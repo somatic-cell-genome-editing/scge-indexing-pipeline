@@ -2,6 +2,7 @@ package edu.mcw.scge.indexer;
 
 import edu.mcw.scge.indexer.dao.delivery.DeliveryDao;
 import edu.mcw.scge.indexer.model.RgdIndex;
+import edu.mcw.scge.indexer.process.Indexer;
 import edu.mcw.scge.indexer.service.ESClient;
 import edu.mcw.scge.indexer.service.IndexAdmin;
 import edu.mcw.scge.indexer.service.IndexService;
@@ -17,6 +18,7 @@ import org.springframework.core.io.FileSystemResource;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Manager {
@@ -28,13 +30,15 @@ public class Manager {
     String env;
     DeliveryDao dao=new DeliveryDao();
     IndexService service=new IndexService();
+    Indexer indexer=new Indexer();
     public static void main(String[] args) throws IOException {
-        DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
+    /*    DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
         new XmlBeanDefinitionReader(bf) .loadBeanDefinitions(new FileSystemResource("properties/AppConfigure.xml"));
         Manager manager= (Manager) bf.getBean("manager");
         manager.command=args[0];
          manager.env=args[1];
-         String index="scge_delivery";
+    //     String index="scge_delivery";
+        String index="scge_search";
         List<String> indices= new ArrayList<>();
        ESClient es= (ESClient) bf.getBean("client");
         if (environments.contains(manager.env)) {
@@ -58,7 +62,7 @@ public class Manager {
         }
         if(es!=null)
             ESClient.destroy();
-        System.out.println(manager.version);
+        System.out.println(manager.version);*/
     }
     public void run() throws Exception {
         long start = System.currentTimeMillis();
@@ -67,7 +71,12 @@ public class Manager {
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
-            service.indexDeliveryObjects( dao.getIndexObjects());
+      //      service.indexDeliveryObjects( dao.getIndexObjects());
+        List<String> objectsToBeIndexed= Arrays.asList("DeliverySystems", "Guides",  "Models",
+                "Transgenes", "Studies","Editors");
+        for(String object:objectsToBeIndexed){
+            indexer.index(object);
+        }
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
             System.out.println(clusterStatus + ", refusing to continue with operations");

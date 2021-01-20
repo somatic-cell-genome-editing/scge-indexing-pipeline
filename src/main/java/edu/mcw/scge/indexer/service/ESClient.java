@@ -47,7 +47,7 @@ public class ESClient {
               /*  client= new PreBuiltTransportClient(settings)
                         .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
                 client = new RestHighLevelClient(RestClient.builder(
-                        new HttpHost("green.rgd.mcw.edu", 9200, "http")
+                        new HttpHost("travis.rgd.mcw.edu", 9200, "http")
 
                 ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
 
