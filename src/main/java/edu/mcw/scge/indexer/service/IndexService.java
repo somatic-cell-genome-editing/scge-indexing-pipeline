@@ -1,5 +1,6 @@
 package edu.mcw.scge.indexer.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.mcw.scge.indexer.model.DeliveryObject;
@@ -35,6 +36,10 @@ public class IndexService {
     }
     public void indexObjects(List<IndexObject> objs, String index, String type) throws ExecutionException, InterruptedException, IOException {
         // BulkRequestBuilder bulkRequestBuilder= ESClient.getClient().prepareBulk().setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+        ObjectMapper mapper=new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
         BulkRequest bulkRequest=new BulkRequest();
         //  bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
@@ -42,17 +47,18 @@ public class IndexService {
         bulkRequest.timeout("2m");
         int docCount=0;
         for (IndexObject o : objs) {
-            System.out.println(o.toString());
-          /*  docCount++;
-            ObjectMapper mapper = new ObjectMapper();
-            byte[] json = new byte[0];
+        //    System.out.println(o.toString());
+           docCount++;
+
+
             try {
-                json = mapper.writeValueAsBytes(o.toString());
+               String json = mapper.writeValueAsString(o);
+                bulkRequest.add(new IndexRequest(index).source(json, XContentType.JSON));
+
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-            }*/
+            }
             //     bulkRequestBuilder.add(new IndexRequest(index, type,o.getTerm_acc()).source(json, XContentType.JSON));
-            bulkRequest.add(new IndexRequest(index).source(o.toString(), XContentType.JSON));
 
 
 

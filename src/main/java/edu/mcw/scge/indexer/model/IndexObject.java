@@ -1,6 +1,7 @@
 package edu.mcw.scge.indexer.model;
 
 import com.google.gson.Gson;
+import edu.mcw.scge.datamodel.*;
 
 import java.util.List;
 
@@ -21,8 +22,34 @@ public class IndexObject {
     private String sequence;
     private List<String> target;
     private List<String> externalId; //stocknumber etc.
+    private List<String> additionalData;
     private List<String> experimentTags;
+    private String experimentName;
+    private int tier;
+    private String reportPageLink;
 
+    private Study study;
+    private List<Editor> editors;
+    private List<Delivery> deliveries;
+    private List<Model> models;
+    private List<Guide> guides;
+    private List<Experiment> experiments;
+
+    public List<Experiment> getExperiments() {
+        return experiments;
+    }
+
+    public void setExperiments(List<Experiment> experiments) {
+        this.experiments = experiments;
+    }
+
+    public String getReportPageLink() {
+        return reportPageLink;
+    }
+
+    public void setReportPageLink(String reportPageLink) {
+        this.reportPageLink = reportPageLink;
+    }
 
     public String getName() {
         return name;
@@ -144,6 +171,22 @@ public class IndexObject {
         this.id = id;
     }
 
+    public List<String> getAdditionalData() {
+        return additionalData;
+    }
+
+    public void setAdditionalData(List<String> additionalData) {
+        this.additionalData = additionalData;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
     public List<String> getExperimentTags() {
         return experimentTags;
     }
@@ -152,7 +195,54 @@ public class IndexObject {
         this.experimentTags = experimentTags;
     }
 
-    public String toString(){
+    public String getExperimentName() {
+        return experimentName;
+    }
+
+    public void setExperimentName(String experimentName) {
+        this.experimentName = experimentName;
+    }
+
+    public Study getStudy() {
+        return study;
+    }
+
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+
+    public List<Editor> getEditors() {
+        return editors;
+    }
+
+    public void setEditors(List<Editor> editors) {
+        this.editors = editors;
+    }
+
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<Delivery> deliveries) {
+        this.deliveries = deliveries;
+    }
+
+    public List<Model> getModels() {
+        return models;
+    }
+
+    public void setModels(List<Model> models) {
+        this.models = models;
+    }
+
+    public List<Guide> getGuides() {
+        return guides;
+    }
+
+    public void setGuides(List<Guide> guides) {
+        this.guides = guides;
+    }
+/*   public String toString(){
         StringBuffer sb=new StringBuffer();
         Gson gson=new Gson();
         boolean first=true;
@@ -168,6 +258,27 @@ public class IndexObject {
             }else
                 first=false;
             sb.append("\"name\":\"" + name+"\"" );
+        }
+        if(experimentName!=null) {
+            if(!first){
+                sb.append(",");
+            }else
+                first=false;
+            sb.append("\"experimentName\":\"" + experimentName+"\"" );
+        }
+        if(reportPageLink!=null) {
+            if(!first){
+                sb.append(",");
+            }else
+                first=false;
+            sb.append("\"reportPageLink\":\"" + reportPageLink+"\"" );
+        }
+        if(tier!=0) {
+            if(!first){
+                sb.append(",");
+            }else
+                first=false;
+            sb.append("\"tier\":\"" + tier+"\"" );
         }
         if(type!=null) {
             if(!first){
@@ -205,7 +316,7 @@ public class IndexObject {
 
             sb.append("\"description\":\"" + description + "\"");
         }*/
-        if(pam!=null) {
+    /*    if(pam!=null) {
             if(!first){
                 sb.append(",");
             }else
@@ -254,6 +365,13 @@ public class IndexObject {
                 first=false;
             sb.append("\"externalId\":" + gson.toJson(externalId) );
         }
+        if(additionalData!=null && additionalData.size()>0) {
+            if(!first){
+                sb.append(",");
+            }else
+                first=false;
+            sb.append("\"additionalData\":" + gson.toJson(additionalData));
+        }
         if(experimentTags!=null && experimentTags.size()>0) {
             if(!first){
                 sb.append(",");
@@ -263,5 +381,5 @@ public class IndexObject {
         }
         sb.append("}");
             return sb.toString();
-    }
+    }*/
 }

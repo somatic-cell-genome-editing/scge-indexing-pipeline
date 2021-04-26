@@ -32,7 +32,8 @@ public class Manager {
     IndexService service=new IndexService();
     Indexer indexer=new Indexer();
     public static void main(String[] args) throws IOException {
-    /*    DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
+
+       DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
         new XmlBeanDefinitionReader(bf) .loadBeanDefinitions(new FileSystemResource("properties/AppConfigure.xml"));
         Manager manager= (Manager) bf.getBean("manager");
         manager.command=args[0];
@@ -62,7 +63,7 @@ public class Manager {
         }
         if(es!=null)
             ESClient.destroy();
-        System.out.println(manager.version);*/
+        System.out.println(manager.version);
     }
     public void run() throws Exception {
         long start = System.currentTimeMillis();
@@ -73,7 +74,7 @@ public class Manager {
             admin.updateIndex();
       //      service.indexDeliveryObjects( dao.getIndexObjects());
         List<String> objectsToBeIndexed= Arrays.asList("DeliverySystems", "Guides",  "Models",
-                "Transgenes", "Studies","Editors");
+                "Transgenes", /*"Studies",*/"Editors","Experiments");
         for(String object:objectsToBeIndexed){
             indexer.index(object);
         }

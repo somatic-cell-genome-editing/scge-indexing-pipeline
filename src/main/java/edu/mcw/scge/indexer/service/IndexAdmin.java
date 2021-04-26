@@ -8,11 +8,14 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,20 +63,20 @@ public class IndexAdmin {
     }
     public void createNewIndex(String index, String _mappings, String type) throws Exception {
 
-        String path="data/"+_mappings+".json";
+        String path="data/mappings.json";
         log.info("CREATING NEW INDEX..." + index);
 
-//        String mappings=new String(Files.readAllBytes(Paths.get(path)));
-        //      String analyzers=new String(Files.readAllBytes(Paths.get("data/analyzers.json")));
+           String mappings=new String(Files.readAllBytes(Paths.get(path)));
+           String analyzers=new String(Files.readAllBytes(Paths.get("data/analyzers.json")));
 
         /********* create index, put mappings and analyzers ****/
         CreateIndexRequest request=new CreateIndexRequest(index);
         request.settings(Settings.builder()
                 .put("index.number_of_shards",5)
-                .put("index.number_of_replicas", 0))
-        // .loadFromSource(analyzers, XContentType.JSON))
+                .put("index.number_of_replicas", 0)
+         .loadFromSource(analyzers, XContentType.JSON))
         ;
-        //    request.mapping(mappings, XContentType.JSON);
+           request.mapping(mappings, XContentType.JSON);
         org.elasticsearch.client.indices.CreateIndexResponse createIndexResponse = ESClient.getClient().indices().create(request, RequestOptions.DEFAULT);
         log.info(index + " created on  " + new Date());
 
