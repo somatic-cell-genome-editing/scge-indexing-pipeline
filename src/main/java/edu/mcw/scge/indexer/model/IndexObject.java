@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import edu.mcw.scge.datamodel.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class IndexObject {
 
-    private int id;
+    private long id;
     private String name;
     private String type;
     private String subType;
@@ -34,6 +36,44 @@ public class IndexObject {
     private List<Model> models;
     private List<Guide> guides;
     private List<Experiment> experiments;
+    private List<Vector> vectors;
+
+    private int experimentCount;
+    private String withExperiments;
+   private Map<Integer, String> studyNames;
+   private Map<Long, String> experimentNames;
+
+    public Map<Integer, String> getStudyNames() {
+        return studyNames;
+    }
+
+    public void setStudyNames(Map<Integer, String> studyNames) {
+        this.studyNames = studyNames;
+    }
+
+    public Map<Long, String> getExperimentNames() {
+        return experimentNames;
+    }
+
+    public void setExperimentNames(Map<Long, String> experimentNames) {
+        this.experimentNames = experimentNames;
+    }
+
+    public String getWithExperiments() {
+        return withExperiments;
+    }
+
+    public void setWithExperiments(String withExperiments) {
+        this.withExperiments = withExperiments;
+    }
+
+    public int getExperimentCount() {
+        return experimentCount;
+    }
+
+    public void setExperimentCount(int experimentCount) {
+        this.experimentCount = experimentCount;
+    }
 
     public List<Experiment> getExperiments() {
         return experiments;
@@ -163,11 +203,11 @@ public class IndexObject {
         this.target = target;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -242,144 +282,14 @@ public class IndexObject {
     public void setGuides(List<Guide> guides) {
         this.guides = guides;
     }
-/*   public String toString(){
-        StringBuffer sb=new StringBuffer();
-        Gson gson=new Gson();
-        boolean first=true;
-        sb.append("{");
 
-        if(id!=0) {
-            sb.append("\"id\":" + id);
-            first=false;
-        }
-        if(name!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"name\":\"" + name+"\"" );
-        }
-        if(experimentName!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"experimentName\":\"" + experimentName+"\"" );
-        }
-        if(reportPageLink!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"reportPageLink\":\"" + reportPageLink+"\"" );
-        }
-        if(tier!=0) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"tier\":\"" + tier+"\"" );
-        }
-        if(type!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-            first=false;
-            sb.append("\"type\":\"" + type+"\"" );
-        }
-        if(subType!=null) {
-            if (!first) {
-                sb.append(",");
-            }else
-                    first=false;
-            sb.append("\"subType\":\"" + subType + "\"");
-        }
-        if(species!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"species\":\"" + species + "\"");
-        }
-        if(symbol!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"symbol\":\"" + symbol + "\"");
-        }
-    /*    if(description!=null && !description.equals("")) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
+    public List<Vector> getVectors() {
+        return vectors;
+    }
 
-            sb.append("\"description\":\"" + description + "\"");
-        }*/
-    /*    if(pam!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"pam\":\"" + pam + "\"");
-        }
-        if(detectionMethod!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"detectionMethod\":\"" + detectionMethod + "\"");
-        }
-        if(site!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"site\":\"" + site + "\"");
-        }
-        if(category!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"category\":\"" + category + "\"");
-        }
-        if(sequence!=null) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"sequence\":\"" + sequence + "\"");
-        }
-        if(target!=null && target.size()>0) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"target\":" + gson.toJson(target) );
-        }
-        if(externalId!=null && externalId.size()>0) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"externalId\":" + gson.toJson(externalId) );
-        }
-        if(additionalData!=null && additionalData.size()>0) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"additionalData\":" + gson.toJson(additionalData));
-        }
-        if(experimentTags!=null && experimentTags.size()>0) {
-            if(!first){
-                sb.append(",");
-            }else
-                first=false;
-            sb.append("\"experimentalTags\":" + gson.toJson(experimentTags));
-        }
-        sb.append("}");
-            return sb.toString();
-    }*/
+    public void setVectors(List<Vector> vectors) {
+        this.vectors = vectors;
+    }
+
+
 }

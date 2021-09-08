@@ -24,7 +24,7 @@ import java.util.List;
 public class Manager {
     private String version;
     private RgdIndex rgdIndex;
-    private static List environments;
+    private static List<String> environments;
     private IndexAdmin admin;
     String command;
     String env;
@@ -73,8 +73,9 @@ public class Manager {
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
       //      service.indexDeliveryObjects( dao.getIndexObjects());
-        List<String> objectsToBeIndexed= Arrays.asList("DeliverySystems", "Guides",  "Models",
-                "Transgenes", /*"Studies",*/"Editors","Experiments");
+        List<String> objectsToBeIndexed= Arrays.asList(/*"Guides"*/
+                "DeliverySystems", "Guides",  "Models",
+                "Transgenes", /*"Studies",*/"Editors","Experiments", "Vectors");
         for(String object:objectsToBeIndexed){
             indexer.index(object);
         }
@@ -107,13 +108,13 @@ public class Manager {
         this.rgdIndex = rgdIndex;
     }
 
-    public static List getEnvironments() {
+    public static List<String> getEnvironments() {
         return environments;
     }
 
-    public static void setEnvironments(List environments) {
+ /*   public static void setEnvironments(List<String> environments) {
         Manager.environments = environments;
-    }
+    }*/
 
     public IndexAdmin getAdmin() {
         return admin;
@@ -169,4 +170,9 @@ public class Manager {
 
     }
 
+
+    public void setEnvironments(List<String> environments) {
+        Manager.environments = environments;
+
+    }
 }
