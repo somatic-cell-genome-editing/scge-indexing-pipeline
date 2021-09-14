@@ -5,6 +5,7 @@ import edu.mcw.scge.dao.implementation.DeliveryDao;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.Vector;
 import edu.mcw.scge.indexer.model.IndexObject;
+import org.apache.commons.text.CaseUtils;
 
 
 import java.util.*;
@@ -173,7 +174,7 @@ public class Crawler {
             List<String> additionalData=new ArrayList<>();
             IndexObject o=new IndexObject();
             o.setCategory("Vector");
-          o.setId(e.getVectorId());
+            o.setId(e.getVectorId());
 //            if(e.getType()!=null)
 //                o.setType(e.getType().trim());
 //            if(e.getSubtype()!=null)
@@ -445,7 +446,7 @@ public class Crawler {
             int expCount=experimentRecords.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet()).size();
             o.setExperimentCount(expCount);
             if(expCount>0){
-                o.setWithExperiments(m.getOrganism().toUpperCase());
+                o.setWithExperiments(CaseUtils.toCamelCase(m.getOrganism(),true,' '));
             }
             Map<Integer, String> studies=  studyDao.getStudiesByModel(m.getModelId()).stream().collect(Collectors.toMap(Study::getStudyId,Study::getStudy));
             o.setStudyNames(studies);
@@ -508,17 +509,21 @@ public class Crawler {
                 o.setStudyNames(studies);
                 try {
                     Set<Long> experimentIds = experimentRecords.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet());
-                    Map<Long, String> experimentNames = experimentIds.stream().map(p -> {
-                        try {
-                            return new ExperimentDao().getExperiment(p);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        return new Experiment();
-                    }).collect(Collectors.toMap(Experiment::getExperimentId,
-                            Experiment::getName));
-                    o.setExperimentNames(experimentNames);
-                }catch (Exception e){}
+                    if (experimentIds.size() > 0) {
+                        Map<Long, String> experimentNames = experimentIds.stream().map(p -> {
+                            try {
+                                return new ExperimentDao().getExperiment(p);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                            return new Experiment();
+                        }).collect(Collectors.toMap(Experiment::getExperimentId,
+                                Experiment::getName));
+                        o.setExperimentNames(experimentNames);
+                    }
+                    }catch(Exception e){
+                    }
+
                 objects.add(o);
             }
         }
@@ -652,8 +657,8 @@ public class Crawler {
                     models.add(modelDao.getModelById(r.getModelId()));
                 }
         }
-        return models.stream().map(m->{m.setOrganism(m.getOrganism().toUpperCase());
-        m.setType(m.getType().toUpperCase()) ;return m;}).collect(Collectors.toList());
+        return models.stream().map(m->{m.setOrganism(CaseUtils.toCamelCase(m.getOrganism(), true, ' '));
+        m.setType(CaseUtils.toCamelCase(m.getType(),true,' ')) ;return m;}).collect(Collectors.toList());
     }
     public List<Vector> mapVectors(List<ExperimentRecord> experimentRecords) throws Exception {
         Set<Long> vectorIds=new HashSet<>();
