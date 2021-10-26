@@ -5,6 +5,7 @@ import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 import edu.mcw.scge.datamodel.ontologyx.TermSynonym;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,14 +24,14 @@ public class TissueMapper implements Mapper {
             if (r.getTissueId() != null && !r.getTissueId().equals("")) {
                 String t = xdao.getTerm(r.getTissueId()).getTerm();
                 if (!tissueTerm.contains(t)) {
-                    tissueTerm.add(t);
+                    tissueTerm.add(StringUtils.capitalize(t.trim()));
                     tissueIds.add(r.getTissueId());
                     for(TermSynonym synonym:xdao.getActiveSynonyms(r.getTissueId())){
-                        synonyms.add(synonym.getName());
+                        synonyms.add(StringUtils.capitalize(synonym.getName().trim()));
                         synonyms.add(synonym.getTermAcc());
                     }
                     for(Term term: xdao.getAllActiveTermAncestors(r.getTissueId())){
-                        synonyms.add(term.getTerm());
+                        synonyms.add(StringUtils.capitalize(term.getTerm().trim()));
                         synonyms.add(term.getAccId());
                     }
 
@@ -45,13 +46,13 @@ public class TissueMapper implements Mapper {
                     System.err.println("CELL TYPE:"+ cellType);
                     e.printStackTrace();}
                 if(cellType!=null)
-                    cellTypes.add(cellType);
+                    cellTypes.add(StringUtils.capitalize(cellType.trim()));
                 for (TermSynonym synonym : xdao.getActiveSynonyms(r.getCellType())) {
-                    synonyms.add(synonym.getName());
+                    synonyms.add(StringUtils.capitalize(synonym.getName().trim()));
                     synonyms.add(synonym.getTermAcc());
                 }
                 for (Term term : xdao.getAllActiveTermAncestors(r.getCellType())) {
-                    synonyms.add(term.getTerm());
+                    synonyms.add(StringUtils.capitalize(term.getTerm().trim()));
                     synonyms.add(term.getAccId());
                 }
 

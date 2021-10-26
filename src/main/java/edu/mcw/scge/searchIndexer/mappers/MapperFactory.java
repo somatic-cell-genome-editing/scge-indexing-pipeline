@@ -26,6 +26,9 @@ public class MapperFactory  {
         if(type.equalsIgnoreCase("application")){
             return new ApplicationMapper();
         }
+        if(type.equalsIgnoreCase("study")){
+            return new StudyMapper();
+        }
 
         return null;
     }

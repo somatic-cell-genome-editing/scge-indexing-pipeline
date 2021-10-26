@@ -16,8 +16,11 @@ public class ExperimentMapper implements Mapper {
         Set<String> genotype=new HashSet<>();
         Set<String> sex=new HashSet<>();
         for(ExperimentRecord record:experimentRecords){
+            if(record.getSex()!=null && !record.getSex().equals(""))
             sex.add(record.getSex());
+            if(record.getSamplePrep()!=null && !record.getSamplePrep().equals(""))
             samplePrep.add(record.getSamplePrep());
+            if(record.getGenotype()!=null && !record.getGenotype().equals(""))
             genotype.add(record.getGenotype());
         }
         if(!sex.isEmpty())indexDocument.setSex(sex);

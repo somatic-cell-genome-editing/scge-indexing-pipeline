@@ -4,6 +4,7 @@ import edu.mcw.scge.dao.implementation.GuideDao;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Guide;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,9 +51,9 @@ public class GuideMapper implements Mapper {
 
                         guideTargetLocus.add(g.getTargetLocus());
                     if(g.getTargetSequence()!=null && !g.getTargetSequence().equals(""))
-                    guideTargetSequence.add(g.getTargetSequence());
+                    guideTargetSequence.add(g.getTargetSequence().toUpperCase());
                     if(g.getSpecies()!=null && !g.getSpecies().equals(""))
-                    guideSpecies.add(g.getSpecies());
+                    guideSpecies.add(StringUtils.capitalize(g.getSpecies().trim()));
                     if(g.getPam()!=null && !g.getPam().equals(""))
                     guidePam.add(g.getPam());
                     if(g.getGrnaLabId()!=null && !g.getGrnaLabId().equals(""))

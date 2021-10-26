@@ -3,8 +3,7 @@ package edu.mcw.scge.searchIndexer.indexers;
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
 
-import edu.mcw.scge.datamodel.ontologyx.Term;
-import edu.mcw.scge.datamodel.ontologyx.TermSynonym;
+
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
@@ -24,6 +23,8 @@ public class ExperimentIndexer implements Indexer {
         List<IndexDocument> objects= new ArrayList<>();
         List<Study> studies=studyDao.getStudies();
         for(Study s: studies) {
+            Map<Integer, String> studyMap=new HashMap<>();
+            studyMap.put(s.getStudyId(), s.getStudy());
             List<Experiment> experiments = experimentDao.getExperimentsByStudy(s.getStudyId());
             for (Experiment x : experiments) {
                 IndexDocument o = new IndexDocument();
@@ -37,7 +38,7 @@ public class ExperimentIndexer implements Indexer {
                 o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
                 o.setPi(Stream.of(s.getPi()).collect(Collectors.toSet()));
                 o.setDescription(x.getDescription());
-
+                o.setStudyNames(studyMap);
                 o.setGeneratedDescription(x.getDescription());
                 List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());
                 Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);

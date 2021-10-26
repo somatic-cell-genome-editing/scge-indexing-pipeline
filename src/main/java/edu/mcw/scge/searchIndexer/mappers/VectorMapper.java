@@ -4,6 +4,7 @@ import edu.mcw.scge.dao.implementation.VectorDao;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Vector;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,17 +31,38 @@ public class VectorMapper implements Mapper {
             for(Vector v:     vectorDao.getVectorsByExpRecId(r.getExperimentRecordId()) ){
                 if(!vectorIds.contains(v.getVectorId())){
                     vectorIds.add(v.getVectorId());
-                    vectorName.add(v.getName());
-                    vectorType.add(v.getType());
-                    vectorSubtype.add(v.getSubtype());
-                    source.add(v.getSource());
-                    vectorlabId.add(v.getLabId());
-                    vectorAnnotatedMap.add(v.getAnnotatedMap());
-                    genomeSerotype.add(v.getGenomeSerotype());
-                    capsidSerotype.add(v.getCapsidSerotype());
-                    capsidVariant.add(v.getCapsidVariant());
-                    titerMethod.add(v.getTiterMethod());
-                    description.add(v.getTiterMethod());
+                    if(v.getName()!=null && !v.getName().equals(""))
+                    vectorName.add(StringUtils.capitalize(v.getName().trim()));
+                    if(v.getType()!=null && !v.getType().equals(""))
+
+                        vectorType.add(StringUtils.capitalize(v.getType().trim()));
+                    if(v.getName()!=null && !v.getName().equals(""))
+
+                        vectorSubtype.add(StringUtils.capitalize(v.getSubtype().trim()));
+                    if(v.getSource()!=null && !v.getSource().equals(""))
+
+                        source.add(StringUtils.capitalize(v.getSource().trim()));
+                    if(v.getLabId()!=null && !v.getLabId().equals(""))
+
+                        vectorlabId.add(v.getLabId());
+                    if(v.getAnnotatedMap()!=null && !v.getAnnotatedMap().equals(""))
+
+                        vectorAnnotatedMap.add(v.getAnnotatedMap());
+                    if(v.getGenomeSerotype()!=null && !v.getGenomeSerotype().equals(""))
+
+                        genomeSerotype.add(v.getGenomeSerotype());
+                    if(v.getCapsidSerotype()!=null && !v.getCapsidSerotype().equals(""))
+
+                        capsidSerotype.add(v.getCapsidSerotype());
+                    if(v.getCapsidVariant()!=null && !v.getCapsidVariant().equals(""))
+
+                        capsidVariant.add(v.getCapsidVariant());
+                    if(v.getTiterMethod()!=null && !v.getTiterMethod().equals(""))
+
+                        titerMethod.add(v.getTiterMethod());
+                    if(v.getDescription()!=null && !v.getDescription().equals(""))
+
+                        description.add(v.getDescription());
                 }
             }
         }

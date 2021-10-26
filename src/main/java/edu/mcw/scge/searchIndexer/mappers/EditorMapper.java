@@ -4,6 +4,7 @@ import edu.mcw.scge.dao.implementation.EditorDao;
 import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -50,22 +51,20 @@ public class EditorMapper implements Mapper {
                         e.printStackTrace();
                     }
                     if(editor.getType()!=null && !editor.getType().equals(""))
-                    type.add(editor.getType());
+                    type.add(StringUtils.capitalize(editor.getType().trim()));
                     if(editor.getSubType()!=null && !editor.getSubType().equals(""))
-
-                        subType.add(editor.getSubType());
+                        subType.add(StringUtils.capitalize(editor.getSubType().trim()));
                     if(editor.getSymbol()!=null && !editor.getSymbol().equals(""))
-
-                        symbol.add(editor.getSymbol());
+                        symbol.add(editor.getSymbol().trim());
                     if(editor.getSource()!=null && !editor.getSource().equals(""))
 
-                        source.add(editor.getSource());
+                        source.add(editor.getSource().trim());
                     if(editor.getAlias()!=null && !editor.getAlias().equals(""))
 
-                        alias.add(editor.getAlias());
+                        alias.add(editor.getAlias().trim());
                     if(editor.getSpecies()!=null && !editor.getSpecies().equals(""))
 
-                        species.add(editor.getSpecies());
+                        species.add(StringUtils.capitalize(editor.getSpecies().trim()));
                     if(editor.getEditorVariant()!=null && !editor.getEditorVariant().equals(""))
 
                         editorVariant.add(editor.getEditorVariant());
@@ -89,13 +88,13 @@ public class EditorMapper implements Mapper {
                         fusion.add(editor.getFusion());
                     if(editor.getTarget_sequence()!=null && !editor.getTarget_sequence().equals(""))
 
-                        targetSequence.add(editor.getTarget_sequence());
+                        targetSequence.add(editor.getTarget_sequence().toLowerCase().trim());
                     if(editor.getProteinSequence()!=null && !editor.getProteinSequence().equals(""))
 
                         proteinSequence.add(editor.getProteinSequence());
                     if(editor.getTargetLocus()!=null && !editor.getTargetLocus().equals(""))
 
-                        targetLocus.add(editor.getTargetLocus());
+                        targetLocus.add(editor.getTargetLocus().trim());
                     if(editor.getAnnotatedMap()!=null && !editor.getAnnotatedMap().equals(""))
 
                         annotatedMap.add(editor.getAnnotatedMap());

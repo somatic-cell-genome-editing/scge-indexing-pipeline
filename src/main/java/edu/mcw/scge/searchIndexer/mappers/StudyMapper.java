@@ -7,9 +7,7 @@ import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StudyMapper implements Mapper {
@@ -21,17 +19,32 @@ public class StudyMapper implements Mapper {
         Set<String> pi=new HashSet<>();
         Set<String> experimentName=new HashSet<>();
         Set<String> experimentType=new HashSet<>();
-
+        Map<Integer, String> studyMap=new HashMap<>();
+        Map<Long, String> experimentMap=new HashMap<>();
         Set<Long> experimentIds=experimentRecords.stream()
                 .map(ExperimentRecord::getExperimentId).collect(Collectors.toSet());
         for(Long experimentId:experimentIds){
-            Study study=studyDao.getStudyByExperimentId(experimentId).get(0);
-            studies.add(study.getStudy());
-            pi.add(study.getPi());
+            Study study=new Study();
+            try {
+              List<Study> studyList=  studyDao.getStudyByExperimentId(experimentId);
+              if(studyList.size()>0) {
+                  study = studyList.get(0);
+                  studies.add(study.getStudy());
+                  studyMap.put(study.getStudyId(), study.getStudy());
+                  pi.add(study.getPi());
+              }
+            }catch (Exception e){
+                System.out.println("EXPERIMENT ID:"+experimentId);
+                e.printStackTrace();
+            }
+
             Experiment experiment=experimentDao.getExperiment(experimentId);
             experimentName.add(experiment.getName());
             experimentType.add(experiment.getType());
+            experimentMap.put(experiment.getExperimentId(), experiment.getName());
         }
+        indexDocument.setStudyNames(studyMap);
+        indexDocument.setExperimentNames(experimentMap);
         indexDocument.setStudy(studies);
         indexDocument.setPi(pi);
         indexDocument.setExperimentName(experimentName);

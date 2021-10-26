@@ -34,7 +34,6 @@ public class Manager {
         Manager manager= (Manager) bf.getBean("manager");
         manager.command=args[0];
          manager.env=args[1];
-    //     String index="scge_delivery";
         String index="scge_search";
         List<String> indices= new ArrayList<>();
        ESClient es= (ESClient) bf.getBean("client");
@@ -71,7 +70,8 @@ public class Manager {
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
 
-        for(String category: Arrays.asList("experiment")) {
+        for(String category: Arrays.asList("experiment", "editor", "delivery",
+                "vector", "guide","model")) {
            Indexer indexer = indexers.getIndexer(category);
             indexer.index(RgdIndex.getNewAlias());
         }
@@ -166,8 +166,6 @@ public class Manager {
         return  true;
 
     }
-
-
     public void setEnvironments(List<String> environments) {
         Manager.environments = environments;
 
