@@ -63,7 +63,7 @@ public class IndexAdmin {
     }
     public void createNewIndex(String index, String _mappings, String type) throws Exception {
 
-        String path= "data/mappings.json";
+        String path= "data/indexDocMappings.json";
         log.info("CREATING NEW INDEX..." + index);
 
            String mappings=new String(Files.readAllBytes(Paths.get(path)));
