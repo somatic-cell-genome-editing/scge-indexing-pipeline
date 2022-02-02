@@ -18,8 +18,8 @@ public class ExperimentMapper implements Mapper {
         for(ExperimentRecord record:experimentRecords){
             if(record.getSex()!=null && !record.getSex().equals(""))
             sex.add(record.getSex());
-            if(record.getSamplePrep()!=null && !record.getSamplePrep().equals(""))
-            samplePrep.add(record.getSamplePrep());
+//            if(record.getSamplePrep()!=null && !record.getSamplePrep().equals(""))
+//            samplePrep.add(record.getSamplePrep());
             if(record.getGenotype()!=null && !record.getGenotype().equals(""))
             genotype.add(record.getGenotype());
         }
