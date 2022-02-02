@@ -59,8 +59,8 @@ public class ModelMapper implements Mapper {
                     transgeneReporter.add(model.getTransgeneReporter());
                     if(model.getParentalOrigin()!=null && ! model.getParentalOrigin().equals(""))
                     parentalOrigin.add(model.getParentalOrigin());
-                    if(model.getStrainCode()!=null && ! model.getStrainCode().equals(""))
-                    strainCode.add(model.getStrainCode());
+                  //  if(model.getStrainCode()!=null && ! model.getStrainCode().equals(""))
+                  //  strainCode.add(model.getStrainCode());
                     if(model.getStrainAlias()!=null && ! model.getStrainAlias().equals(""))
                     strainAlias.add(model.getStrainAlias());
                 }

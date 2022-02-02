@@ -420,8 +420,8 @@ public class Crawler {
             additionalTags.add(m.getTransgeneReporter());
             if(m.getTransgene()!=null && !m.getTransgene().equals(""))
             additionalTags.add(m.getTransgene());
-            if(m.getStrainCode()!=null &&! m.getStrainCode().equals(""))
-            additionalTags.add(m.getStrainCode());
+         //   if(m.getStrainCode()!=null &&! m.getStrainCode().equals(""))
+         //   additionalTags.add(m.getStrainCode());
             if(m.getAnnotatedMap()!=null && !m.getAnnotatedMap().equals(""))
             additionalTags.add(m.getAnnotatedMap());
             if(m.getParentalOrigin()!=null && !m.getParentalOrigin().equals(""))
