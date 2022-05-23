@@ -36,7 +36,7 @@ public class ExperimentIndexer implements Indexer {
                 o.setReportPageLink("/toolkit/data/experiments/experiment/");
                 o.setTier(s.getTier());
                 o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
-                o.setPi(Stream.of(s.getPi()).collect(Collectors.toSet()));
+                o.setPi(Stream.of(s.getPiLastName()+" "+ s.getPiFirstName()).collect(Collectors.toSet()));
                 o.setDescription(x.getDescription());
                 o.setStudyNames(studyMap);
                 o.setGeneratedDescription(x.getDescription());

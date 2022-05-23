@@ -1,6 +1,9 @@
 package edu.mcw.scge.searchIndexer.model;
 
 
+
+
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,6 +50,10 @@ public class IndexDocument {
     private Set<String> studyName;
     private Set<String> labName;
     private Set<String> pi;
+    private String status;
+    private String access;
+    private String submissionDate;
+
     /******************EDITOR FIELDS*************************/
     private Set<String> editorType;
     private Set<String> editorSubType;
@@ -129,6 +136,29 @@ public class IndexDocument {
     private Set<String> deliveryLabId;
     private Set<String> deliveryAnnotatedMap;
 
+    public String getSubmissionDate() {
+        return submissionDate;
+    }
+
+    public void setSubmissionDate(String submissionDate) {
+        this.submissionDate = submissionDate;
+    }
+
+    public String getAccess() {
+        return access;
+    }
+
+    public void setAccess(String access) {
+        this.access = access;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public long getId() {
         return id;

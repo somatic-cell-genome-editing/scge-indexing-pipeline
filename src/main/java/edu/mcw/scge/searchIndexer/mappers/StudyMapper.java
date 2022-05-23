@@ -31,7 +31,7 @@ public class StudyMapper implements Mapper {
                   study = studyList.get(0);
                   studies.add(study.getStudy());
                   studyMap.put(study.getStudyId(), study.getStudy());
-                  pi.add(study.getPi());
+                  pi.add(study.getPiLastName()+" "+ study.getPiFirstName());
               }
             }catch (Exception e){
                 System.out.println("EXPERIMENT ID:"+experimentId);

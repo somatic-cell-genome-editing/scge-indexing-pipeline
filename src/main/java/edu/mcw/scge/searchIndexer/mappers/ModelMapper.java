@@ -4,7 +4,7 @@ import edu.mcw.scge.dao.implementation.ModelDao;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Model;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
-import org.apache.commons.text.CaseUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,15 +36,15 @@ public class ModelMapper implements Mapper {
                     Model model=modelDao.getModelById(r.getModelId());
                     if(model.getType()!=null && ! model.getType().equals(""))
 
-                        modelType.add(CaseUtils.toCamelCase(model.getType(),true,' '));
+                        modelType.add(StringUtils.capitalize(model.getType().trim()));
                     if(model.getOrganism()!=null && ! model.getOrganism().equals(""))
-                    modelOrganism.add(CaseUtils.toCamelCase(model.getOrganism(), true, ' '));
+                    modelOrganism.add(StringUtils.capitalize(model.getOrganism().trim()));
                     if(model.getRrid()!=null && ! model.getRrid().equals(""))
                     modelRrid.add(model.getRrid());
                     if(model.getSource()!=null && ! model.getSource().equals(""))
-                    modelSource.add(model.getSource());
+                    modelSource.add(StringUtils.capitalize(model.getSource().trim()));
                     if(model.getSubtype()!=null && ! model.getSubtype().equals(""))
-                    modelSubtype.add(model.getSubtype());
+                    modelSubtype.add(StringUtils.capitalize(model.getSubtype().trim()));
                     if(model.getAnnotatedMap()!=null && ! model.getAnnotatedMap().equals(""))
                     modelAnnotatedMap.add(model.getAnnotatedMap());
                     if(model.getName()!=null && ! model.getName().equals(""))
