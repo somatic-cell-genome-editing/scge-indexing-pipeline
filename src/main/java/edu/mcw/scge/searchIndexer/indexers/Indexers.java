@@ -23,6 +23,9 @@ public class Indexers {
         if(category.equalsIgnoreCase("delivery")){
             return new DeliveryIndexer();
         }
+        if(category.equalsIgnoreCase("studies")){
+            return new StudyIndexer();
+        }
         return null;
     }
 }
