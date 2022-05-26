@@ -1,12 +1,11 @@
 package edu.mcw.scge.indexer;
 
-import edu.mcw.scge.indexer.dao.delivery.DeliveryDao;
 import edu.mcw.scge.indexer.model.RgdIndex;
-import edu.mcw.scge.indexer.process.Indexer;
 import edu.mcw.scge.indexer.service.ESClient;
 import edu.mcw.scge.indexer.service.IndexAdmin;
-import edu.mcw.scge.indexer.service.IndexService;
 import edu.mcw.scge.indexer.utils.Utils;
+import edu.mcw.scge.searchIndexer.indexers.Indexer;
+import edu.mcw.scge.searchIndexer.indexers.Indexers;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
@@ -28,9 +27,6 @@ public class Manager {
     private IndexAdmin admin;
     String command;
     String env;
-    DeliveryDao dao=new DeliveryDao();
-    IndexService service=new IndexService();
-    Indexer indexer=new Indexer();
     public static void main(String[] args) throws IOException {
 
        DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
@@ -38,7 +34,6 @@ public class Manager {
         Manager manager= (Manager) bf.getBean("manager");
         manager.command=args[0];
          manager.env=args[1];
-    //     String index="scge_delivery";
         String index="scge_search";
         List<String> indices= new ArrayList<>();
        ESClient es= (ESClient) bf.getBean("client");
@@ -49,6 +44,7 @@ public class Manager {
             manager.rgdIndex.setIndices(indices);
         }
         manager.rgdIndex= (RgdIndex) bf.getBean("rgdIndex");
+
         try {
             manager.run();
         } catch (Exception e) {
@@ -67,18 +63,19 @@ public class Manager {
     }
     public void run() throws Exception {
         long start = System.currentTimeMillis();
+        Indexers indexers=new Indexers();
 
         if (command.equalsIgnoreCase("reindex"))
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
-      //      service.indexDeliveryObjects( dao.getIndexObjects());
-        List<String> objectsToBeIndexed= Arrays.asList(/*"Guides"*/
-                "DeliverySystems", "Guides",  "Models",
-                "Transgenes", /*"Studies",*/"Editors","Experiments", "Vectors");
-        for(String object:objectsToBeIndexed){
-            indexer.index(object);
+
+        for(String category: Arrays.asList("experiment", "editor", "delivery",
+                "vector", "guide","model","studies")) {
+           Indexer indexer = indexers.getIndexer(category);
+            indexer.index(RgdIndex.getNewAlias());
         }
+
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
             System.out.println(clusterStatus + ", refusing to continue with operations");
@@ -169,8 +166,6 @@ public class Manager {
         return  true;
 
     }
-
-
     public void setEnvironments(List<String> environments) {
         Manager.environments = environments;
 

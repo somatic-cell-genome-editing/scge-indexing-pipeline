@@ -420,8 +420,8 @@ public class Crawler {
             additionalTags.add(m.getTransgeneReporter());
             if(m.getTransgene()!=null && !m.getTransgene().equals(""))
             additionalTags.add(m.getTransgene());
-            if(m.getStrainCode()!=null &&! m.getStrainCode().equals(""))
-            additionalTags.add(m.getStrainCode());
+         //   if(m.getStrainCode()!=null &&! m.getStrainCode().equals(""))
+         //   additionalTags.add(m.getStrainCode());
             if(m.getAnnotatedMap()!=null && !m.getAnnotatedMap().equals(""))
             additionalTags.add(m.getAnnotatedMap());
             if(m.getParentalOrigin()!=null && !m.getParentalOrigin().equals(""))
@@ -470,7 +470,7 @@ public class Crawler {
         }
         return objects;
     }
-    public List<IndexObject> getTransgenes() throws Exception {
+  /*  public List<IndexObject> getTransgenes() throws Exception {
         List<IndexObject> objects=new ArrayList<>();
         for(Model m:modelDao.getModels()){
             if((m.getTransgene()!=null && !m.getTransgene().equals(""))
@@ -486,7 +486,7 @@ public class Crawler {
                 List<String> externalIds = new ArrayList<>();
              /*   if (m.getReporterDbIds() != null)
                     externalIds.add(m.getReporterDbIds());*/
-                o.setAliases(alias);
+   /*             o.setAliases(alias);
                 o.setExternalId(externalIds);
                 o.setTier(m.getTier());
                 if(m.getTier()==4){
@@ -528,7 +528,7 @@ public class Crawler {
             }
         }
         return objects;
-    }
+    }*/
 /*   public List<IndexObject> getStudies() throws Exception {
         List<IndexObject> objects=new ArrayList<>();
         List<Study> studies=studyDao.getStudies();
