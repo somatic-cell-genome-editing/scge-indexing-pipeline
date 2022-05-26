@@ -31,7 +31,12 @@ public class StudyMapper implements Mapper {
                   study = studyList.get(0);
                   studies.add(study.getStudy());
                   studyMap.put(study.getStudyId(), study.getStudy());
+                  if(study.getPiFirstName()!=null && study.getPiLastName()!=null)
                   pi.add(study.getPiLastName()+" "+ study.getPiFirstName());
+                  else
+                      if(study.getPi()!=null)
+                      pi.add(study.getPi().replaceAll(",", " "));
+                      else System.err.println("NO PI NAME:"+study.getStudyId());
               }
             }catch (Exception e){
                 System.out.println("EXPERIMENT ID:"+experimentId);
