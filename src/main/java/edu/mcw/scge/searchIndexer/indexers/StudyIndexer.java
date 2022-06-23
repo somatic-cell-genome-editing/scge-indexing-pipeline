@@ -30,9 +30,9 @@ public class StudyIndexer implements Indexer {
 
             Map<Long, String> experimentMap=new HashMap<>();
 
-            Grant grant=grantDao.getGrantByGroupId(s.getGroupId());
+          Grant grant=grantDao.getGrantByGroupId(s.getGroupId());
                 o.setId(s.getStudyId());
-                o.setType(UI.getLabel( grant.getGrantInitiative()));
+                o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
                 o.setCategory("Study");
                 o.setName(s.getStudy().trim());
                 o.setReportPageLink("/toolkit/data/experiments/study/");
@@ -51,9 +51,9 @@ public class StudyIndexer implements Indexer {
                     experimentMap.put(experiment.getExperimentId(), experiment.getName());
                 }
                 if(s.getIsValidationStudy()==1){
-                    o.setSubType("Validation");
+                    o.setStudyType("Validation");
                 }else{
-                    o.setSubType("Experimental");
+                    o.setStudyType("Experimental");
                 }
                 o.setExperimentNames(experimentMap);
                 if(s.getTier()==4){

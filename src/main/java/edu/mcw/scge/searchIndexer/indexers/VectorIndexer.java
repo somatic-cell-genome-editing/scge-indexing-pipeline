@@ -25,9 +25,9 @@ public class VectorIndexer implements Indexer {
             o.setCategory("Vector");
             o.setId(e.getVectorId());
             if(e.getType()!=null)
-               o.setType(e.getType().trim());
+           //    o.setVectorType(Collections.singleton(e.getType().trim()));
            if(e.getSubtype()!=null)
-               o.setSubType(e.getSubtype().trim());
+          //     o.setVectorSubtype(Collections.singleton(e.getSubtype().trim()));
             if(e.getName()!=null)
                 o.setSymbol(e.getName().trim());
             o.setDescription(e.getDescription());

@@ -47,8 +47,8 @@ public class ModelMapper implements Mapper {
                     modelSubtype.add(StringUtils.capitalize(model.getSubtype().trim()));
                     if(model.getAnnotatedMap()!=null && ! model.getAnnotatedMap().equals(""))
                     modelAnnotatedMap.add(model.getAnnotatedMap());
-                    if(model.getName()!=null && ! model.getName().equals(""))
-                    modelName.add(model.getName());
+                    if(model.getDisplayName()!=null && ! model.getDisplayName().equals(""))
+                    modelName.add(model.getDisplayName());
                     if(model.getTransgene()!=null && ! model.getTransgene().equals(""))
                     transgene.add(model.getTransgene());
                     if(model.getDescription()!=null && ! model.getDescription().equals(""))
@@ -65,12 +65,11 @@ public class ModelMapper implements Mapper {
                     strainAlias.add(model.getStrainAlias());
                 }
         }
-        if(!indexDocument.getCategory().equalsIgnoreCase("model")) {
             if(!modelType.isEmpty())   indexDocument.setModelType(modelType);
             if(!modelSubtype.isEmpty())   indexDocument.setModelSubtype(modelSubtype);
             if(!modelName.isEmpty())  indexDocument.setModelName(modelName);
             if(!modelOrganism.isEmpty())  indexDocument.setModelOrganism(modelOrganism);
-        }
+
         if(!modelRrid.isEmpty())  indexDocument.setModelRrid(modelRrid);
         if(!modelSource.isEmpty())  indexDocument.setModelSource(modelSource);
         if(!modelAnnotatedMap.isEmpty())  indexDocument.setModelAnnotatedMap(modelAnnotatedMap);

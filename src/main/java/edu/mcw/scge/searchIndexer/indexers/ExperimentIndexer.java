@@ -30,7 +30,7 @@ public class ExperimentIndexer implements Indexer {
                 IndexDocument o = new IndexDocument();
 
                 o.setId(x.getExperimentId());
-                o.setType(x.getType());
+             //   o.setExperimentType(Collections.singleton(x.getType()));
                 o.setCategory("Experiment");
                 o.setName(x.getName());
                 o.setReportPageLink("/toolkit/data/experiments/experiment/");

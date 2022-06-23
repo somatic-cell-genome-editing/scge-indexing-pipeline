@@ -12,9 +12,9 @@ public class IndexDocument {
     private long id;
     private String name;
     private String symbol;
-    private String type;
-    private String subType;
-    private String species;
+ //   private String type;
+ //   private String subType;
+ //   private String species;
     private String description;
     private String category;
     private Set<String> aliases;
@@ -53,6 +53,8 @@ public class IndexDocument {
     private String status;
     private String access;
     private String submissionDate;
+    private Set<String> initiative;
+    private String studyType;
 
     /******************EDITOR FIELDS*************************/
     private Set<String> editorType;
@@ -100,6 +102,7 @@ public class IndexDocument {
     private Set<String> specificityRatio;
     private Set<String> guideLocation;
     private Set<String> guideAnnotatedMap;
+    private Set<String> guideCompatibility;
     /**************************MODEL FIELDS*********************************/
     private Set<String> modelType;
     private Set<String> modelOrganism;
@@ -135,6 +138,30 @@ public class IndexDocument {
     private Set<String> deliverySource;
     private Set<String> deliveryLabId;
     private Set<String> deliveryAnnotatedMap;
+
+    public Set<String> getGuideCompatibility() {
+        return guideCompatibility;
+    }
+
+    public void setGuideCompatibility(Set<String> guideCompatibility) {
+        this.guideCompatibility = guideCompatibility;
+    }
+
+    public Set<String> getInitiative() {
+        return initiative;
+    }
+
+    public void setInitiative(Set<String> initiative) {
+        this.initiative = initiative;
+    }
+
+    public String getStudyType() {
+        return studyType;
+    }
+
+    public void setStudyType(String studyType) {
+        this.studyType = studyType;
+    }
 
     public String getSubmissionDate() {
         return submissionDate;
@@ -176,7 +203,7 @@ public class IndexDocument {
         this.name = name;
     }
 
-    public String getType() {
+   /* public String getType() {
         return type;
     }
 
@@ -198,7 +225,7 @@ public class IndexDocument {
 
     public void setSpecies(String species) {
         this.species = species;
-    }
+    }*/
 
     public String getDescription() {
         return description;

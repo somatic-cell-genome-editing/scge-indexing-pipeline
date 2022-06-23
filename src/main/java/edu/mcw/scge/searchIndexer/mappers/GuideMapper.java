@@ -42,6 +42,7 @@ public class GuideMapper implements Mapper {
         Set<String> guideAnnotatedMap=new HashSet<>();
         Set<String> guideLocation=new HashSet<>();
         Set<String> description= new HashSet<>();
+        Set<String> guideCompaitibility=new HashSet<>();
         for(ExperimentRecord r: experimentRecords) {
             for (Guide g : guideDao.getGuidesByExpRecId(r.getExperimentRecordId())) {
                 //   if (!guideIds.contains(r.getGuideId())) {
@@ -78,9 +79,12 @@ public class GuideMapper implements Mapper {
                     guideAnnotatedMap.add(g.getAnnotatedMap());
                     if(g.getGuideDescription()!=null && !g.getGuideDescription().equals(""))
                     description.add(g.getGuideDescription());
+                    if(g.getGuideCompatibility()!=null && !g.getGuideCompatibility().equals(""))
+                       guideCompaitibility.add(g.getGuideCompatibility()) ;
                 }
             }
         }
+        if(!guideCompaitibility.isEmpty()) indexDocument.setGuideCompatibility(guideCompaitibility);
         if(!guideTargetLocus.isEmpty())  indexDocument.setGuideTargetLocus(guideTargetLocus);
         if(!guideSpecies.isEmpty()) indexDocument.setGuideSpecies(guideSpecies);
         if(!guideTargetSequence.isEmpty()) indexDocument.setGuideTargetSequence(guideTargetSequence);
@@ -88,7 +92,6 @@ public class GuideMapper implements Mapper {
         if(!grnaLabId.isEmpty()) indexDocument. setGrnaLabId( grnaLabId);
         if(!guideSpacerSequence.isEmpty()) indexDocument. setGuideSpacerSequence(guideSpacerSequence);
         if(!guideRepeatSequence.isEmpty()) indexDocument.setGuideRepeatSequence(guideRepeatSequence);
-        if(!indexDocument.getCategory().equalsIgnoreCase("guide"))
             if(!guide.isEmpty())   indexDocument.setGuide(guide);
         if(!guideForwardPrimer.isEmpty()) indexDocument.setGuideForwardPrimer(guideForwardPrimer);
         if(!guideReversePrimer.isEmpty()) indexDocument.setGuideReversePrimer( guideReversePrimer);
