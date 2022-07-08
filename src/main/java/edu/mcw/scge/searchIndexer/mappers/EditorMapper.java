@@ -103,14 +103,14 @@ public class EditorMapper implements Mapper {
                         }
 
                     List<Guide> guides=guideDao.getGuidesByEditor(editor.getId());
-                    for(Guide g:guides){
+                  /*  for(Guide g:guides){
                         System.out.print("guide locus:"+ g.getTargetLocus() );
 
                         for(Editor editor1: editorDao.getEditorByGuide(g.getGuide_id())){
                             System.out.print("\tEditor Target:" +editor1.getTargetLocus());
                         }
                         System.out.print("\n");
-                    }
+                    }*/
                         if (editor.getAnnotatedMap() != null && !editor.getAnnotatedMap().equals(""))
 
                             annotatedMap.add(editor.getAnnotatedMap());
