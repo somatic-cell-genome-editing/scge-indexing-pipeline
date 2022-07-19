@@ -6,7 +6,6 @@ import edu.mcw.scge.dao.implementation.ProtocolDao;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Model;
 import edu.mcw.scge.datamodel.Protocol;
-import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ public class ProtocolIndexer implements Indexer {
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
         List<IndexDocument> objects=new ArrayList<>();
+        List<Protocol> protocols=protocolDao.getProtocols();
+        System.out.print("PROTOCOLS SIZE:"+protocols.size() );
         for(Protocol protocol:protocolDao.getProtocols()){
             IndexDocument o=new IndexDocument();
             o.setCategory("Protocol");
@@ -28,7 +29,7 @@ public class ProtocolIndexer implements Indexer {
             //  o.setModelSubtype(Collections.singleton(m.getSubtype()));
             o.setDescription(protocol.getDescription());
             o.setTier(protocol.getTier());
-            o.setReportPageLink("/toolkit/data/protocols/protocol/?id=");
+            o.setReportPageLink("https://scge.mcw.edu/toolkit/data/protocols/protocol/?id=");
           //  List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByModel(m.getModelId());
           //  int expCount=experimentRecords.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet()).size();
          //   o.setExperimentCount(expCount);
@@ -40,8 +41,5 @@ public class ProtocolIndexer implements Indexer {
         return objects;
     }
 
-    @Override
-    public void index(String index) throws Exception {
 
-    }
 }
