@@ -29,7 +29,7 @@ public class ProtocolIndexer implements Indexer {
             //  o.setModelSubtype(Collections.singleton(m.getSubtype()));
             o.setDescription(protocol.getDescription());
             o.setTier(protocol.getTier());
-            o.setReportPageLink("https://scge.mcw.edu/toolkit/data/protocols/protocol/?id=");
+            o.setReportPageLink("/toolkit/data/protocols/protocol/?id=");
           //  List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByModel(m.getModelId());
           //  int expCount=experimentRecords.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet()).size();
          //   o.setExperimentCount(expCount);
