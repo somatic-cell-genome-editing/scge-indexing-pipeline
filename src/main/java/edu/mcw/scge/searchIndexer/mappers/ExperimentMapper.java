@@ -56,9 +56,9 @@ public class ExperimentMapper implements Mapper {
 
         Objects.requireNonNull(MapperFactory.getMapper("tissue")).mapFields(experimentRecords, indexDocument);
      //   Objects.requireNonNull(MapperFactory.getMapper("application")).mapFields(experimentRecords, indexDocument);
-        if(!indexDocument.getCategory().equalsIgnoreCase("experiment")){
+      //  if(!indexDocument.getCategory().equalsIgnoreCase("experiment")){
             Objects.requireNonNull(MapperFactory.getMapper("study")).mapFields(experimentRecords, indexDocument);
 
-        }
+       // }
     }
 }
