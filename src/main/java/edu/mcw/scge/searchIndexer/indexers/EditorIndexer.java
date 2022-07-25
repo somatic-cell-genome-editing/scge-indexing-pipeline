@@ -27,8 +27,8 @@ public class EditorIndexer implements Indexer {
                 o.setSymbol(e.getSymbol().trim());
             o.setDescription(e.getEditorDescription());
             o.setTier(e.getTier());
-            o.setType(StringUtils.capitalize(e.getType().trim()));
-            o.setSubType(StringUtils.capitalize(e.getSubType().trim()));
+          //  o.setEditorType(Collections.singleton(StringUtils.capitalize(e.getType().trim())));
+         //   o.setEditorSubType(Collections.singleton(StringUtils.capitalize(e.getSubType().trim())));
             o.setReportPageLink("/toolkit/data/editors/editor?id=");
             List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByEditor(e.getId());
             Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);

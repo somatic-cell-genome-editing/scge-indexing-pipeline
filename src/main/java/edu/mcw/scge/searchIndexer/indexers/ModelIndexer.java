@@ -21,9 +21,9 @@ public class ModelIndexer implements Indexer {
             IndexDocument o=new IndexDocument();
             o.setCategory("Model System");
             o.setId(m.getModelId());
-            o.setType(m.getType());
-            o.setName(m.getName());
-            o.setSubType(m.getSubtype());
+           // o.setModelType(Collections.singleton(m.getType()));
+            o.setName(m.getDisplayName());
+          //  o.setModelSubtype(Collections.singleton(m.getSubtype()));
             o.setDescription(m.getDescription());
             o.setTier(m.getTier());
             o.setReportPageLink("/toolkit/data/models/model/?id=");

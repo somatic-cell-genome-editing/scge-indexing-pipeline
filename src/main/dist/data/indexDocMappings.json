@@ -183,6 +183,10 @@
         "keyword": {
           "type": "keyword",
           "ignore_above": 256
+        },
+        "custom": {
+          "type": "text",
+          "analyzer": "symbol_analyzer"
         }
       },
       "analyzer": "ngram_analyzer"
@@ -460,6 +464,10 @@
         "keyword": {
           "type": "keyword",
           "ignore_above": 256
+        },
+        "custom": {
+          "type": "text",
+          "analyzer": "symbol_analyzer"
         },
         "ngram": {
           "type": "text",

@@ -26,6 +26,9 @@ public class Indexers {
         if(category.equalsIgnoreCase("studies")){
             return new StudyIndexer();
         }
+        if(category.equalsIgnoreCase("protocol")){
+            return new ProtocolIndexer();
+        }
         return null;
     }
 }

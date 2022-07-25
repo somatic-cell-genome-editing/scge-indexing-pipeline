@@ -23,8 +23,8 @@ public class DeliveryIndexer implements Indexer {
         for(Delivery d:deliveryDao.getDeliverySystems() ) {
             IndexDocument o = new IndexDocument();
             o.setId(d.getId());
-            o.setType(d.getType());
-            o.setSubType(d.getSubtype());
+           // o.setDeliveryType(Collections.singleton(d.getType()));
+          //  o.setDeliverySubtype(Collections.singleton(d.getSubtype()));
             o.setName(d.getName());
             o.setDescription(d.getDescription());
             o.setCategory("Delivery System");

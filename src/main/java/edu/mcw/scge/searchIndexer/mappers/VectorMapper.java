@@ -66,11 +66,11 @@ public class VectorMapper implements Mapper {
                 }
             }
         }
-        if(!indexDocument.getCategory().equalsIgnoreCase("vector")) {
+
             if(!vectorName.isEmpty())   indexDocument.setVectorName(vectorName);
             if(!vectorType.isEmpty())   indexDocument.setVectorType(vectorType);
             if(!vectorSubtype.isEmpty()) indexDocument.setVectorSubtype(vectorSubtype);
-        }
+
        if(!source.isEmpty()) indexDocument.setVectorSource(source);
         if(!vectorlabId.isEmpty()) indexDocument.setVectorlabId(vectorlabId);
         if(!vectorAnnotatedMap.isEmpty()) indexDocument.setVectorAnnotatedMap(vectorAnnotatedMap);

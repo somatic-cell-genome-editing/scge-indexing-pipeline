@@ -55,11 +55,11 @@ public class DeliveryMapper implements Mapper {
                         description.add(delivery.getDescription());
                 }
         }
-        if(!indexDocument.getCategory().equalsIgnoreCase("Delivery System")) {
+
             if(!deliverySystemName.isEmpty())    indexDocument.setDeliverySystemName(deliverySystemName);
             if(!deliveryType.isEmpty())    indexDocument.setDeliveryType( deliveryType);
             if(!deliverySubtype.isEmpty())   indexDocument.setDeliverySubtype(deliverySubtype);
-        }
+
         if(!molTargetingAgent.isEmpty()) indexDocument.setMolTargetingAgent( molTargetingAgent);
 
         if(!deliverySource.isEmpty()) indexDocument.setDeliverySource(deliverySource);
