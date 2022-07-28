@@ -52,6 +52,7 @@ public class ExperimentMapper implements Mapper {
 
 
             Objects.requireNonNull(MapperFactory.getMapper("model")).mapFields(experimentRecords, indexDocument);
+        Objects.requireNonNull(MapperFactory.getMapper("antibody")).mapFields(experimentRecords, indexDocument);
 
 
         Objects.requireNonNull(MapperFactory.getMapper("tissue")).mapFields(experimentRecords, indexDocument);
