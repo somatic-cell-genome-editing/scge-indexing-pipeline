@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class ApplicationMapper implements Mapper {
+public class ApplicationMethodMapper implements Mapper {
     @Override
     public void mapFields(List<ExperimentRecord> experimentRecords, IndexDocument indexDocument) throws Exception {
         Set<String> dosage=new HashSet<>();

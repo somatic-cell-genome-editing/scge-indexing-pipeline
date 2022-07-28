@@ -32,6 +32,9 @@ public class Indexers {
         if(category.equalsIgnoreCase("antibody")){
             return new AntibodyIndexer();
         }
+        if(category.equalsIgnoreCase("applicationMethod")){
+            return new ApplicationMethodIndexer();
+        }
         return null;
     }
 }
