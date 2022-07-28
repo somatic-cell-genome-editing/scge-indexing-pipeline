@@ -46,41 +46,44 @@ public class GuideMapper implements Mapper {
         for(ExperimentRecord r: experimentRecords) {
             for (Guide g : guideDao.getGuidesByExpRecId(r.getExperimentRecordId())) {
                 //   if (!guideIds.contains(r.getGuideId())) {
-                if (!guideIds.contains(g.getGuide_id())) {
-                    guideIds.add(g.getGuide_id());
-                    if(g.getTargetLocus()!=null && !g.getTargetLocus().equals(""))
+                if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                        || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && g.getTier() == 4)) {
+                    if (!guideIds.contains(g.getGuide_id())) {
+                        guideIds.add(g.getGuide_id());
+                        if (g.getTargetLocus() != null && !g.getTargetLocus().equals(""))
 
-                        guideTargetLocus.add(g.getTargetLocus());
-                    if(g.getTargetSequence()!=null && !g.getTargetSequence().equals(""))
-                    guideTargetSequence.add(g.getTargetSequence().toUpperCase());
-                    if(g.getSpecies()!=null && !g.getSpecies().equals(""))
-                    guideSpecies.add(StringUtils.capitalize(g.getSpecies().trim()));
-                    if(g.getPam()!=null && !g.getPam().equals(""))
-                    guidePam.add(g.getPam());
-                    if(g.getGrnaLabId()!=null && !g.getGrnaLabId().equals(""))
-                    grnaLabId.add(g.getGrnaLabId());
-                     if(g.getSpacerSequence()!=null && !g.getSpacerSequence().equals(""))
-                    guideSpacerSequence.add(g.getSpacerSequence());
-                    if(g.getGuide()!=null && !g.getGuide().equals(""))
-                    guide.add(g.getGuide());
-                    if(g.getRepeatSequence()!=null && !g.getRepeatSequence().equals(""))
-                    guideRepeatSequence.add(g.getRepeatSequence());
-                    if(g.getForwardPrimer()!=null && !g.getForwardPrimer().equals(""))
-                    guideForwardPrimer.add(g.getForwardPrimer());
-                    if(g.getReversePrimer()!=null && !g.getReversePrimer().equals(""))
-                    guideReversePrimer.add(g.getReversePrimer());
-                    if(g.getChr()!=null && !g.getChr().equals(""))
-                    guideLocation.add("CHR:"+g.getChr()+":"+g.getStart()+" - "+ g.getStop());
-                    if(g.getModifications()!=null && !g.getModifications().equals(""))
-                    modifications.add(g.getModifications());
-                    if(g.getAntiRepeatSequence()!=null && !g.getAntiRepeatSequence().equals(""))
-                    guideAntiRepeatSequence.add(g.getAntiRepeatSequence());
-                    if(g.getAnnotatedMap()!=null && !g.getAnnotatedMap().equals(""))
-                    guideAnnotatedMap.add(g.getAnnotatedMap());
-                    if(g.getGuideDescription()!=null && !g.getGuideDescription().equals(""))
-                    description.add(g.getGuideDescription());
-                    if(g.getGuideCompatibility()!=null && !g.getGuideCompatibility().equals(""))
-                       guideCompaitibility.add(g.getGuideCompatibility()) ;
+                            guideTargetLocus.add(g.getTargetLocus());
+                        if (g.getTargetSequence() != null && !g.getTargetSequence().equals(""))
+                            guideTargetSequence.add(g.getTargetSequence().toUpperCase());
+                        if (g.getSpecies() != null && !g.getSpecies().equals(""))
+                            guideSpecies.add(StringUtils.capitalize(g.getSpecies().trim()));
+                        if (g.getPam() != null && !g.getPam().equals(""))
+                            guidePam.add(g.getPam());
+                        if (g.getGrnaLabId() != null && !g.getGrnaLabId().equals(""))
+                            grnaLabId.add(g.getGrnaLabId());
+                        if (g.getSpacerSequence() != null && !g.getSpacerSequence().equals(""))
+                            guideSpacerSequence.add(g.getSpacerSequence());
+                        if (g.getGuide() != null && !g.getGuide().equals(""))
+                            guide.add(g.getGuide());
+                        if (g.getRepeatSequence() != null && !g.getRepeatSequence().equals(""))
+                            guideRepeatSequence.add(g.getRepeatSequence());
+                        if (g.getForwardPrimer() != null && !g.getForwardPrimer().equals(""))
+                            guideForwardPrimer.add(g.getForwardPrimer());
+                        if (g.getReversePrimer() != null && !g.getReversePrimer().equals(""))
+                            guideReversePrimer.add(g.getReversePrimer());
+                        if (g.getChr() != null && !g.getChr().equals(""))
+                            guideLocation.add("CHR:" + g.getChr() + ":" + g.getStart() + " - " + g.getStop());
+                        if (g.getModifications() != null && !g.getModifications().equals(""))
+                            modifications.add(g.getModifications());
+                        if (g.getAntiRepeatSequence() != null && !g.getAntiRepeatSequence().equals(""))
+                            guideAntiRepeatSequence.add(g.getAntiRepeatSequence());
+                        if (g.getAnnotatedMap() != null && !g.getAnnotatedMap().equals(""))
+                            guideAnnotatedMap.add(g.getAnnotatedMap());
+                        if (g.getGuideDescription() != null && !g.getGuideDescription().equals(""))
+                            description.add(g.getGuideDescription());
+                        if (g.getGuideCompatibility() != null && !g.getGuideCompatibility().equals(""))
+                            guideCompaitibility.add(g.getGuideCompatibility());
+                    }
                 }
             }
         }

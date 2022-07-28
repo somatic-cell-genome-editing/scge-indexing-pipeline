@@ -27,53 +27,61 @@ public class StudyIndexer implements Indexer {
 
         for(Study s: studies) {
             IndexDocument o = new IndexDocument();
+                o.setAccessLevel("consortium");
+                mapDetails(o,s);
+                objects.add(o);
+            if(s.getTier()==4){
+                IndexDocument publicObject = new IndexDocument();
+                publicObject.setAccessLevel("public");
+                mapDetails(publicObject,s);
+                objects.add(publicObject);
+            }
+        }
+        return objects;
+    }
+    public void mapDetails(IndexDocument o, Study s) throws Exception {
+        Map<Long, String> experimentMap=new HashMap<>();
 
-            Map<Long, String> experimentMap=new HashMap<>();
-
-          Grant grant=grantDao.getGrantByGroupId(s.getGroupId());
-                o.setId(s.getStudyId());
-                o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
-                o.setCategory("Study");
-                o.setName(s.getStudy().trim());
-                o.setReportPageLink("/toolkit/data/experiments/study/");
-                o.setTier(s.getTier());
-                o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
-                o.setPi(Stream.of(s.getPiLastName()+" "+s.getPiFirstName()).collect(Collectors.toSet()));
-             //   o.setStudyNames(studyMap);
-               // o.setGeneratedDescription(grant.);
-                List<Experiment> experiments=experimentDao.getExperimentsByStudy(s.getStudyId());
-                if(experiments.size()>0){
-                    o.setStatus("Processed");
-                }else{
-                    o.setStatus("Received");
-                }
-                for(Experiment experiment:experiments){
-                    experimentMap.put(experiment.getExperimentId(), experiment.getName());
-                }
-                if(s.getIsValidationStudy()==1){
-                    o.setStudyType("Validation");
-                }else{
-                    o.setStudyType("Experimental");
-                }
-                o.setExperimentNames(experimentMap);
-                if(s.getTier()==4){
+        Grant grant=grantDao.getGrantByGroupId(s.getGroupId());
+        o.setId(s.getStudyId());
+        o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
+        o.setCategory("Study");
+        o.setName(s.getStudy().trim());
+        o.setReportPageLink("/toolkit/data/experiments/study/");
+        o.setTier(s.getTier());
+        o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
+        o.setPi(Stream.of(s.getPiLastName()+" "+s.getPiFirstName()).collect(Collectors.toSet()));
+        //   o.setStudyNames(studyMap);
+        // o.setGeneratedDescription(grant.);
+        List<Experiment> experiments=experimentDao.getExperimentsByStudy(s.getStudyId());
+        if(experiments.size()>0){
+            o.setStatus("Processed");
+        }else{
+            o.setStatus("Received");
+        }
+        for(Experiment experiment:experiments){
+            experimentMap.put(experiment.getExperimentId(), experiment.getName());
+        }
+        if(s.getIsValidationStudy()==1){
+            o.setStudyType("Validation");
+        }else{
+            o.setStudyType("Experimental");
+        }
+        o.setExperimentNames(experimentMap);
+               /* if(s.getTier()==4){
                     o.setAccess("Public");
                 }else{
                     o.setAccess("Restricted");
-                }
+                }*/
 
-                try {
-                    if (!isInDCCorNIHGroup(personDao.getPersonById(s.getModifiedBy()).get(0))) {
-                        o.setStatus("Verified");
-                    }
-                }catch (Exception e){
-                    System.err.println("STUDY ID with no Modified By:"+ s.getStudyId());
-                }
-                o.setSubmissionDate(s.getSubmissionDate().toString());
-                objects.add(o);
-
+        try {
+            if (!isInDCCorNIHGroup(personDao.getPersonById(s.getModifiedBy()).get(0))) {
+                o.setStatus("Verified");
+            }
+        }catch (Exception e){
+            System.err.println("STUDY ID with no Modified By:"+ s.getStudyId());
         }
-        return objects;
+        o.setSubmissionDate(s.getSubmissionDate().toString());
     }
     public boolean isInDCCorNIHGroup(Person p) throws Exception{
 

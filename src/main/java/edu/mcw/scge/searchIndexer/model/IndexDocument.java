@@ -52,6 +52,7 @@ public class IndexDocument {
     private Set<String> pi;
     private String status;
     private String access;
+    private String accessLevel;
     private String submissionDate;
     private Set<String> initiative;
     private String studyType;
@@ -177,6 +178,14 @@ public class IndexDocument {
 
     public void setAccess(String access) {
         this.access = access;
+    }
+
+    public String getAccessLevel() {
+        return accessLevel;
+    }
+
+    public void setAccessLevel(String accessLevel) {
+        this.accessLevel = accessLevel;
     }
 
     public String getStatus() {

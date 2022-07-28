@@ -21,17 +21,29 @@ public class GuideIndexer implements Indexer {
         List<IndexDocument> objList = new ArrayList<>();
         for(Guide g: guideDao.getGuides()){
             IndexDocument o=new IndexDocument();
-            o.setCategory("Guide");
-            o.setId(g.getGuide_id());
-            o.setName(g.getGuide());
-            o.setDescription(g.getGuideDescription());
-            o.setTier(g.getTier());
-            o.setReportPageLink("/toolkit/data/guide/system?id=");
+            o.setAccessLevel("consortium");
+
+            mapDetails(o,g);
             List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByGuide(g.getGuide_id());
             Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
             objList.add(o);
+            if(g.getTier()==4){
+                IndexDocument publicObject = new IndexDocument();
+                publicObject.setAccessLevel("public");
+                mapDetails(publicObject,g);
+                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
+
+                objList.add(publicObject);
+            }
         }
         return objList;
     }
-
+    public void mapDetails(IndexDocument o, Guide g){
+        o.setCategory("Guide");
+        o.setId(g.getGuide_id());
+        o.setName(g.getGuide());
+        o.setDescription(g.getGuideDescription());
+        o.setTier(g.getTier());
+        o.setReportPageLink("/toolkit/data/guide/system?id=");
+    }
 }

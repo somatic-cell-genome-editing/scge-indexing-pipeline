@@ -33,36 +33,40 @@ public class ModelMapper implements Mapper {
             if (r.getModelId() != 0)
                 if (!modelIds.contains(r.getModelId())) {
                     modelIds.add(r.getModelId());
-                    Model model=modelDao.getModelById(r.getModelId());
-                    if(model.getType()!=null && ! model.getType().equals(""))
+                    Model model = modelDao.getModelById(r.getModelId());
+                    if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                    || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && model.getTier()==4))
+                    {
+                        if (model.getType() != null && !model.getType().equals(""))
 
-                        modelType.add(StringUtils.capitalize(model.getType().trim()));
-                    if(model.getOrganism()!=null && ! model.getOrganism().equals(""))
-                    modelOrganism.add(StringUtils.capitalize(model.getOrganism().trim()));
-                    if(model.getRrid()!=null && ! model.getRrid().equals(""))
-                    modelRrid.add(model.getRrid());
-                    if(model.getSource()!=null && ! model.getSource().equals(""))
-                    modelSource.add(StringUtils.capitalize(model.getSource().trim()));
-                    if(model.getSubtype()!=null && ! model.getSubtype().equals(""))
-                    modelSubtype.add(StringUtils.capitalize(model.getSubtype().trim()));
-                    if(model.getAnnotatedMap()!=null && ! model.getAnnotatedMap().equals(""))
-                    modelAnnotatedMap.add(model.getAnnotatedMap());
-                    if(model.getDisplayName()!=null && ! model.getDisplayName().equals(""))
-                    modelName.add(model.getDisplayName());
-                    if(model.getTransgene()!=null && ! model.getTransgene().equals(""))
-                    transgene.add(model.getTransgene());
-                    if(model.getDescription()!=null && ! model.getDescription().equals(""))
-                    description.add(model.getDescription());
-                    if(model.getTransgeneDescription()!=null && ! model.getTransgeneDescription().equals(""))
-                    description.add(model.getTransgeneDescription());
-                    if(model.getTransgeneReporter()!=null && ! model.getTransgeneReporter().equals(""))
-                    transgeneReporter.add(model.getTransgeneReporter());
-                    if(model.getParentalOrigin()!=null && ! model.getParentalOrigin().equals(""))
-                    parentalOrigin.add(model.getParentalOrigin());
-                  //  if(model.getStrainCode()!=null && ! model.getStrainCode().equals(""))
-                  //  strainCode.add(model.getStrainCode());
-                    if(model.getStrainAlias()!=null && ! model.getStrainAlias().equals(""))
-                    strainAlias.add(model.getStrainAlias());
+                            modelType.add(StringUtils.capitalize(model.getType().trim()));
+                        if (model.getOrganism() != null && !model.getOrganism().equals(""))
+                            modelOrganism.add(StringUtils.capitalize(model.getOrganism().trim()));
+                        if (model.getRrid() != null && !model.getRrid().equals(""))
+                            modelRrid.add(model.getRrid());
+                        if (model.getSource() != null && !model.getSource().equals(""))
+                            modelSource.add(StringUtils.capitalize(model.getSource().trim()));
+                        if (model.getSubtype() != null && !model.getSubtype().equals(""))
+                            modelSubtype.add(StringUtils.capitalize(model.getSubtype().trim()));
+                        if (model.getAnnotatedMap() != null && !model.getAnnotatedMap().equals(""))
+                            modelAnnotatedMap.add(model.getAnnotatedMap());
+                        if (model.getDisplayName() != null && !model.getDisplayName().equals(""))
+                            modelName.add(model.getDisplayName());
+                        if (model.getTransgene() != null && !model.getTransgene().equals(""))
+                            transgene.add(model.getTransgene());
+                        if (model.getDescription() != null && !model.getDescription().equals(""))
+                            description.add(model.getDescription());
+                        if (model.getTransgeneDescription() != null && !model.getTransgeneDescription().equals(""))
+                            description.add(model.getTransgeneDescription());
+                        if (model.getTransgeneReporter() != null && !model.getTransgeneReporter().equals(""))
+                            transgeneReporter.add(model.getTransgeneReporter());
+                        if (model.getParentalOrigin() != null && !model.getParentalOrigin().equals(""))
+                            parentalOrigin.add(model.getParentalOrigin());
+                        //  if(model.getStrainCode()!=null && ! model.getStrainCode().equals(""))
+                        //  strainCode.add(model.getStrainCode());
+                        if (model.getStrainAlias() != null && !model.getStrainAlias().equals(""))
+                            strainAlias.add(model.getStrainAlias());
+                    }
                 }
         }
             if(!modelType.isEmpty())   indexDocument.setModelType(modelType);

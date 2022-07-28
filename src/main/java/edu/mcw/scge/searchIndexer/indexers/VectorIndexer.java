@@ -22,23 +22,35 @@ public class VectorIndexer implements Indexer {
         List<IndexDocument> objList= new ArrayList<>();
         for(Vector e:vectorDao.getAllVectors()){
             IndexDocument o=new IndexDocument();
-            o.setCategory("Vector");
-            o.setId(e.getVectorId());
-            if(e.getType()!=null)
-           //    o.setVectorType(Collections.singleton(e.getType().trim()));
-           if(e.getSubtype()!=null)
-          //     o.setVectorSubtype(Collections.singleton(e.getSubtype().trim()));
-            if(e.getName()!=null)
-                o.setSymbol(e.getName().trim());
-            o.setDescription(e.getDescription());
-            o.setTier(e.getTier());
-            o.setReportPageLink("/toolkit/data/vector/format?id=");
+            o.setAccessLevel("consortium");
+            mapDetails(o, e);
             List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByVector(e.getVectorId());
             Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
 
 
             objList.add(o);
+            if(e.getTier()==4){
+                IndexDocument publicObject = new IndexDocument();
+                publicObject.setAccessLevel("public");
+                mapDetails(publicObject,e);
+                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
+
+                objList.add(publicObject);
+            }
         }
         return objList;
+    }
+    public void mapDetails(IndexDocument o, Vector e){
+        o.setCategory("Vector");
+        o.setId(e.getVectorId());
+        if(e.getType()!=null)
+            //    o.setVectorType(Collections.singleton(e.getType().trim()));
+            if(e.getSubtype()!=null)
+                //     o.setVectorSubtype(Collections.singleton(e.getSubtype().trim()));
+                if(e.getName()!=null)
+                    o.setSymbol(e.getName().trim());
+        o.setDescription(e.getDescription());
+        o.setTier(e.getTier());
+        o.setReportPageLink("/toolkit/data/vector/format?id=");
     }
 }

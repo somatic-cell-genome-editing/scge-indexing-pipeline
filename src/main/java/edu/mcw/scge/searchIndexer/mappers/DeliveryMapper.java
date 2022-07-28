@@ -29,30 +29,33 @@ public class DeliveryMapper implements Mapper {
             if (r.getDeliverySystemId() != 0)
                 if (!deliveryIds.contains(r.getDeliverySystemId())) {
                     deliveryIds.add(r.getDeliverySystemId());
-                    Delivery delivery=deliveryDao.getDeliverySystemsById(r.getDeliverySystemId()).get(0);
-                    if(delivery.getName()!=null && !delivery.getName().equals(""))
+                    Delivery delivery = deliveryDao.getDeliverySystemsById(r.getDeliverySystemId()).get(0);
+                    if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                            || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && delivery.getTier() == 4)) {
+                        if (delivery.getName() != null && !delivery.getName().equals(""))
 
-                        deliverySystemName.add(delivery.getName().trim());
-                    if(delivery.getMolTargetingAgent()!=null && !delivery.getMolTargetingAgent().equals(""))
+                            deliverySystemName.add(delivery.getName().trim());
+                        if (delivery.getMolTargetingAgent() != null && !delivery.getMolTargetingAgent().equals(""))
 
-                        molTargetingAgent.add(delivery.getMolTargetingAgent());
-                    if(delivery.getType()!=null && !delivery.getType().equals(""))
+                            molTargetingAgent.add(delivery.getMolTargetingAgent());
+                        if (delivery.getType() != null && !delivery.getType().equals(""))
 
-                        deliveryType.add(StringUtils.capitalize(delivery.getType().trim()));
-                    if(delivery.getSubtype()!=null && !delivery.getSubtype().equals(""))
-                    deliverySubtype.add(StringUtils.capitalize(delivery.getSubtype().trim()));
-                    if(delivery.getSource()!=null && delivery.getSource().equals(""))
+                            deliveryType.add(StringUtils.capitalize(delivery.getType().trim()));
+                        if (delivery.getSubtype() != null && !delivery.getSubtype().equals(""))
+                            deliverySubtype.add(StringUtils.capitalize(delivery.getSubtype().trim()));
+                        if (delivery.getSource() != null && delivery.getSource().equals(""))
 
-                        deliverySource.add(delivery.getSource());
-                    if(delivery.getLabId()!=null && !delivery.getLabId().equals(""))
+                            deliverySource.add(delivery.getSource());
+                        if (delivery.getLabId() != null && !delivery.getLabId().equals(""))
 
-                        deliveryLabId.add(delivery.getLabId().trim());
-                    if(delivery.getAnnotatedMap()!=null && !delivery.getAnnotatedMap().equals(""))
+                            deliveryLabId.add(delivery.getLabId().trim());
+                        if (delivery.getAnnotatedMap() != null && !delivery.getAnnotatedMap().equals(""))
 
-                        deliveryAnnotatedMap.add(delivery.getAnnotatedMap());
-                    if(delivery.getDescription()!=null && !delivery.getDescription().equals(""))
+                            deliveryAnnotatedMap.add(delivery.getAnnotatedMap());
+                        if (delivery.getDescription() != null && !delivery.getDescription().equals(""))
 
-                        description.add(delivery.getDescription());
+                            description.add(delivery.getDescription());
+                    }
                 }
         }
 
