@@ -25,6 +25,7 @@ public class IndexDocument {
     private String strand;
     private int tier;
     private String reportPageLink;
+    private String externalLink;
     private Set<String> externalId; //stocknumber etc.
     private int experimentCount;
     private String withExperiments;
@@ -139,6 +140,25 @@ public class IndexDocument {
     private Set<String> deliverySource;
     private Set<String> deliveryLabId;
     private Set<String> deliveryAnnotatedMap;
+
+    /************************Antibody************************************/
+    private Set<String> antibody;
+
+    public String getExternalLink() {
+        return externalLink;
+    }
+
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
+    }
+
+    public Set<String> getAntibody() {
+        return antibody;
+    }
+
+    public void setAntibody(Set<String> antibody) {
+        this.antibody = antibody;
+    }
 
     public Set<String> getGuideCompatibility() {
         return guideCompatibility;

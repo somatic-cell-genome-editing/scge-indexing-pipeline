@@ -29,6 +29,9 @@ public class Indexers {
         if(category.equalsIgnoreCase("protocol")){
             return new ProtocolIndexer();
         }
+        if(category.equalsIgnoreCase("antibody")){
+            return new AntibodyIndexer();
+        }
         return null;
     }
 }

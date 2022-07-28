@@ -29,7 +29,9 @@ public class MapperFactory  {
         if(type.equalsIgnoreCase("study")){
             return new StudyMapper();
         }
-
+        if(type.equalsIgnoreCase("antibody")){
+            return new AntibodyMapper();
+        }
         return null;
     }
 }
