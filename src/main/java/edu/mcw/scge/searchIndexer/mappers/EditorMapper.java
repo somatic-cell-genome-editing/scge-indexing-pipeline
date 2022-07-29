@@ -54,7 +54,8 @@ public class EditorMapper implements Mapper {
                         System.out.println(r.getEditorId());
                         e.printStackTrace();
                     }
-
+                    if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                            || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && editor.getTier() == 4)) {
                         if (editor.getType() != null && !editor.getType().equals(""))
                             type.add(StringUtils.capitalize(editor.getType().trim()));
                         if (editor.getSubType() != null && !editor.getSubType().equals(""))
@@ -102,7 +103,7 @@ public class EditorMapper implements Mapper {
                             targetLocus.add(editor.getTargetLocus().trim());
                         }
 
-                    List<Guide> guides=guideDao.getGuidesByEditor(editor.getId());
+                        List<Guide> guides = guideDao.getGuidesByEditor(editor.getId());
                   /*  for(Guide g:guides){
                         System.out.print("guide locus:"+ g.getTargetLocus() );
 
@@ -121,6 +122,7 @@ public class EditorMapper implements Mapper {
 
 
                     }
+                }
 
                     if (!alias.isEmpty()) indexDocument.setEditorAlias(alias);
                     if (!species.isEmpty()) indexDocument.setEditorSpecies(species);

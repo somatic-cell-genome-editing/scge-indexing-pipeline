@@ -34,57 +34,60 @@ public class StudyMapper implements Mapper {
               List<Study> studyList=  studyDao.getStudyByExperimentId(experimentId);
               if(studyList.size()>0) {
                   study = studyList.get(0);
-                  studies.add(study.getStudy());
-                  Grant grant=grantDao.getGrantByGroupId(study.getGroupId());
-                  grantInitiatives.add(UI.getLabel( grant.getGrantInitiative()));
-                  studyMap.put(study.getStudyId(), study.getStudy());
-                  if(study.getPiFirstName()!=null && study.getPiLastName()!=null)
-                  pi.add(study.getPiLastName()+" "+ study.getPiFirstName());
-                  else
-                      if(study.getPi()!=null)
-                      pi.add(study.getPi().replaceAll(",", " "));
-                      else System.err.println("NO PI NAME:"+study.getStudyId());
+                  if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                          || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
+                      studies.add(study.getStudy());
+                      Grant grant = grantDao.getGrantByGroupId(study.getGroupId());
+                      grantInitiatives.add(UI.getLabel(grant.getGrantInitiative()));
+                      studyMap.put(study.getStudyId(), study.getStudy());
+                      if (study.getPiFirstName() != null && study.getPiLastName() != null)
+                          pi.add(study.getPiLastName() + " " + study.getPiFirstName());
+                      else if (study.getPi() != null)
+                          pi.add(study.getPi().replaceAll(",", " "));
+                      else System.err.println("NO PI NAME:" + study.getStudyId());
 
-                  //    if(!studyIds.contains(study.getStudyId())){
-                  //        studyIds.add(study.getStudyId());
-                          List<Experiment> experiments=experimentDao.getExperimentsByStudy(study.getStudyId());
-                          if(experiments.size()>0){
-                              status.add("Processed");
-                          }else{
-                              status.add("Received");
-                          }
+                      //    if(!studyIds.contains(study.getStudyId())){
+                      //        studyIds.add(study.getStudyId());
+                      List<Experiment> experiments = experimentDao.getExperimentsByStudy(study.getStudyId());
+                      if (experiments.size() > 0) {
+                          status.add("Processed");
+                      } else {
+                          status.add("Received");
+                      }
 
-                          if(study.getIsValidationStudy()==1){
-                              studyType.add("Validation");
-                          }else{
-                              studyType.add("Experimental");
-                          }
+                      if (study.getIsValidationStudy() == 1) {
+                          studyType.add("Validation");
+                      } else {
+                          studyType.add("Experimental");
+                      }
 
-                          if(study.getTier()==4){
-                             access.add("Public");
-                          }else{
-                              access.add("Restricted");
-                          }
+                      if (study.getTier() == 4) {
+                          access.add("Public");
+                      } else {
+                          access.add("Restricted");
+                      }
 
-                          try {
-                              if (!isInDCCorNIHGroup(personDao.getPersonById(study.getModifiedBy()).get(0))) {
-                                  status.add("Verified");
-                              }
-                          }catch (Exception e){
-                              System.err.println("STUDY ID with no Modified By:"+ study.getStudyId());
+                      try {
+                          if (!isInDCCorNIHGroup(personDao.getPersonById(study.getModifiedBy()).get(0))) {
+                              status.add("Verified");
                           }
-                        //  o.setSubmissionDate(study.getSubmissionDate().toString());
-                   //   }
+                      } catch (Exception e) {
+                          System.err.println("STUDY ID with no Modified By:" + study.getStudyId());
+                      }
+                      //  o.setSubmissionDate(study.getSubmissionDate().toString());
+                      //   }
+                      Experiment experiment=experimentDao.getExperiment(experimentId);
+                      experimentName.add(experiment.getName());
+                      experimentType.add(experiment.getType());
+                      experimentMap.put(experiment.getExperimentId(), experiment.getName());
+                  }
               }
             }catch (Exception e){
                 System.out.println("EXPERIMENT ID:"+experimentId);
                 e.printStackTrace();
             }
 
-            Experiment experiment=experimentDao.getExperiment(experimentId);
-            experimentName.add(experiment.getName());
-            experimentType.add(experiment.getType());
-            experimentMap.put(experiment.getExperimentId(), experiment.getName());
+
         }
       //  if(indexDocument.getCategory().equalsIgnoreCase("Study"))
         indexDocument.setInitiative(grantInitiatives);

@@ -28,41 +28,44 @@ public class VectorMapper implements Mapper {
         Set<String> titerMethod=new HashSet<>();
         Set<String> description=new HashSet<>();
         for(ExperimentRecord r: experimentRecords) {
-            for(Vector v:     vectorDao.getVectorsByExpRecId(r.getExperimentRecordId()) ){
-                if(!vectorIds.contains(v.getVectorId())){
-                    vectorIds.add(v.getVectorId());
-                    if(v.getName()!=null && !v.getName().equals(""))
-                    vectorName.add(StringUtils.capitalize(v.getName().trim()));
-                    if(v.getType()!=null && !v.getType().equals(""))
+            for(Vector v:     vectorDao.getVectorsByExpRecId(r.getExperimentRecordId()) ) {
+                if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                        || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && v.getTier() == 4)) {
+                    if (!vectorIds.contains(v.getVectorId())) {
+                        vectorIds.add(v.getVectorId());
+                        if (v.getName() != null && !v.getName().equals(""))
+                            vectorName.add(StringUtils.capitalize(v.getName().trim()));
+                        if (v.getType() != null && !v.getType().equals(""))
 
-                        vectorType.add(StringUtils.capitalize(v.getType().trim()));
-                    if(v.getName()!=null && !v.getName().equals(""))
+                            vectorType.add(StringUtils.capitalize(v.getType().trim()));
+                        if (v.getName() != null && !v.getName().equals(""))
 
-                        vectorSubtype.add(StringUtils.capitalize(v.getSubtype().trim()));
-                    if(v.getSource()!=null && !v.getSource().equals(""))
+                            vectorSubtype.add(StringUtils.capitalize(v.getSubtype().trim()));
+                        if (v.getSource() != null && !v.getSource().equals(""))
 
-                        source.add(StringUtils.capitalize(v.getSource().trim()));
-                    if(v.getLabId()!=null && !v.getLabId().equals(""))
+                            source.add(StringUtils.capitalize(v.getSource().trim()));
+                        if (v.getLabId() != null && !v.getLabId().equals(""))
 
-                        vectorlabId.add(v.getLabId());
-                    if(v.getAnnotatedMap()!=null && !v.getAnnotatedMap().equals(""))
+                            vectorlabId.add(v.getLabId());
+                        if (v.getAnnotatedMap() != null && !v.getAnnotatedMap().equals(""))
 
-                        vectorAnnotatedMap.add(v.getAnnotatedMap());
-                    if(v.getGenomeSerotype()!=null && !v.getGenomeSerotype().equals(""))
+                            vectorAnnotatedMap.add(v.getAnnotatedMap());
+                        if (v.getGenomeSerotype() != null && !v.getGenomeSerotype().equals(""))
 
-                        genomeSerotype.add(v.getGenomeSerotype());
-                    if(v.getCapsidSerotype()!=null && !v.getCapsidSerotype().equals(""))
+                            genomeSerotype.add(v.getGenomeSerotype());
+                        if (v.getCapsidSerotype() != null && !v.getCapsidSerotype().equals(""))
 
-                        capsidSerotype.add(v.getCapsidSerotype());
-                    if(v.getCapsidVariant()!=null && !v.getCapsidVariant().equals(""))
+                            capsidSerotype.add(v.getCapsidSerotype());
+                        if (v.getCapsidVariant() != null && !v.getCapsidVariant().equals(""))
 
-                        capsidVariant.add(v.getCapsidVariant());
-                    if(v.getTiterMethod()!=null && !v.getTiterMethod().equals(""))
+                            capsidVariant.add(v.getCapsidVariant());
+                        if (v.getTiterMethod() != null && !v.getTiterMethod().equals(""))
 
-                        titerMethod.add(v.getTiterMethod());
-                    if(v.getDescription()!=null && !v.getDescription().equals(""))
+                            titerMethod.add(v.getTiterMethod());
+                        if (v.getDescription() != null && !v.getDescription().equals(""))
 
-                        description.add(v.getDescription());
+                            description.add(v.getDescription());
+                    }
                 }
             }
         }

@@ -24,12 +24,14 @@ public class MapperFactory  {
             return new DeliveryMapper();
         }
         if(type.equalsIgnoreCase("application")){
-            return new ApplicationMapper();
+            return new ApplicationMethodMapper();
         }
         if(type.equalsIgnoreCase("study")){
             return new StudyMapper();
         }
-
+        if(type.equalsIgnoreCase("antibody")){
+            return new AntibodyMapper();
+        }
         return null;
     }
 }

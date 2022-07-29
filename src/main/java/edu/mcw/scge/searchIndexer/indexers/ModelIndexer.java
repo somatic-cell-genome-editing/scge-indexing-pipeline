@@ -7,6 +7,7 @@ import edu.mcw.scge.datamodel.Model;
 
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import htsjdk.tribble.index.Index;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,22 +20,34 @@ public class ModelIndexer implements Indexer {
         List<IndexDocument> objects=new ArrayList<>();
         for(Model m:modelDao.getModels()){
             IndexDocument o=new IndexDocument();
-            o.setCategory("Model System");
-            o.setId(m.getModelId());
-           // o.setModelType(Collections.singleton(m.getType()));
-            o.setName(m.getDisplayName());
-          //  o.setModelSubtype(Collections.singleton(m.getSubtype()));
-            o.setDescription(m.getDescription());
-            o.setTier(m.getTier());
-            o.setReportPageLink("/toolkit/data/models/model/?id=");
+            o.setAccessLevel("consortium");
+
             List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByModel(m.getModelId());
             int expCount=experimentRecords.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet()).size();
             o.setExperimentCount(expCount);
-
+            mapDetails(o,m);
             Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
 
             objects.add(o);
+            if(m.getTier()==4){
+                IndexDocument publicObject = new IndexDocument();
+                publicObject.setAccessLevel("public");
+                mapDetails(publicObject,m);
+                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
+
+                objects.add(publicObject);
+            }
         }
         return objects;
+    }
+    public void mapDetails(IndexDocument o, Model m){
+        o.setCategory("Model System");
+        o.setId(m.getModelId());
+        // o.setModelType(Collections.singleton(m.getType()));
+        o.setName(m.getDisplayName());
+        //  o.setModelSubtype(Collections.singleton(m.getSubtype()));
+        o.setDescription(m.getDescription());
+        o.setTier(m.getTier());
+        o.setReportPageLink("/toolkit/data/models/model/?id=");
     }
 }
