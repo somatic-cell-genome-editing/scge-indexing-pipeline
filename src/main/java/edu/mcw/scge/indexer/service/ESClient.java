@@ -9,6 +9,8 @@ import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class ESClient {
     private static Logger log=Logger.getLogger(Manager.class);
@@ -42,7 +44,34 @@ public class ESClient {
     public static RestHighLevelClient getInstance() {
 
         if (client == null) {
+        if(getHostName().contains("morn")){
+            try {
+              /*  client= new PreBuiltTransportClient(settings)
+                        .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
+                client = new RestHighLevelClient(RestClient.builder(
+                        new HttpHost("erika01.rgd.mcw.edu", 9200, "http"),
+                        new HttpHost("erika02.rgd.mcw.edu", 9200, "http"),
+                new HttpHost("erika03.rgd.mcw.edu", 9200, "http"),
+                new HttpHost("erika04.rgd.mcw.edu", 9200, "http"),
+                new HttpHost("erika05.rgd.mcw.edu", 9200, "http")
 
+                ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+
+                    @Override
+                    public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
+                        return requestConfigBuilder
+                                .setConnectTimeout(5000)
+                                .setSocketTimeout(120000)
+                                ;
+                    }
+                })
+                );
+
+            } catch (Exception e) {
+                log.info(e);
+                e.printStackTrace();
+            }
+        }else {
             try {
               /*  client= new PreBuiltTransportClient(settings)
                         .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
@@ -65,9 +94,25 @@ public class ESClient {
                 log.info(e);
                 e.printStackTrace();
             }
-
+        }
         }
 
         return client;
+    }
+    public static String getHostName(){
+        String hostname = "Unknown";
+
+        try
+        {
+            InetAddress addr;
+            addr = InetAddress.getLocalHost();
+            hostname = addr.getHostName();
+        }
+        catch (UnknownHostException ex)
+        {
+            System.out.println("Hostname can not be resolved");
+        }
+        System.out.println("hostname:"+hostname);
+        return hostname;
     }
 }
