@@ -44,57 +44,60 @@ public class ESClient {
     public static RestHighLevelClient getInstance() {
 
         if (client == null) {
-            if(getHostName().contains("morn")){
-                try {
+        if(getHostName().contains("morn")){
+            System.out.println("PRODUCTION ENVIRONMENT...");
+            try {
               /*  client= new PreBuiltTransportClient(settings)
                         .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
-                    client = new RestHighLevelClient(RestClient.builder(
-                            new HttpHost("erika01.rgd.mcw.edu", 9200, "http"),
-                            new HttpHost("erika02.rgd.mcw.edu", 9200, "http"),
-                            new HttpHost("erika03.rgd.mcw.edu", 9200, "http"),
-                            new HttpHost("erika04.rgd.mcw.edu", 9200, "http"),
-                            new HttpHost("erika05.rgd.mcw.edu", 9200, "http")
+                client = new RestHighLevelClient(RestClient.builder(
+                        new HttpHost("erika01.rgd.mcw.edu", 9200, "http"),
+                        new HttpHost("erika02.rgd.mcw.edu", 9200, "http"),
+                new HttpHost("erika03.rgd.mcw.edu", 9200, "http"),
+                new HttpHost("erika04.rgd.mcw.edu", 9200, "http"),
+                new HttpHost("erika05.rgd.mcw.edu", 9200, "http")
 
-                    ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+                ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
 
-                        @Override
-                        public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
-                            return requestConfigBuilder
-                                    .setConnectTimeout(5000)
-                                    .setSocketTimeout(120000)
-                                    ;
-                        }
-                    })
-                    );
+                    @Override
+                    public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
+                        return requestConfigBuilder
+                                .setConnectTimeout(5000)
+                                .setSocketTimeout(120000)
+                                ;
+                    }
+                })
+                );
 
-                } catch (Exception e) {
-                    log.info(e);
-                    e.printStackTrace();
-                }
-            }else {
-                try {
-              /*  client= new PreBuiltTransportClient(settings)
-                        .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
-                    client = new RestHighLevelClient(RestClient.builder(
-                            new HttpHost("travis.rgd.mcw.edu", 9200, "http")
-
-                    ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
-
-                        @Override
-                        public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
-                            return requestConfigBuilder
-                                    .setConnectTimeout(5000)
-                                    .setSocketTimeout(120000)
-                                    ;
-                        }
-                    })
-                    );
-
-                } catch (Exception e) {
-                    log.info(e);
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                log.info(e);
+                e.printStackTrace();
             }
+        }else {
+            System.out.println("DEV ENVIRONMENT...");
+
+            try {
+              /*  client= new PreBuiltTransportClient(settings)
+                        .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
+                client = new RestHighLevelClient(RestClient.builder(
+                        new HttpHost("travis.rgd.mcw.edu", 9200, "http")
+
+                ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+
+                    @Override
+                    public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
+                        return requestConfigBuilder
+                                .setConnectTimeout(5000)
+                                .setSocketTimeout(120000)
+                                ;
+                    }
+                })
+                );
+
+            } catch (Exception e) {
+                log.info(e);
+                e.printStackTrace();
+            }
+        }
         }
 
         return client;
