@@ -45,6 +45,7 @@ public class ESClient {
 
         if (client == null) {
         if(getHostName().contains("morn")){
+            System.out.println("PRODUCTION ENVIRONMENT...");
             try {
               /*  client= new PreBuiltTransportClient(settings)
                         .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
@@ -72,6 +73,8 @@ public class ESClient {
                 e.printStackTrace();
             }
         }else {
+            System.out.println("DEV ENVIRONMENT...");
+
             try {
               /*  client= new PreBuiltTransportClient(settings)
                         .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
