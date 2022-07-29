@@ -88,7 +88,7 @@ public class Crawler {
     public List<IndexObject> getEditors() throws Exception {
         List<IndexObject> objList= new ArrayList<>();
         List<Editor> editors=editorDao.getAllEditors();
-        System.out.println("EDITORS SIZE: "+editors.size());
+      //  System.out.println("EDITORS SIZE: "+editors.size());
         for(Editor e:editors){
             List<String> additionalData=new ArrayList<>();
             IndexObject o=new IndexObject();
@@ -128,7 +128,7 @@ public class Crawler {
            o.setAdditionalData(additionalData);
            o.setTier(e.getTier());
            if(e.getTier()==4){
-               System.out.println("EDITOR TIER:"+e.getTier());
+            //   System.out.println("EDITOR TIER:"+e.getTier());
            }
            o.setReportPageLink("/toolkit/data/editors/editor?id=");
         //   o.setExperimentTags(getExperimentTags(e));
@@ -169,7 +169,7 @@ public class Crawler {
     public List<IndexObject> getVectors() throws Exception {
         List<IndexObject> objList= new ArrayList<>();
         List<Vector> vectors=vectorDao.getAllVectors();
-        System.out.println("EDITORS SIZE: "+vectors.size());
+      //  System.out.println("EDITORS SIZE: "+vectors.size());
         for(Vector e:vectors){
             List<String> additionalData=new ArrayList<>();
             IndexObject o=new IndexObject();
@@ -210,7 +210,7 @@ public class Crawler {
                 o.setAdditionalData(additionalData);
             o.setTier(e.getTier());
             if(e.getTier()==4){
-                System.out.println("EDITOR TIER:"+e.getTier());
+          //      System.out.println("EDITOR TIER:"+e.getTier());
             }
             o.setReportPageLink("/toolkit/data/vector/format?id=");
             //   o.setExperimentTags(getExperimentTags(e));
@@ -273,7 +273,7 @@ public class Crawler {
             o.setAdditionalData(additionalTags);
             o.setTier(d.getTier());
             if(d.getTier()==4){
-                System.out.println("DELIVERT TIER:"+d.getTier());
+             //   System.out.println("DELIVERT TIER:"+d.getTier());
             }
             o.setReportPageLink("/toolkit/data/delivery/system?id=");
          //   o.setExperimentTags(getExperimentTags(d));
@@ -355,7 +355,7 @@ public class Crawler {
             o.setAdditionalData(additionalTags);
             o.setTier(g.getTier());
             if(g.getTier()==4){
-                System.out.println("GUIDE TIER:"+g.getTier());
+           //     System.out.println("GUIDE TIER:"+g.getTier());
             }
             o.setReportPageLink("/toolkit/data/guide/system?id=");
         //    o.setExperimentTags(getExperimentTags(g));
@@ -432,7 +432,7 @@ public class Crawler {
             o.setAdditionalData(additionalTags);
             o.setTier(m.getTier());
             if(m.getTier()==4){
-                System.out.println("MODEL TIER:"+m.getTier());
+              //  System.out.println("MODEL TIER:"+m.getTier());
             }
             o.setReportPageLink("/toolkit/data/models/model/?id=");
          //   o.setExperimentTags(getExperimentTags(m));

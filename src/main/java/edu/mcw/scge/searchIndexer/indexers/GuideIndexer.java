@@ -3,14 +3,11 @@ package edu.mcw.scge.searchIndexer.indexers;
 import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.dao.implementation.GuideDao;
 import edu.mcw.scge.datamodel.*;
-import edu.mcw.scge.indexer.dao.delivery.Crawler;
-import edu.mcw.scge.indexer.model.IndexObject;
+
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GuideIndexer implements Indexer {
 

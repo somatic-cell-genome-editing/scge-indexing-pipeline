@@ -100,15 +100,9 @@ public class GuideMapper implements Mapper {
         if(!guideReversePrimer.isEmpty()) indexDocument.setGuideReversePrimer( guideReversePrimer);
         if(!guideLinkerSequence.isEmpty()) indexDocument. setGuideLinkerSequence( guideLinkerSequence);
         if(!guideAntiRepeatSequence.isEmpty()) indexDocument. setGuideAntiRepeatSequence(guideAntiRepeatSequence);
-        //   indexDocument. setGuideguideStemloopSequence;
-        //   indexDocument. guideFormat;
+
         if(!modifications.isEmpty())  indexDocument.setModifications( modifications);
-        //   indexDocument. standardScaffoldSequence;
-        //  indexDocument. ivtConstructSource;
-        //   indexDocument. vectorName;
-        //   indexDocument. vectorDescription;
-        //   indexDocument. vectorType;
-        //    indexDocument. specificityRatio;
+
         if(!guideLocation.isEmpty())indexDocument.setGuideLocation( guideLocation);
         if(!guideAnnotatedMap.isEmpty()) indexDocument.setGuideAnnotatedMap(guideAnnotatedMap);
         StringBuilder generatedDescription=new StringBuilder();

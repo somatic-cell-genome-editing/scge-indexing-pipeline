@@ -72,7 +72,7 @@ public class StudyMapper implements Mapper {
                               status.add("Verified");
                           }
                       } catch (Exception e) {
-                          System.err.println("STUDY ID with no Modified By:" + study.getStudyId());
+                        //  System.err.println("STUDY ID with no Modified By:" + study.getStudyId());
                       }
                       //  o.setSubmissionDate(study.getSubmissionDate().toString());
                       //   }

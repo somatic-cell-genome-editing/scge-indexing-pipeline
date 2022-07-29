@@ -2,13 +2,11 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.EditorDao;
 import edu.mcw.scge.dao.implementation.ExperimentDao;
-import edu.mcw.scge.dao.implementation.ExperimentRecordDao;
 import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -46,8 +44,6 @@ public class EditorIndexer implements Indexer {
             o.setSymbol(e.getSymbol().trim());
         o.setDescription(e.getEditorDescription());
         o.setTier(e.getTier());
-        //  o.setEditorType(Collections.singleton(StringUtils.capitalize(e.getType().trim())));
-        //   o.setEditorSubType(Collections.singleton(StringUtils.capitalize(e.getSubType().trim())));
         o.setReportPageLink("/toolkit/data/editors/editor?id=");
     }
 }

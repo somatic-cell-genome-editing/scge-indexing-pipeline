@@ -3,7 +3,6 @@ package edu.mcw.scge.searchIndexer.indexers;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.mcw.scge.indexer.model.IndexObject;
 import edu.mcw.scge.indexer.service.ESClient;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;

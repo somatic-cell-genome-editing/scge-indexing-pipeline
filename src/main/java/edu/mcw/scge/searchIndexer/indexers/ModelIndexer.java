@@ -7,7 +7,6 @@ import edu.mcw.scge.datamodel.Model;
 
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
-import htsjdk.tribble.index.Index;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,9 +42,7 @@ public class ModelIndexer implements Indexer {
     public void mapDetails(IndexDocument o, Model m){
         o.setCategory("Model System");
         o.setId(m.getModelId());
-        // o.setModelType(Collections.singleton(m.getType()));
         o.setName(m.getDisplayName());
-        //  o.setModelSubtype(Collections.singleton(m.getSubtype()));
         o.setDescription(m.getDescription());
         o.setTier(m.getTier());
         o.setReportPageLink("/toolkit/data/models/model/?id=");

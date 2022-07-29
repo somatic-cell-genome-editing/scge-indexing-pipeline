@@ -3,7 +3,6 @@ package edu.mcw.scge.searchIndexer.mappers;
 import edu.mcw.scge.dao.implementation.AntibodyDao;
 import edu.mcw.scge.datamodel.Antibody;
 import edu.mcw.scge.datamodel.ExperimentRecord;
-import edu.mcw.scge.datamodel.Model;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.HashSet;

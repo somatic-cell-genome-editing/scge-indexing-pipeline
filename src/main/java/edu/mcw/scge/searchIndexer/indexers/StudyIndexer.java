@@ -2,9 +2,7 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
-import edu.mcw.scge.indexer.dao.delivery.Crawler;
 import edu.mcw.scge.process.UI;
-import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
@@ -68,18 +66,12 @@ public class StudyIndexer implements Indexer {
             o.setStudyType("Experimental");
         }
         o.setExperimentNames(experimentMap);
-               /* if(s.getTier()==4){
-                    o.setAccess("Public");
-                }else{
-                    o.setAccess("Restricted");
-                }*/
 
         try {
             if (!isInDCCorNIHGroup(personDao.getPersonById(s.getModifiedBy()).get(0))) {
                 o.setStatus("Verified");
             }
         }catch (Exception e){
-            System.err.println("STUDY ID with no Modified By:"+ s.getStudyId());
         }
         o.setSubmissionDate(s.getSubmissionDate().toString());
     }
