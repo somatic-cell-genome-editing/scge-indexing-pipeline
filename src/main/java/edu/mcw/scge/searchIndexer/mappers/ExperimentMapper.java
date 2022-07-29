@@ -1,8 +1,10 @@
 package edu.mcw.scge.searchIndexer.mappers;
 
 import edu.mcw.scge.dao.implementation.ExperimentDao;
+import edu.mcw.scge.dao.implementation.StudyDao;
 import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.ExperimentRecord;
+import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.HashSet;
@@ -12,6 +14,7 @@ import java.util.Set;
 
 public class ExperimentMapper implements Mapper {
     ExperimentDao experimentDao=new ExperimentDao();
+    StudyDao studyDao=new StudyDao();
     @Override
     public void mapFields(List<ExperimentRecord> experimentRecords, IndexDocument indexDocument) throws Exception {
 
@@ -19,18 +22,26 @@ public class ExperimentMapper implements Mapper {
         Set<String> sex=new HashSet<>();
         Set<String> experimentType=new HashSet<>();
         Set<Long> experimentIds=new HashSet<>();
-        for(ExperimentRecord record:experimentRecords){
-            if(record.getSex()!=null && !record.getSex().equals(""))
-            sex.add(record.getSex());
-     //  if(record.getSamplePrep()!=null && !record.getSamplePrep().equals(""))
-     //       samplePrep.add(record.getSamplePrep());
-            if(record.getGenotype()!=null && !record.getGenotype().equals(""))
-            genotype.add(record.getGenotype());
-            experimentIds.add(record.getExperimentId());
+        for(ExperimentRecord record:experimentRecords) {
+            Study study = studyDao.getStudyByExperimentId(record.getExperimentId()).get(0);
+            if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                    || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
+                if (record.getSex() != null && !record.getSex().equals(""))
+                    sex.add(record.getSex());
+                //  if(record.getSamplePrep()!=null && !record.getSamplePrep().equals(""))
+                //       samplePrep.add(record.getSamplePrep());
+                if (record.getGenotype() != null && !record.getGenotype().equals(""))
+                    genotype.add(record.getGenotype());
+                experimentIds.add(record.getExperimentId());
+            }
         }
         for(long experiemntId:experimentIds){
            Experiment experiment= experimentDao.getExperiment(experiemntId);
-           experimentType.add(experiment.getType());
+           Study study=studyDao.getStudyByExperimentId(experiemntId).get(0);
+            if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
+                    || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
+                experimentType.add(experiment.getType());
+            }
         }
         indexDocument.setExperimentType(experimentType);
         if(!sex.isEmpty())indexDocument.setSex(sex);

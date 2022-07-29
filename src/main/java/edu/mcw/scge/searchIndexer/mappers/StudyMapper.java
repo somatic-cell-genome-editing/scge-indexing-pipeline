@@ -76,6 +76,10 @@ public class StudyMapper implements Mapper {
                       }
                       //  o.setSubmissionDate(study.getSubmissionDate().toString());
                       //   }
+                      Experiment experiment=experimentDao.getExperiment(experimentId);
+                      experimentName.add(experiment.getName());
+                      experimentType.add(experiment.getType());
+                      experimentMap.put(experiment.getExperimentId(), experiment.getName());
                   }
               }
             }catch (Exception e){
@@ -83,10 +87,7 @@ public class StudyMapper implements Mapper {
                 e.printStackTrace();
             }
 
-            Experiment experiment=experimentDao.getExperiment(experimentId);
-            experimentName.add(experiment.getName());
-            experimentType.add(experiment.getType());
-            experimentMap.put(experiment.getExperimentId(), experiment.getName());
+
         }
       //  if(indexDocument.getCategory().equalsIgnoreCase("Study"))
         indexDocument.setInitiative(grantInitiatives);
