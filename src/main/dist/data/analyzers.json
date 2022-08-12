@@ -65,7 +65,7 @@
       },
       "symbol_analyzer" : {
         "filter" : [
-          "lowercase"
+          "lowercase","stop"
         ],
         "type":"custom",
         "tokenizer" : "keyword"
