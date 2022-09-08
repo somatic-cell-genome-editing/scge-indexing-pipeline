@@ -1,0 +1,606 @@
+{
+      "properties" : {
+        "additionalData" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "ngram" : {
+              "type" : "text",
+              "analyzer" : "autocomplete_analyzer"
+            }
+          }
+        },
+        "aliases" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "category" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "deliveries" : {
+          "properties" : {
+            "description" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "id" : {
+              "type" : "long"
+            },
+            "labId" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "name" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+
+              }
+            },
+            "npSize" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "source" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "subtype" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                },
+                "ngram" : {
+                  "type" : "text",
+                  "analyzer" : "autocomplete_analyzer"
+                }
+              }
+            },
+            "tier" : {
+              "type" : "long"
+            },
+            "type" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "description" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "editors" : {
+          "properties" : {
+            "activity" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "alias" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "dsbCleavageType" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "editorDescription" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "editorVariant" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "fusion" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "id" : {
+              "type" : "long"
+            },
+            "pamPreference" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "proteinSequence" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "source" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "species" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "subType" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "substrateTarget" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "symbol" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "target_sequence" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "tier" : {
+              "type" : "long"
+            },
+            "type" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "experimentTags" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "externalId" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "id" : {
+          "type" : "long"
+        },
+        "models" : {
+          "properties" : {
+            "description" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "modelId" : {
+              "type" : "long"
+            },
+            "name" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "organism" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "parentalOrigin" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "sex" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "source" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "strainCode" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "subtype" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "tier" : {
+              "type" : "long"
+            },
+            "transgene" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "transgeneDescription" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "transgeneReporter" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "type" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        },
+        "name" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "ngram" : {
+              "type" : "text",
+              "analyzer" : "autocomplete_analyzer"
+            }
+          }
+        },
+        "pam" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "reportPageLink" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "species" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "ngram" : {
+              "type" : "text",
+              "analyzer" : "autocomplete_analyzer"
+            }
+          }
+        },
+        "study" : {
+          "properties" : {
+            "grantId" : {
+              "type" : "long"
+            },
+            "groupId" : {
+              "type" : "long"
+            },
+            "labId" : {
+              "type" : "long"
+            },
+            "labName" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "pi" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "piId" : {
+              "type" : "long"
+            },
+            "study" : {
+              "type" : "text",
+              "analyzer": "english_analyzer",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "studyId" : {
+              "type" : "long"
+            },
+            "submissionDate" : {
+              "type" : "long"
+            },
+            "submitter" : {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            },
+            "submitterId" : {
+              "type" : "long"
+            },
+            "tier" : {
+              "type" : "long"
+            }
+          }
+        },
+        "subType" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "ngram" : {
+              "type" : "text",
+              "analyzer" : "autocomplete_analyzer"
+            }
+          }
+        },
+        "symbol" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "ngram" : {
+              "type" : "text",
+              "analyzer" : "autocomplete_analyzer"
+            }
+          }
+        },
+        "target" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "tier" : {
+          "type" : "long"
+        },
+        "type" : {
+          "type" : "text",
+          "analyzer": "english_analyzer",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "ngram" : {
+              "type" : "text",
+              "analyzer" : "autocomplete_analyzer"
+            }
+          }
+        }
+      }
+    }
