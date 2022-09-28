@@ -58,7 +58,11 @@ public void mapDetails(Experiment x, IndexDocument o, Study s) throws Exception 
     o.setReportPageLink("/toolkit/data/experiments/experiment/");
     o.setTier(s.getTier());
     o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
-    o.setPi(Stream.of(s.getPiLastName()+" "+ s.getPiFirstName()).collect(Collectors.toSet()));
+    Set<String> pis=new HashSet<>();
+    for(Person pi:s.getMultiplePis()){
+        pis.add(pi.getFirstName()+" "+ pi.getLastName());
+    }
+    o.setPi(pis);
     o.setDescription(x.getDescription());
     o.setGeneratedDescription(x.getDescription());
     List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());

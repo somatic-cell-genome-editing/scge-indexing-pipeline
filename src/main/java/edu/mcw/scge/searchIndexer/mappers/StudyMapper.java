@@ -40,11 +40,17 @@ public class StudyMapper implements Mapper {
                       Grant grant = grantDao.getGrantByGroupId(study.getGroupId());
                       grantInitiatives.add(UI.getLabel(grant.getGrantInitiative()));
                       studyMap.put(study.getStudyId(), study.getStudy());
-                      if (study.getPiFirstName() != null && study.getPiLastName() != null)
+
+                      Set<String> pis=new HashSet<>();
+                      for(Person p:study.getMultiplePis()){
+                          pis.add(p.getFirstName()+" "+ p.getLastName());
+                      }
+                      pi.addAll(pis);
+                     /* if (study.getPiFirstName() != null && study.getPiLastName() != null)
                           pi.add(study.getPiLastName() + " " + study.getPiFirstName());
                       else if (study.getPi() != null)
                           pi.add(study.getPi().replaceAll(",", " "));
-                      else System.err.println("NO PI NAME:" + study.getStudyId());
+                      else System.err.println("NO PI NAME:" + study.getStudyId());*/
 
                       //    if(!studyIds.contains(study.getStudyId())){
                       //        studyIds.add(study.getStudyId());
