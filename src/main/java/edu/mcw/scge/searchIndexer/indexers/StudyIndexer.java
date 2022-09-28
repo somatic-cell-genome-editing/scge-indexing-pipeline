@@ -48,7 +48,11 @@ public class StudyIndexer implements Indexer {
         o.setReportPageLink("/toolkit/data/experiments/study/");
         o.setTier(s.getTier());
         o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
-        o.setPi(Stream.of(s.getPiLastName()+" "+s.getPiFirstName()).collect(Collectors.toSet()));
+        Set<String> pis=new HashSet<>();
+        for(Person pi:s.getMultiplePis()){
+            pis.add(pi.getFirstName()+" "+ pi.getLastName());
+        }
+        o.setPi(pis);
         //   o.setStudyNames(studyMap);
         // o.setGeneratedDescription(grant.);
         List<Experiment> experiments=experimentDao.getExperimentsByStudy(s.getStudyId());
