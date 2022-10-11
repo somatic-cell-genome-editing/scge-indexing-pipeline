@@ -68,12 +68,15 @@ public class IndexAdmin {
 
            String mappings=new String(Files.readAllBytes(Paths.get(path)));
            String analyzers=new String(Files.readAllBytes(Paths.get("data/analyzers.json")));
-
+            int replicates=0;
+           if(!index.contains("dev")){
+               replicates=1;
+           }
         /********* create index, put mappings and analyzers ****/
         CreateIndexRequest request=new CreateIndexRequest(index);
         request.settings(Settings.builder()
                 .put("index.number_of_shards",5)
-                .put("index.number_of_replicas", 1)
+                .put("index.number_of_replicas", replicates)
          .loadFromSource(analyzers, XContentType.JSON))
         ;
            request.mapping(mappings, XContentType.JSON);
