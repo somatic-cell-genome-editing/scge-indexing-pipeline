@@ -2,6 +2,7 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
+import edu.mcw.scge.indexer.model.IndexObject;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
@@ -27,15 +28,20 @@ public class GrantIndexer implements Indexer{
             IndexDocument o = new IndexDocument();
             Grant grant = grantDao.getGrantByGroupId(id);
             o.setAccessLevel("Consortium");
-
             mapDetails(o,grant);
             objects.add(o);
+            if(o.getTier()==4){
+                IndexDocument publicObject = new IndexDocument();
+                publicObject.setAccessLevel("public");
+                mapDetails(publicObject,grant);
+                objects.add(publicObject);
+
+            }
         }
 
         return objects;
     }
     public void mapDetails(IndexDocument o,Grant grant) throws Exception {
-        Map<Long, String> experimentMap=new HashMap<>();
 
         o.setId(grant.getGroupId());
         o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
@@ -48,31 +54,19 @@ public class GrantIndexer implements Indexer{
             pis.add(pi.getLastName()+" "+ pi.getFirstName());
         }
         o.setPi(pis);
-       /* //   o.setStudyNames(studyMap);
-        // o.setGeneratedDescription(grant.);
-        List<Experiment> experiments=experimentDao.getExperimentsByStudy(s.getStudyId());
-        if(experiments.size()>0){
-            o.setStatus("Processed");
-        }else{
-            o.setStatus("Received");
-        }
-        for(Experiment experiment:experiments){
-            experimentMap.put(experiment.getExperimentId(), experiment.getName());
-        }
-        if(s.getIsValidationStudy()==1){
-            o.setStudyType("Validation");
-        }else{
-            o.setStudyType("Experimental");
-        }
-        o.setExperimentNames(experimentMap);
+       List<Study> studies= studyDao.getStudiesByGroupId(grant.getGroupId());
+       boolean flag=false;
+       for(Study study:studies){
+           if(study.getTier()==4){
+               flag=true;
+           }
+       }
+       if(flag){
+           o.setTier(4);
+       }else{
+           o.setTier(0);
+       }
 
-        try {
-            if (!isInDCCorNIHGroup(personDao.getPersonById(s.getModifiedBy()).get(0))) {
-                o.setStatus("Verified");
-            }
-        }catch (Exception e){
-        }
-        o.setSubmissionDate(s.getSubmissionDate().toString());*/
     }
     public boolean isInDCCorNIHGroup(Person p) throws Exception{
 
