@@ -27,7 +27,7 @@ public class GrantIndexer implements Indexer{
         for(int id:submittedGrantIds) {
             IndexDocument o = new IndexDocument();
             Grant grant = grantDao.getGrantByGroupId(id);
-            o.setAccessLevel("Consortium");
+            o.setAccessLevel("consortium");
             mapDetails(o,grant);
             objects.add(o);
             if(o.getTier()==4){
