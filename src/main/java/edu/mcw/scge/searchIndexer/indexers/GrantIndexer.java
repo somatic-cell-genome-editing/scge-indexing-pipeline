@@ -45,7 +45,7 @@ public class GrantIndexer implements Indexer{
 
         o.setId(grant.getGroupId());
         o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
-        o.setCategory("Grant");
+        o.setCategory("Project");
         o.setName(grant.getGrantTitle());
         o.setReportPageLink("/toolkit/data/experiments/group/");
         List<Person> piList=grantDao.getGrantPi(grant.getGroupId());
@@ -55,17 +55,28 @@ public class GrantIndexer implements Indexer{
         }
         o.setPi(pis);
        List<Study> studies= studyDao.getStudiesByGroupId(grant.getGroupId());
-       boolean flag=false;
+       Map<Long, String> experimentNames=new HashMap<>();
+
+        boolean flag=false;
        for(Study study:studies){
            if(study.getTier()==4){
                flag=true;
            }
+        for(Experiment x:experimentDao.getExperimentsByStudy(study.getStudyId())){
+            experimentNames.put(x.getExperimentId(), x.getName());
+        }
        }
+       o.setExperimentNames(experimentNames);
        if(flag){
            o.setTier(4);
        }else{
            o.setTier(0);
        }
+       o.setDescription(grant.getDescription());
+       o.setCurrentGrantNumber(grant.getCurrentGrantNumber());
+       if(grant.getFormerGrantNumbers().size()>0)
+       o.setFormerGrantNumbers(new HashSet<>(grant.getFormerGrantNumbers()));
+
 
     }
     public boolean isInDCCorNIHGroup(Person p) throws Exception{

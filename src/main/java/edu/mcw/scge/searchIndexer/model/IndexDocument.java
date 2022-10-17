@@ -143,6 +143,26 @@ public class IndexDocument {
 
     /************************Antibody************************************/
     private Set<String> antibody;
+    /*********************Grant number*******************************/
+    private Set<String> formerGrantNumbers;
+    private String currentGrantNumber;
+
+
+    public Set<String> getFormerGrantNumbers() {
+        return formerGrantNumbers;
+    }
+
+    public void setFormerGrantNumbers(Set<String> formerGrantNumbers) {
+        this.formerGrantNumbers = formerGrantNumbers;
+    }
+
+    public String getCurrentGrantNumber() {
+        return currentGrantNumber;
+    }
+
+    public void setCurrentGrantNumber(String currentGrantNumber) {
+        this.currentGrantNumber = currentGrantNumber;
+    }
 
     public String getExternalLink() {
         return externalLink;
