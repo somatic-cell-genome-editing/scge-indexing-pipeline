@@ -61,10 +61,12 @@ public class GrantIndexer implements Indexer{
        for(Study study:studies){
            if(study.getTier()==4){
                flag=true;
+               for(Experiment x:experimentDao.getExperimentsByStudy(study.getStudyId())){
+                   experimentNames.put(x.getExperimentId(), x.getName());
+               }
            }
-        for(Experiment x:experimentDao.getExperimentsByStudy(study.getStudyId())){
-            experimentNames.put(x.getExperimentId(), x.getName());
-        }
+
+
        }
        o.setExperimentNames(experimentNames);
        if(flag){
