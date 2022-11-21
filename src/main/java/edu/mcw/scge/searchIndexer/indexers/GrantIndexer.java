@@ -2,18 +2,16 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
-import edu.mcw.scge.indexer.model.IndexObject;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class GrantIndexer implements Indexer{
     StudyDao studyDao=new StudyDao();
     GrantDao grantDao=new GrantDao();
-    GroupDAO gdao=new GroupDAO();
+    GroupDAO groupdao=new GroupDAO();
     ExperimentDao experimentDao=new ExperimentDao();
 
     @Override
@@ -56,7 +54,7 @@ public class GrantIndexer implements Indexer{
         o.setPi(pis);
        List<Study> studies= studyDao.getStudiesByGroupId(grant.getGroupId());
        Map<Long, String> experimentNames=new HashMap<>();
-
+        Set<String> members=new HashSet<>();
         boolean flag=false;
        for(Study study:studies){
            if(study.getTier()==4){
@@ -74,9 +72,12 @@ public class GrantIndexer implements Indexer{
                    }
                }
            }
-
-
+        List<Person> projectMembers=   groupdao.getGroupMembersByGroupId(study.getGroupId());
+        if(projectMembers.size()>0){
+            members.addAll(projectMembers.stream().map(p->p.getName()).collect(Collectors.toSet()));
+        }
        }
+       o.setProjectMembers(members);
        o.setExperimentNames(experimentNames);
        if(flag){
            o.setTier(4);
@@ -93,7 +94,7 @@ public class GrantIndexer implements Indexer{
     public boolean isInDCCorNIHGroup(Person p) throws Exception{
 
 
-        List<Integer> DCCNIHGroupsIds=gdao.getDCCNIHGroupIds();
+        List<Integer> DCCNIHGroupsIds=groupdao.getDCCNIHGroupIds();
         PersonDao pdao = new PersonDao();
         List<PersonInfo> personInfoRecords = pdao.getPersonInfo(p.getId());
 

@@ -146,7 +146,15 @@ public class IndexDocument {
     /*********************Grant number*******************************/
     private Set<String> formerGrantNumbers;
     private String currentGrantNumber;
+    private Set<String> projectMembers;
 
+    public Set<String> getProjectMembers() {
+        return projectMembers;
+    }
+
+    public void setProjectMembers(Set<String> projectMembers) {
+        this.projectMembers = projectMembers;
+    }
 
     public Set<String> getFormerGrantNumbers() {
         return formerGrantNumbers;
