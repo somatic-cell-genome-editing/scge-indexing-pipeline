@@ -8,9 +8,11 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Properties;
 
 public class ESClient {
     private static Logger log=Logger.getLogger(Manager.class);
@@ -44,17 +46,17 @@ public class ESClient {
     public static RestHighLevelClient getInstance() {
 
         if (client == null) {
+            Properties props= getProperties();
         if(getHostName().contains("morn")){
             System.out.println("PRODUCTION ENVIRONMENT...");
             try {
-              /*  client= new PreBuiltTransportClient(settings)
-                        .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
+
                 client = new RestHighLevelClient(RestClient.builder(
-                        new HttpHost("erika01.rgd.mcw.edu", 9200, "http"),
-                        new HttpHost("erika02.rgd.mcw.edu", 9200, "http"),
-                new HttpHost("erika03.rgd.mcw.edu", 9200, "http"),
-                new HttpHost("erika04.rgd.mcw.edu", 9200, "http"),
-                new HttpHost("erika05.rgd.mcw.edu", 9200, "http")
+                        new HttpHost((String) props.get("HOST1"), 9200, "http"),
+                        new HttpHost((String) props.get("HOST2"), 9200, "http"),
+                        new HttpHost((String) props.get("HOST3"), 9200, "http"),
+                        new HttpHost((String) props.get("HOST4"), 9200, "http"),
+                        new HttpHost((String) props.get("HOST5"), 9200, "http")
 
                 ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
 
@@ -101,6 +103,28 @@ public class ESClient {
         }
 
         return client;
+    }
+    static Properties getProperties(){
+        Properties props= new Properties();
+        FileInputStream fis=null;
+
+
+        try{
+            // fis=new FileInputStream("C:/Apps/elasticsearchProps.properties");
+            fis=new FileInputStream("/data/pipelines/properties/elasticsearchProps.properties");
+            props.load(fis);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            if (fis != null) {
+                fis.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props;
     }
     public static String getHostName(){
         String hostname = "Unknown";
