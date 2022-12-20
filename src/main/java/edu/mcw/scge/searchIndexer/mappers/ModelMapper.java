@@ -52,6 +52,8 @@ public class ModelMapper implements Mapper {
                             modelAnnotatedMap.add(model.getAnnotatedMap());
                         if (model.getDisplayName() != null && !model.getDisplayName().equals(""))
                             modelName.add(model.getDisplayName());
+                        else
+                            modelName.add(model.getName());
                         if (model.getTransgene() != null && !model.getTransgene().equals(""))
                             transgene.add(model.getTransgene());
                         if (model.getDescription() != null && !model.getDescription().equals(""))
