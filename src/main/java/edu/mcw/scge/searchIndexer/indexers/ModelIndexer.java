@@ -42,7 +42,10 @@ public class ModelIndexer implements Indexer {
     public void mapDetails(IndexDocument o, Model m){
         o.setCategory("Model System");
         o.setId(m.getModelId());
+        if(m.getDisplayName()!=null && !m.getDisplayName().equals(""))
         o.setName(m.getDisplayName());
+        else
+            o.setName(m.getName());
         o.setDescription(m.getDescription());
         o.setTier(m.getTier());
         o.setReportPageLink("/toolkit/data/models/model/?id=");
