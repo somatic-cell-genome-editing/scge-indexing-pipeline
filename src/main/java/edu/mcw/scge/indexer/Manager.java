@@ -70,8 +70,9 @@ public class Manager {
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
 
-        for(String category: Arrays.asList("experiment", "editor", "delivery",
-                "vector", "guide","model","studies", "protocol", "antibody","grant")) {
+        for(String category: Arrays.asList(
+               "experiment", "editor", "delivery",
+                "vector", "guide","model", "protocol", "antibody","grant")) {
            Indexer indexer = indexers.getIndexer(category);
             indexer.index(RgdIndex.getNewAlias());
         }
