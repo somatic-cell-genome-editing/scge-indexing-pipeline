@@ -24,6 +24,8 @@ public class StudyMapper implements Mapper {
         Set<String> experimentType=new HashSet<>();
         Map<Integer, String> studyMap=new HashMap<>();
         Map<Long, String> experimentMap=new HashMap<>();
+        List<Date> lastModifiedDate=new ArrayList<>();
+
         Set<String> grantInitiatives= new HashSet<>();
         Set<Long> experimentIds=experimentRecords.stream()
                 .map(ExperimentRecord::getExperimentId).collect(Collectors.toSet());
@@ -86,6 +88,8 @@ public class StudyMapper implements Mapper {
                       experimentName.add(experiment.getName());
                       experimentType.add(experiment.getType());
                       experimentMap.put(experiment.getExperimentId(), experiment.getName());
+                      if(experiment.getLastModifiedDate()!=null)
+                      lastModifiedDate.add(experiment.getLastModifiedDate());
                   }
               }
             }catch (Exception e){
@@ -108,10 +112,14 @@ public class StudyMapper implements Mapper {
         indexDocument.setStudy(studies);
 
         indexDocument.setExperimentName(experimentName);
-        if(indexDocument.getCategory().equalsIgnoreCase("Study") || indexDocument.getCategory().equalsIgnoreCase("Experiment"))
+        if(indexDocument.getCategory().equalsIgnoreCase("Project") || indexDocument.getCategory().equalsIgnoreCase("Experiment"))
         {
             indexDocument.setExperimentType(experimentType);
             indexDocument.setPi(pi);
+        }
+
+        if(lastModifiedDate.size()>0) {
+            // System.out.println("MAX DATE:"+ Collections.max(lastModifiedDate));
         }
     }
     public boolean isInDCCorNIHGroup(Person p) throws Exception{

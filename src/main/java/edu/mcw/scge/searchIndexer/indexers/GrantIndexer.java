@@ -54,6 +54,8 @@ public class GrantIndexer implements Indexer{
         o.setPi(pis);
        List<Study> studies= studyDao.getStudiesByGroupId(grant.getGroupId());
        Map<Long, String> experimentNames=new HashMap<>();
+        List<Date> lastModifiedDate=new ArrayList<>();
+
         Set<String> members=new HashSet<>();
         boolean flag=false;
        for(Study study:studies){
@@ -61,22 +63,32 @@ public class GrantIndexer implements Indexer{
                flag=true;
 
            }
+           List<Experiment> experiments=experimentDao.getExperimentsByStudy(study.getStudyId());
            if(o.getAccessLevel().equalsIgnoreCase("consortium")) {
-               for (Experiment x : experimentDao.getExperimentsByStudy(study.getStudyId())) {
+               for (Experiment x : experiments) {
                    experimentNames.put(x.getExperimentId(), x.getName());
                }
            }else{
                if(study.getTier()==4) {
-                   for (Experiment x : experimentDao.getExperimentsByStudy(study.getStudyId())) {
+                   for (Experiment x : experiments) {
                        experimentNames.put(x.getExperimentId(), x.getName());
                    }
                }
+           }
+           for(Experiment x:experiments){
+               if(x.getLastModifiedDate()!=null)
+                   lastModifiedDate.add(x.getLastModifiedDate());
+           }
+           if(lastModifiedDate.size()==0){
+               lastModifiedDate.add(study.getSubmissionDate());
            }
         List<Person> projectMembers=   groupdao.getGroupMembersByGroupId(study.getGroupId());
         if(projectMembers.size()>0){
             members.addAll(projectMembers.stream().map(p->p.getName()).collect(Collectors.toSet()));
         }
        }
+       if(lastModifiedDate.size()>0)
+           o.setLastModifiedDate(Collections.max(lastModifiedDate).toString());
        o.setProjectMembers(members);
        o.setExperimentNames(experimentNames);
        if(flag){

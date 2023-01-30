@@ -32,6 +32,7 @@ public class IndexDocument {
     private Map<Integer, String> studyNames;
     private Map<Long, String> experimentNames;
     private String generatedDescription;
+    private String lastModifiedDate;
     /**********************EXPERIMENT FIELDS*********************/
     private Set<String> experimentType;
     private Set<String> experimentName;
@@ -1133,5 +1134,13 @@ public class IndexDocument {
 
     public void setExperimentType(Set<String> experimentType) {
         this.experimentType = experimentType;
+    }
+
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

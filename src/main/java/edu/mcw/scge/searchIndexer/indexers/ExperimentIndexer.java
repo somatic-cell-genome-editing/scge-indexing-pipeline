@@ -53,6 +53,11 @@ public void mapDetails(Experiment x, IndexDocument o, Study s) throws Exception 
 
     o.setId(x.getExperimentId());
     //   o.setExperimentType(Collections.singleton(x.getType()));
+    if(x.getLastModifiedDate()!=null)
+    o.setLastModifiedDate(x.getLastModifiedDate().toString());
+    else{
+        o.setLastModifiedDate(s.getSubmissionDate().toString());
+    }
     o.setCategory("Experiment");
     o.setName(x.getName());
     o.setReportPageLink("/toolkit/data/experiments/experiment/");
