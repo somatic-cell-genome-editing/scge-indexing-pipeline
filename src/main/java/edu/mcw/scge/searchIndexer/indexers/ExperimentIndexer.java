@@ -65,7 +65,9 @@ public void mapDetails(Experiment x, IndexDocument o, Study s) throws Exception 
     o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
     Set<String> pis=new HashSet<>();
     for(Person pi:s.getMultiplePis()){
-        pis.add(pi.getFirstName()+" "+ pi.getLastName());
+        if(pi.getFirstName()!=null && !pi.getFirstName().equals(""))
+            pis.add(pi.getLastName()+" "+ pi.getFirstName());
+        else pis.add(pi.getName());
     }
     o.setPi(pis);
     o.setDescription(x.getDescription());
