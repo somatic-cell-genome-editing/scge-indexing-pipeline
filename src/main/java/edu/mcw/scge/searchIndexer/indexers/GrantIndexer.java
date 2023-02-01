@@ -49,7 +49,9 @@ public class GrantIndexer implements Indexer{
         List<Person> piList=grantDao.getGrantPi(grant.getGroupId());
         Set<String> pis=new HashSet<>();
         for(Person pi:piList){
+            if(pi.getFirstName()!=null && !pi.getFirstName().equals(""))
             pis.add(pi.getLastName()+" "+ pi.getFirstName());
+            else pis.add(pi.getName());
         }
         o.setPi(pis);
        List<Study> studies= studyDao.getStudiesByGroupId(grant.getGroupId());

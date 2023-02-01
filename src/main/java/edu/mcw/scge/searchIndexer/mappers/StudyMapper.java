@@ -45,7 +45,10 @@ public class StudyMapper implements Mapper {
 
                       Set<String> pis=new HashSet<>();
                       for(Person p:study.getMultiplePis()){
-                          pis.add(p.getFirstName()+" "+ p.getLastName());
+                          if(p.getFirstName()!=null && !p.getFirstName().equals(""))
+                              pis.add(p.getLastName()+" "+ p.getFirstName());
+                          else
+                              pis.add(p.getName());
                       }
                       pi.addAll(pis);
                      /* if (study.getPiFirstName() != null && study.getPiLastName() != null)
