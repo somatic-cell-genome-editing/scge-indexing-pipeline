@@ -58,6 +58,7 @@ public class IndexDocument {
     private String submissionDate;
     private Set<String> initiative;
     private String studyType;
+    private int studyId;
 
     /******************EDITOR FIELDS*************************/
     private Set<String> editorType;
@@ -148,6 +149,14 @@ public class IndexDocument {
     private Set<String> formerGrantNumbers;
     private String currentGrantNumber;
     private Set<String> projectMembers;
+
+    public int getStudyId() {
+        return studyId;
+    }
+
+    public void setStudyId(int studyId) {
+        this.studyId = studyId;
+    }
 
     public Set<String> getProjectMembers() {
         return projectMembers;

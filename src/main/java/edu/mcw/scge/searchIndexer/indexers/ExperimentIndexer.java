@@ -63,6 +63,7 @@ public void mapDetails(Experiment x, IndexDocument o, Study s) throws Exception 
     o.setReportPageLink("/toolkit/data/experiments/experiment/");
     o.setTier(s.getTier());
     o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
+    o.setStudyId(s.getStudyId());
     Set<String> pis=new HashSet<>();
     for(Person pi:s.getMultiplePis()){
         if(pi.getFirstName()!=null && !pi.getFirstName().equals(""))
