@@ -46,8 +46,9 @@ public class ESClient {
     public static RestHighLevelClient getInstance() {
 
         if (client == null) {
+
+        if(getHostName().contains("morn") || getHostName().contains("saru")){
             Properties props= getProperties();
-        if(getHostName().contains("morn")){
             System.out.println("PRODUCTION ENVIRONMENT...");
             try {
 
@@ -110,8 +111,7 @@ public class ESClient {
 
 
         try{
-            // fis=new FileInputStream("C:/Apps/elasticsearchProps.properties");
-            fis=new FileInputStream("/data/pipelines/properties/elasticsearchProps.properties");
+           fis=new FileInputStream("/data/pipelines/properties/elasticsearchProps.properties");
             props.load(fis);
 
         }catch (Exception e){
