@@ -136,12 +136,12 @@ public class EditorMapper implements Mapper {
                     if (!activity.isEmpty()) indexDocument.setActivity(activity);
                     if (!annotatedMap.isEmpty()) indexDocument.setEditorAnnotatedMap(annotatedMap);
                     if (!location.isEmpty()) indexDocument.setEditorLocation(location);
-                    StringBuilder generatedDescription = new StringBuilder();
+                  /*  StringBuilder generatedDescription = new StringBuilder();
                     if (indexDocument.getGeneratedDescription() != null) {
                         generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
                     }
                     generatedDescription.append(description.stream().collect(Collectors.joining("..")));
-                    indexDocument.setGeneratedDescription(generatedDescription.toString());
+                    indexDocument.setGeneratedDescription(generatedDescription.toString());*/
                     if (!fusion.isEmpty()) indexDocument.setFusion(fusion);
                     if (!substrateTarget.isEmpty()) indexDocument.setSubstrateTarget(substrateTarget);
                     if (!targetSequence.isEmpty()) indexDocument.setEditorTargetSequence(targetSequence);

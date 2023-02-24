@@ -81,11 +81,11 @@ public class VectorMapper implements Mapper {
         if(!capsidSerotype.isEmpty()) indexDocument.setCapsidSerotype(capsidSerotype);
         if(!capsidVariant.isEmpty()) indexDocument.setCapsidVariant(capsidVariant);
         if(!titerMethod.isEmpty()) indexDocument.setTiterMethod(titerMethod);
-        StringBuilder generatedDescription=new StringBuilder();
+       /* StringBuilder generatedDescription=new StringBuilder();
         if(indexDocument.getGeneratedDescription()!=null){
             generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
         }
         generatedDescription.append(description.stream().collect(Collectors.joining("..")));
-        indexDocument.setGeneratedDescription(generatedDescription.toString());
+        indexDocument.setGeneratedDescription(generatedDescription.toString());*/
     }
 }

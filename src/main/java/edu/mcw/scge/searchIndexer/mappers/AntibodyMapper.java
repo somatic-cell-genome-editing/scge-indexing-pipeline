@@ -31,12 +31,12 @@ public class AntibodyMapper implements Mapper {
             if (!antibodies.isEmpty()) indexDocument.setAntibody(antibodies);
             if (!otherIds.isEmpty()) indexDocument.setExternalId(otherIds);
 
-            StringBuilder generatedDescription = new StringBuilder();
+           /* StringBuilder generatedDescription = new StringBuilder();
             if (indexDocument.getGeneratedDescription() != null) {
                 generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
             }
             generatedDescription.append(description.stream().collect(Collectors.joining("..")));
-            indexDocument.setGeneratedDescription(generatedDescription.toString());
+            indexDocument.setGeneratedDescription(generatedDescription.toString());*/
         }
     }
 

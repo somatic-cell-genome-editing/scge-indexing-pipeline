@@ -105,11 +105,11 @@ public class GuideMapper implements Mapper {
 
         if(!guideLocation.isEmpty())indexDocument.setGuideLocation( guideLocation);
         if(!guideAnnotatedMap.isEmpty()) indexDocument.setGuideAnnotatedMap(guideAnnotatedMap);
-        StringBuilder generatedDescription=new StringBuilder();
+     /*   StringBuilder generatedDescription=new StringBuilder();
         if(indexDocument.getGeneratedDescription()!=null){
             generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
         }
         generatedDescription.append(description.stream().collect(Collectors.joining("..")));
-        if(!generatedDescription.toString().isEmpty())  indexDocument.setGeneratedDescription(generatedDescription.toString());
+        if(!generatedDescription.toString().isEmpty())  indexDocument.setGeneratedDescription(generatedDescription.toString());*/
     }
 }

@@ -31,7 +31,7 @@ public class IndexDocument {
     private String withExperiments;
     private Map<Integer, String> studyNames;
     private Map<Long, String> experimentNames;
-    private String generatedDescription;
+  //  private String generatedDescription;
     private String lastModifiedDate;
     /**********************EXPERIMENT FIELDS*********************/
     private Set<String> experimentType;
@@ -416,15 +416,6 @@ public class IndexDocument {
         this.experimentNames = experimentNames;
     }
 
-
-
-    public String getGeneratedDescription() {
-        return generatedDescription;
-    }
-
-    public void setGeneratedDescription(String generatedDescription) {
-        this.generatedDescription = generatedDescription;
-    }
 
     public Set<String> getSamplePrep() {
         return samplePrep;

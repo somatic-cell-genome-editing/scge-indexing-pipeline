@@ -29,9 +29,9 @@ public interface Indexer {
 
             BulkRequest bulkRequest=new BulkRequest();
             bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-            bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
-            bulkRequest.timeout(TimeValue.timeValueMinutes(2));
-            bulkRequest.timeout("2m");
+        //    bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
+          //  bulkRequest.timeout(TimeValue.timeValueMinutes(2));
+          //  bulkRequest.timeout("2m");
             for (IndexDocument o : objects) {
                 try {
                     String json = mapper.writeValueAsString(o);

@@ -68,12 +68,12 @@ public class DeliveryMapper implements Mapper {
         if(!deliverySource.isEmpty()) indexDocument.setDeliverySource(deliverySource);
         if(!deliveryLabId.isEmpty()) indexDocument.setDeliveryLabId(deliveryLabId);
         if(!deliveryAnnotatedMap.isEmpty()) indexDocument.setDeliveryAnnotatedMap(deliveryAnnotatedMap);
-        StringBuilder generatedDescription=new StringBuilder();
+      /*  StringBuilder generatedDescription=new StringBuilder();
 
         if(indexDocument.getGeneratedDescription()!=null){
             generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
         }
         generatedDescription.append(description.stream().collect(Collectors.joining("..")));
-        if(!generatedDescription.toString().isEmpty())    indexDocument.setGeneratedDescription(generatedDescription.toString());
+        if(!generatedDescription.toString().isEmpty())    indexDocument.setGeneratedDescription(generatedDescription.toString());*/
     }
 }

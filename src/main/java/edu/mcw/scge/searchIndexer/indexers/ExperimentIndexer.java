@@ -31,7 +31,7 @@ public class ExperimentIndexer implements Indexer {
                 o.setAccessLevel("consortium");
                 mapDetails(x, o,s);
                 o.setStudyNames(studyMap);
-                o.setGeneratedDescription(x.getDescription());
+               // o.setGeneratedDescription(x.getDescription());
                 List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());
                 Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
 
@@ -72,7 +72,7 @@ public void mapDetails(Experiment x, IndexDocument o, Study s) throws Exception 
     }
     o.setPi(pis);
     o.setDescription(x.getDescription());
-    o.setGeneratedDescription(x.getDescription());
+  //  o.setGeneratedDescription(x.getDescription());
     List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());
     Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
 
