@@ -8,7 +8,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.xcontent.XContentType;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
@@ -79,7 +79,8 @@ public class IndexAdmin {
                 .put("index.number_of_replicas", replicates)
          .loadFromSource(analyzers, XContentType.JSON))
         ;
-           request.mapping(mappings, XContentType.JSON);
+           request.mapping(mappings,
+                   XContentType.JSON);
         org.elasticsearch.client.indices.CreateIndexResponse createIndexResponse = ESClient.getClient().indices().create(request, RequestOptions.DEFAULT);
         log.info(index + " created on  " + new Date());
 
