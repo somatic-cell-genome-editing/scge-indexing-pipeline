@@ -148,6 +148,15 @@ public class IndexDocument {
     private Set<String> formerGrantNumbers;
     private String currentGrantNumber;
     private Set<String> projectMembers;
+    private String nihReporterLink;
+
+    public String getNihReporterLink() {
+        return nihReporterLink;
+    }
+
+    public void setNihReporterLink(String nihReporterLink) {
+        this.nihReporterLink = nihReporterLink;
+    }
 
     public Set<String> getProjectMembers() {
         return projectMembers;

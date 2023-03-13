@@ -102,7 +102,8 @@ public class GrantIndexer implements Indexer{
        o.setCurrentGrantNumber(grant.getCurrentGrantNumber());
        if(grant.getFormerGrantNumbers().size()>0)
        o.setFormerGrantNumbers(new HashSet<>(grant.getFormerGrantNumbers()));
-
+        if(grant.getNihReporterLink()!=null && !grant.getNihReporterLink().equals(""))
+            o.setNihReporterLink(grant.getNihReporterLink());
 
     }
     public boolean isInDCCorNIHGroup(Person p) throws Exception{
