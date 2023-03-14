@@ -85,10 +85,10 @@ public class ModelMapper implements Mapper {
         if(!strainCode.isEmpty()) indexDocument.setStrainCode(strainCode);
         if(!strainAlias.isEmpty()) indexDocument.setStrainAlias(strainAlias);
         StringBuilder generatedDescription=new StringBuilder();
-        if(indexDocument.getGeneratedDescription()!=null){
+       /* if(indexDocument.getGeneratedDescription()!=null){
             generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
         }
         generatedDescription.append(description.stream().collect(Collectors.joining("..")));
-        indexDocument.setGeneratedDescription(generatedDescription.toString());
+        indexDocument.setGeneratedDescription(generatedDescription.toString());*/
     }
 }

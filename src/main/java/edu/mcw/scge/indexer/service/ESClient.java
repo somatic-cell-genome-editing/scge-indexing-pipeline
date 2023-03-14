@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.RestHighLevelClientBuilder;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class ESClient {
             System.out.println("PRODUCTION ENVIRONMENT...");
             try {
 
-                client = new RestHighLevelClient(RestClient.builder(
+                client = new RestHighLevelClientBuilder(RestClient.builder(
                         new HttpHost((String) props.get("HOST1"), 9200, "http"),
                         new HttpHost((String) props.get("HOST2"), 9200, "http"),
                         new HttpHost((String) props.get("HOST3"), 9200, "http"),
@@ -68,8 +69,8 @@ public class ESClient {
                                 .setSocketTimeout(120000)
                                 ;
                     }
-                })
-                );
+                }).build()
+                ).setApiCompatibilityMode(true).build();
 
             } catch (Exception e) {
                 log.info(e);
@@ -81,7 +82,7 @@ public class ESClient {
             try {
               /*  client= new PreBuiltTransportClient(settings)
                         .addTransportAddress(new TransportAddress(InetAddress.getByName("green.rgd.mcw.edu"), 9300));*/
-                client = new RestHighLevelClient(RestClient.builder(
+                client = new RestHighLevelClientBuilder(RestClient.builder(
                         new HttpHost("travis.rgd.mcw.edu", 9200, "http")
 
                 ).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
@@ -93,8 +94,8 @@ public class ESClient {
                                 .setSocketTimeout(120000)
                                 ;
                     }
-                })
-                );
+                }).build()
+                ).setApiCompatibilityMode(true).build();
 
             } catch (Exception e) {
                 log.info(e);

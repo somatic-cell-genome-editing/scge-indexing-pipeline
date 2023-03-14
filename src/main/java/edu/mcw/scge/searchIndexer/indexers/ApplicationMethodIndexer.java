@@ -13,14 +13,14 @@ public class ApplicationMethodIndexer implements Indexer{
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
         List<IndexDocument> objList= new ArrayList<>();
-        List<ApplicationMethod> methods=dao.getAllApplicationMethods();
+      /*  List<ApplicationMethod> methods=dao.getAllApplicationMethods();
         for(ApplicationMethod method:methods) {
             IndexDocument o = new IndexDocument();
             o.setAccessLevel("consortium");
 
             mapDetails(o, method);
 
-        }
+        }*/
         return objList;
     }
     public void mapDetails(IndexDocument o, ApplicationMethod method){

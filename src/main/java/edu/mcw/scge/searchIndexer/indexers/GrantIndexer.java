@@ -21,7 +21,7 @@ public class GrantIndexer implements Indexer{
     public List<IndexDocument> getGrants() throws  Exception{
         List<IndexDocument> objects= new ArrayList<>();
         List<Integer> submittedGrantIds=studyDao.getAllSubmittedGrantIds();
-        System.out.println("SUBMITTED GRANT IDS:" + submittedGrantIds.size());
+
         for(int id:submittedGrantIds) {
             IndexDocument o = new IndexDocument();
             Grant grant = grantDao.getGrantByGroupId(id);
@@ -102,7 +102,8 @@ public class GrantIndexer implements Indexer{
        o.setCurrentGrantNumber(grant.getCurrentGrantNumber());
        if(grant.getFormerGrantNumbers().size()>0)
        o.setFormerGrantNumbers(new HashSet<>(grant.getFormerGrantNumbers()));
-
+        if(grant.getNihReporterLink()!=null && !grant.getNihReporterLink().equals(""))
+            o.setNihReporterLink(grant.getNihReporterLink());
 
     }
     public boolean isInDCCorNIHGroup(Person p) throws Exception{

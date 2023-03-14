@@ -31,7 +31,7 @@ public class IndexDocument {
     private String withExperiments;
     private Map<Integer, String> studyNames;
     private Map<Long, String> experimentNames;
-    private String generatedDescription;
+  //  private String generatedDescription;
     private String lastModifiedDate;
     /**********************EXPERIMENT FIELDS*********************/
     private Set<String> experimentType;
@@ -149,6 +149,15 @@ public class IndexDocument {
     private Set<String> formerGrantNumbers;
     private String currentGrantNumber;
     private Set<String> projectMembers;
+    private String nihReporterLink;
+
+    public String getNihReporterLink() {
+        return nihReporterLink;
+    }
+
+    public void setNihReporterLink(String nihReporterLink) {
+        this.nihReporterLink = nihReporterLink;
+    }
 
     public int getStudyId() {
         return studyId;
@@ -416,15 +425,6 @@ public class IndexDocument {
         this.experimentNames = experimentNames;
     }
 
-
-
-    public String getGeneratedDescription() {
-        return generatedDescription;
-    }
-
-    public void setGeneratedDescription(String generatedDescription) {
-        this.generatedDescription = generatedDescription;
-    }
 
     public Set<String> getSamplePrep() {
         return samplePrep;
