@@ -115,7 +115,8 @@ public class StudyMapper implements Mapper {
         indexDocument.setStudy(studies);
 
         indexDocument.setExperimentName(experimentName);
-        if(indexDocument.getCategory().equalsIgnoreCase("Project") || indexDocument.getCategory().equalsIgnoreCase("Experiment"))
+        if(indexDocument.getCategory().equalsIgnoreCase("Project") || indexDocument.getCategory().equalsIgnoreCase("Experiment")
+                || indexDocument.getCategory().equalsIgnoreCase("Protocol"))
         {
             indexDocument.setExperimentType(experimentType);
             indexDocument.setPi(pi);
