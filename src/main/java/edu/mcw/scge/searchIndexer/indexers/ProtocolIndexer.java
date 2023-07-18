@@ -48,7 +48,7 @@ public class ProtocolIndexer implements Indexer {
     public void mapDetails(IndexDocument o, Protocol protocol){
         o.setCategory("Protocol");
         o.setId(protocol.getId());
-        o.setName(protocol.getFilename());
+        o.setName(protocol.getTitle());
         o.setDescription(protocol.getDescription());
         o.setTier(protocol.getTier());
         o.setReportPageLink("/toolkit/data/protocols/protocol/?id=");
