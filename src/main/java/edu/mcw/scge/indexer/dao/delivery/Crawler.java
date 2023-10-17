@@ -142,7 +142,7 @@ public class Crawler {
             int expCount=experimentRecords.stream().map(p->p.getExperimentId()).collect(Collectors.toSet()).size();
             o.setExperimentCount(expCount);
             if(expCount>0){
-                o.setWithExperiments(e.getSubType());
+                o.setWithExperiments(e.getSubtype());
             }
 
             Map<Integer, String> studies=  studyDao.getStudiesByEditor(e.getId()).stream().collect(Collectors.toMap(Study::getStudyId,Study::getStudy));

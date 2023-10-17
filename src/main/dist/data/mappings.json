@@ -89,7 +89,7 @@
               },
               "analyzer" : "english_analyzer"
             },
-            "subtype" : {
+            "subType" : {
               "type" : "text",
               "fields" : {
                 "keyword" : {
@@ -887,7 +887,7 @@
                 }
               }
             },
-            "subtype" : {
+            "subType" : {
               "type" : "text",
               "fields" : {
                 "keyword" : {
@@ -1260,7 +1260,7 @@
                 }
               }
             },
-            "subtype" : {
+            "subType" : {
               "type" : "text",
               "fields" : {
                 "keyword" : {

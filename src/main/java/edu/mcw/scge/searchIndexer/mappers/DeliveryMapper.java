@@ -43,7 +43,7 @@ public class DeliveryMapper implements Mapper {
                             deliveryType.add(StringUtils.capitalize(delivery.getType().trim()));
                         if (delivery.getSubtype() != null && !delivery.getSubtype().equals(""))
                             deliverySubtype.add(StringUtils.capitalize(delivery.getSubtype().trim()));
-                        if (delivery.getSource() != null && delivery.getSource().equals(""))
+                        if (delivery.getSource() != null && !delivery.getSource().equals(""))
 
                             deliverySource.add(delivery.getSource());
                         if (delivery.getLabId() != null && !delivery.getLabId().equals(""))

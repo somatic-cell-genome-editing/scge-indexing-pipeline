@@ -58,8 +58,8 @@ public class EditorMapper implements Mapper {
                             || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && editor.getTier() == 4)) {
                         if (editor.getType() != null && !editor.getType().equals(""))
                             type.add(StringUtils.capitalize(editor.getType().trim()));
-                        if (editor.getSubType() != null && !editor.getSubType().equals(""))
-                            subType.add(StringUtils.capitalize(editor.getSubType().trim()));
+                        if (editor.getSubtype() != null && !editor.getSubtype().equals(""))
+                            subType.add(StringUtils.capitalize(editor.getSubtype().trim()));
                         if (editor.getSymbol() != null && !editor.getSymbol().equals(""))
                             symbol.add(editor.getSymbol().trim());
                         if (editor.getSource() != null && !editor.getSource().equals(""))

@@ -89,7 +89,7 @@
                 }
               }
             },
-            "subtype" : {
+            "subType" : {
               "type" : "text",
               "analyzer": "english_analyzer",
               "fields" : {
@@ -381,7 +381,7 @@
                 }
               }
             },
-            "subtype" : {
+            "subType" : {
               "type" : "text",
               "analyzer": "english_analyzer",
               "fields" : {

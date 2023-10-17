@@ -76,7 +76,7 @@
         }
       }
     },
-    "deliverySubtype": {
+    "deliverySubType": {
       "type": "text",
       "fields": {
         "keyword": {
@@ -430,7 +430,7 @@
         }
       }
     },
-    "modelSubtype": {
+    "modelSubType": {
       "type": "text",
       "fields": {
         "keyword": {
@@ -651,7 +651,7 @@
         }
       }
     },
-    "vectorSubtype": {
+    "vectorSubType": {
       "type": "text",
       "fields": {
         "keyword": {

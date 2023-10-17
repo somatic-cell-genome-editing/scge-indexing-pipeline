@@ -21,21 +21,25 @@ public class TissueMapper implements Mapper {
         Set<String> cellTypes=new HashSet<>();
         Set<String> cellTypeIds=new HashSet<>();
         for(ExperimentRecord r: experimentRecords) {
+            try{
             if (r.getTissueId() != null && !r.getTissueId().equals("")) {
                 String t = xdao.getTerm(r.getTissueId()).getTerm();
                 if (!tissueTerm.contains(t)) {
                     tissueTerm.add(StringUtils.capitalize(t.trim()));
                     tissueIds.add(r.getTissueId());
-                    for(TermSynonym synonym:xdao.getActiveSynonyms(r.getTissueId())){
+                    for (TermSynonym synonym : xdao.getActiveSynonyms(r.getTissueId())) {
                         synonyms.add(StringUtils.capitalize(synonym.getName().trim()));
                         synonyms.add(synonym.getTermAcc());
                     }
-                    for(Term term: xdao.getAllActiveTermAncestors(r.getTissueId())){
+                    for (Term term : xdao.getAllActiveTermAncestors(r.getTissueId())) {
                         synonyms.add(StringUtils.capitalize(term.getTerm().trim()));
                         synonyms.add(term.getAccId());
                     }
 
                 }
+            }
+            }catch (Exception e){
+                System.out.println("RECORD ID:"+ r.getTissueId()+"\t" +r.getExperimentRecordId());
             }
             if(r.getCellType()!=null && !r.getCellType().equals("")) {
                 cellTypeIds.add(r.getCellType());
@@ -43,9 +47,10 @@ public class TissueMapper implements Mapper {
                 try {
                    cellType= xdao.getTerm(r.getCellType()).getTerm();
                 }catch (Exception e){
-                    System.err.println("CELL TYPE:"+ cellType);
-                    e.printStackTrace();}
-                if(cellType!=null)
+                    System.err.println("CELL TYPE:"+ cellType +"\tRECORD ID:"+ r.getExperimentRecordId());
+                    e.printStackTrace();
+                }
+                if(cellType!=null && !cellType.equals(""))
                     cellTypes.add(StringUtils.capitalize(cellType.trim()));
                 for (TermSynonym synonym : xdao.getActiveSynonyms(r.getCellType())) {
                     synonyms.add(StringUtils.capitalize(synonym.getName().trim()));
