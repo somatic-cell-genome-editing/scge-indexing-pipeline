@@ -107,6 +107,7 @@ public class IndexDocument {
     private Set<String> guideLocation;
     private Set<String> guideAnnotatedMap;
     private Set<String> guideCompatibility;
+    private Set<String> guideSource;
     /**************************MODEL FIELDS*********************************/
     private Set<String> modelType;
     private Set<String> modelOrganism;
@@ -1151,5 +1152,13 @@ public class IndexDocument {
 
     public void setLastModifiedDate(String lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Set<String> getGuideSource() {
+        return guideSource;
+    }
+
+    public void setGuideSource(Set<String> guideSource) {
+        this.guideSource = guideSource;
     }
 }

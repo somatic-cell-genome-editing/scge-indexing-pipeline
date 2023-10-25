@@ -43,6 +43,8 @@ public class GuideMapper implements Mapper {
         Set<String> guideLocation=new HashSet<>();
         Set<String> description= new HashSet<>();
         Set<String> guideCompaitibility=new HashSet<>();
+        Set<String> source = new HashSet<>();
+
         for(ExperimentRecord r: experimentRecords) {
             for (Guide g : guideDao.getGuidesByExpRecId(r.getExperimentRecordId())) {
                 //   if (!guideIds.contains(r.getGuideId())) {
@@ -50,6 +52,9 @@ public class GuideMapper implements Mapper {
                         || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && g.getTier() == 4)) {
                     if (!guideIds.contains(g.getGuide_id())) {
                         guideIds.add(g.getGuide_id());
+                        if (g.getSource() != null && !g.getSource().equals(""))
+
+                            source.add(g.getSource().trim());
                         if (g.getTargetLocus() != null && !g.getTargetLocus().equals(""))
 
                             guideTargetLocus.add(g.getTargetLocus());
@@ -105,7 +110,9 @@ public class GuideMapper implements Mapper {
 
         if(!guideLocation.isEmpty())indexDocument.setGuideLocation( guideLocation);
         if(!guideAnnotatedMap.isEmpty()) indexDocument.setGuideAnnotatedMap(guideAnnotatedMap);
-     /*   StringBuilder generatedDescription=new StringBuilder();
+        if (!source.isEmpty()) indexDocument.setGuideSource(source);
+
+        /*   StringBuilder generatedDescription=new StringBuilder();
         if(indexDocument.getGeneratedDescription()!=null){
             generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
         }
