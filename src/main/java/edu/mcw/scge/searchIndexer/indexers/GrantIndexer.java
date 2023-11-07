@@ -55,7 +55,7 @@ public class GrantIndexer implements Indexer{
         }
         o.setPi(pis);
        List<Study> studies= studyDao.getStudiesByGroupId(grant.getGroupId());
-       Map<Long, String> experimentNames=new HashMap<>();
+       TreeMap<Long, String> experimentNames=new TreeMap<>();
         List<Date> lastModifiedDate=new ArrayList<>();
 
         Set<String> members=new HashSet<>();
