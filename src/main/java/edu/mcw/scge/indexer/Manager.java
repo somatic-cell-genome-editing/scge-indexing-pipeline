@@ -71,8 +71,13 @@ public class Manager {
             admin.updateIndex();
 
         for(String category: Arrays.asList(
-               "experiment", "editor", "delivery",
-                "vector", "guide","model", "protocol", "antibody","grant")) {
+               "experiment",
+                "editor",
+                "delivery",
+                "vector", "guide","model", "protocol", "antibody",
+                "grant",
+               "publication"
+          )) {
            Indexer indexer = indexers.getIndexer(category);
             indexer.index(RgdIndex.getNewAlias());
         }

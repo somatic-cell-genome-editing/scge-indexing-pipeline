@@ -41,7 +41,7 @@ public class EditorMapper implements Mapper {
         Set<String> description = new HashSet<>();
         if (!indexDocument.getCategory().equalsIgnoreCase("Guide")) {
         for (ExperimentRecord r : experimentRecords) {
-            if (r.getEditorId() != 0)
+            if (r.getEditorId() != 0 )
                 if (!editorIds.contains(r.getEditorId())) {
                     editorIds.add(r.getEditorId());
                     Editor editor = new Editor();
@@ -123,19 +123,16 @@ public class EditorMapper implements Mapper {
 
                     }
                 }
+            if (!alias.isEmpty()) indexDocument.setEditorAlias(alias);
+            if (!species.isEmpty()) indexDocument.setEditorSpecies(species);
+            if (!symbol.isEmpty()) indexDocument.setEditorSymbol(symbol);
+            if (!type.isEmpty()) indexDocument.setEditorType(type);
+            if (!subType.isEmpty()) indexDocument.setEditorSubType(subType);
 
-                    if (!alias.isEmpty()) indexDocument.setEditorAlias(alias);
-                    if (!species.isEmpty()) indexDocument.setEditorSpecies(species);
-
-
-                        if (!symbol.isEmpty()) indexDocument.setEditorSymbol(symbol);
-                        if (!type.isEmpty()) indexDocument.setEditorType(type);
-                        if (!subType.isEmpty()) indexDocument.setEditorSubType(subType);
-
-                    if (!editorVariant.isEmpty()) indexDocument.setEditorVariant(editorVariant);
-                    if (!activity.isEmpty()) indexDocument.setActivity(activity);
-                    if (!annotatedMap.isEmpty()) indexDocument.setEditorAnnotatedMap(annotatedMap);
-                    if (!location.isEmpty()) indexDocument.setEditorLocation(location);
+            if (!editorVariant.isEmpty()) indexDocument.setEditorVariant(editorVariant);
+            if (!activity.isEmpty()) indexDocument.setActivity(activity);
+            if (!annotatedMap.isEmpty()) indexDocument.setEditorAnnotatedMap(annotatedMap);
+            if (!location.isEmpty()) indexDocument.setEditorLocation(location);
                   /*  StringBuilder generatedDescription = new StringBuilder();
                     if (indexDocument.getGeneratedDescription() != null) {
                         generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");

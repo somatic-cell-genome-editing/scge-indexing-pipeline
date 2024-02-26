@@ -3,11 +3,13 @@ package edu.mcw.scge.searchIndexer.model;
 
 
 
+import edu.mcw.scge.datamodel.publications.Publication;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-public class IndexDocument {
+public class IndexDocument extends Publication {
 
     private long id;
     private String name;

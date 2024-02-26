@@ -38,6 +38,9 @@ public class Indexers {
         if(category.equalsIgnoreCase("applicationMethod")){
             return new ApplicationMethodIndexer();
         }
+        if(category.equalsIgnoreCase("publication")){
+            return new PublicationIndexer();
+        }
         return null;
     }
 }
