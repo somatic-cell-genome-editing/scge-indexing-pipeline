@@ -48,6 +48,7 @@ public class PublicationIndexer implements Indexer{
         o.setArticleIds(publication.getArticleIds());
         o.setName(publication.getReference().getTitle());
         o.setDescription(publication.getReference().getRefAbstract());
+        o.setReportPageLink("/toolkit/data/publications/publication/?key=");
 
     }
 }
