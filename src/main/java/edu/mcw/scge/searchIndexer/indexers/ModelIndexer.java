@@ -22,6 +22,7 @@ public class ModelIndexer implements Indexer {
             o.setAccessLevel("consortium");
 
             List<ExperimentRecord> experimentRecords=experimentDao.getExperimentsByModel(m.getModelId());
+
             int expCount=experimentRecords.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet()).size();
             o.setExperimentCount(expCount);
             mapDetails(o,m);
@@ -42,6 +43,8 @@ public class ModelIndexer implements Indexer {
     public void mapDetails(IndexDocument o, Model m){
         o.setCategory("Model System");
         o.setId(m.getModelId());
+        o.setModelType(Collections.singleton(m.getType()));
+        o.setModelOrganism(Collections.singleton(m.getOrganism()));
         if(m.getDisplayName()!=null && !m.getDisplayName().equals(""))
         o.setName(m.getDisplayName());
         else
@@ -50,4 +53,5 @@ public class ModelIndexer implements Indexer {
         o.setTier(m.getTier());
         o.setReportPageLink("/toolkit/data/models/model/?id=");
     }
+
 }
