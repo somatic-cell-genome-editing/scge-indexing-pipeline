@@ -153,6 +153,15 @@ public class IndexDocument extends Publication {
     private String currentGrantNumber;
     private Set<String> projectMembers;
     private String nihReporterLink;
+    private Set<String> keywords;
+
+    public Set<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(Set<String> keywords) {
+        this.keywords = keywords;
+    }
 
     public String getNihReporterLink() {
         return nihReporterLink;

@@ -8,7 +8,9 @@ import edu.mcw.scge.datamodel.publications.Publication;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PublicationIndexer implements Indexer{
     PublicationDAO publicationDAO=new PublicationDAO();
@@ -48,6 +50,9 @@ public class PublicationIndexer implements Indexer{
         o.setArticleIds(publication.getArticleIds());
         o.setName(publication.getReference().getTitle());
         o.setDescription(publication.getReference().getRefAbstract());
+        if(publication.getReference().getMeshTerms()!=null && publication.getReference().getMeshTerms().size()>0 ){
+            o.setKeywords(new HashSet<>(publication.getReference().getMeshTerms()));
+        }
         o.setReportPageLink("/toolkit/data/publications/publication/?key=");
 
     }
