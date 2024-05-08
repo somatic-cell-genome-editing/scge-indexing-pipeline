@@ -42,7 +42,7 @@ public class StudyIndexer implements Indexer {
 
         Grant grant=grantDao.getGrantByGroupId(s.getGroupId());
         o.setId(s.getStudyId());
-        o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
+        o.setInitiative(Collections.singleton(UI.correctInitiative(grant.getGrantInitiative())));
         o.setCategory("Project");
         o.setName(s.getStudy().trim());
         o.setReportPageLink("/toolkit/data/experiments/study/");

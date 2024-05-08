@@ -42,7 +42,7 @@ public class GrantIndexer implements Indexer{
     public void mapDetails(IndexDocument o,Grant grant) throws Exception {
 
         o.setId(grant.getGroupId());
-        o.setInitiative(Collections.singleton(UI.getLabel(grant.getGrantInitiative())));
+        o.setInitiative(Collections.singleton(UI.correctInitiative(grant.getGrantInitiative())));
         o.setCategory("Project");
         o.setName(grant.getGrantTitle());
         o.setReportPageLink("/toolkit/data/experiments/group/");

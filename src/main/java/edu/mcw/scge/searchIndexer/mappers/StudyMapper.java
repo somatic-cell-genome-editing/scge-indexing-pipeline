@@ -40,7 +40,7 @@ public class StudyMapper implements Mapper {
                           || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
                       studies.add(study.getStudy());
                       Grant grant = grantDao.getGrantByGroupId(study.getGroupId());
-                      grantInitiatives.add(UI.getLabel(grant.getGrantInitiative()));
+                      grantInitiatives.add(UI.correctInitiative(grant.getGrantInitiative()));
                       studyMap.put(study.getStudyId(), study.getStudy());
 
                       Set<String> pis=new HashSet<>();
