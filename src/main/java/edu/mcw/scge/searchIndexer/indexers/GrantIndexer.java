@@ -46,7 +46,9 @@ public class GrantIndexer implements Indexer{
         if(grant.getGrantInitiative().equalsIgnoreCase("Collaborative Opportunity Fund")) {
             List<String> cofProjectInitiatives =grantDao.getCOFProjectInitiatives(grant.getGrantId());
             if(!cofProjectInitiatives.isEmpty()) {
-               Set<String> initiatives=o.getInitiative();
+               Set<String> initiatives=new HashSet<>();
+               if(o.getInitiative()!=null)
+                      initiatives.addAll( o.getInitiative());
 
                     for(String cofInitiative:cofProjectInitiatives) {
                         initiatives.add(UI.correctInitiative(cofInitiative));
