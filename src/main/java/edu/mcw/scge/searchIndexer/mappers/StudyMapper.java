@@ -40,6 +40,14 @@ public class StudyMapper implements Mapper {
                           || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
                       studies.add(study.getStudy());
                       Grant grant = grantDao.getGrantByGroupId(study.getGroupId());
+                      if(grant.getGrantInitiative().equalsIgnoreCase("Collaborative Opportunity Fund")) {
+                          List<String> cofProjectInitiatives =grantDao.getCOFProjectInitiatives(grant.getGrantId());
+                          if(!cofProjectInitiatives.isEmpty()) {
+                              for(String cofInitiative:cofProjectInitiatives) {
+                                  grantInitiatives.add(UI.correctInitiative(cofInitiative));
+                              }
+                          }
+                      }
                       grantInitiatives.add(UI.correctInitiative(grant.getGrantInitiative()));
                       studyMap.put(study.getStudyId(), study.getStudy());
 

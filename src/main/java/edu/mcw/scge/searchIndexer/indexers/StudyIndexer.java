@@ -43,6 +43,18 @@ public class StudyIndexer implements Indexer {
         Grant grant=grantDao.getGrantByGroupId(s.getGroupId());
         o.setId(s.getStudyId());
         o.setInitiative(Collections.singleton(UI.correctInitiative(grant.getGrantInitiative())));
+        if(grant.getGrantInitiative().equalsIgnoreCase("Collaborative Opportunity Fund")) {
+            List<String> cofProjectInitiatives =grantDao.getCOFProjectInitiatives(grant.getGrantId());
+            if(!cofProjectInitiatives.isEmpty()) {
+                Set<String> initiatives=o.getInitiative();
+
+                    for(String cofInitiative:cofProjectInitiatives) {
+                        initiatives.add(UI.correctInitiative(cofInitiative));
+                    }
+
+                o.setInitiative(initiatives);
+            }
+        }
         o.setCategory("Project");
         o.setName(s.getStudy().trim());
         o.setReportPageLink("/toolkit/data/experiments/study/");
