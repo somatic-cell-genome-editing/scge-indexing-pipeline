@@ -49,11 +49,15 @@ public class EditorMapper implements Mapper {
                         List<Editor> editors = editorDao.getEditorById(r.getEditorId());
                         if (editors.size() > 0) {
                             editor = editors.get(0);
+                            if(editor.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
+                                indexDocument.setTier(editor.getTier());
+                            }
                         }
                     } catch (Exception e) {
                         System.out.println(r.getEditorId());
                         e.printStackTrace();
                     }
+
                     if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                             || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && editor.getTier() == 4)) {
                         if (editor.getType() != null && !editor.getType().equals(""))

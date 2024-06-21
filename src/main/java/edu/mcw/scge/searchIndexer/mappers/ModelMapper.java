@@ -34,6 +34,9 @@ public class ModelMapper implements Mapper {
                 if (!modelIds.contains(r.getModelId())) {
                     modelIds.add(r.getModelId());
                     Model model = modelDao.getModelById(r.getModelId());
+                    if(model.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
+                        indexDocument.setTier(model.getTier());
+                    }
                     if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                     || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && model.getTier()==4))
                     {

@@ -29,6 +29,9 @@ public class VectorMapper implements Mapper {
         Set<String> description=new HashSet<>();
         for(ExperimentRecord r: experimentRecords) {
             for(Vector v:     vectorDao.getVectorsByExpRecId(r.getExperimentRecordId()) ) {
+                if(v.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
+                    indexDocument.setTier(v.getTier());
+                }
                 if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                         || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && v.getTier() == 4)) {
                     if (!vectorIds.contains(v.getVectorId())) {

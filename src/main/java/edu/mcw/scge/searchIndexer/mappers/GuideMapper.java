@@ -48,6 +48,9 @@ public class GuideMapper implements Mapper {
         for(ExperimentRecord r: experimentRecords) {
             for (Guide g : guideDao.getGuidesByExpRecId(r.getExperimentRecordId())) {
                 //   if (!guideIds.contains(r.getGuideId())) {
+                if(g.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
+                    indexDocument.setTier(g.getTier());
+                }
                 if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                         || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && g.getTier() == 4)) {
                     if (!guideIds.contains(g.getGuide_id())) {

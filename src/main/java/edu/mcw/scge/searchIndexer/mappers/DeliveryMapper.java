@@ -30,6 +30,9 @@ public class DeliveryMapper implements Mapper {
                 if (!deliveryIds.contains(r.getDeliverySystemId())) {
                     deliveryIds.add(r.getDeliverySystemId());
                     Delivery delivery = deliveryDao.getDeliverySystemsById(r.getDeliverySystemId()).get(0);
+                    if(delivery.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
+                        indexDocument.setTier(delivery.getTier());
+                    }
                     if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                             || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && delivery.getTier() == 4)) {
                         if (delivery.getName() != null && !delivery.getName().equals(""))
