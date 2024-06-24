@@ -24,7 +24,7 @@ public class PublicationIndexer implements Indexer{
         for(Publication publication:publications){
             IndexDocument o=new IndexDocument();
             o.setAccessLevel("consortium");
-            o.setTier(4);
+            o.setTier(4); // publications do not have TIER. So manually set it to 4 initially then update with object tier if it is less
              mapDetails(o,publication);
             Association association=associationDao.getPublicationAssociations(publication.getReference().getKey());
             AssociationDetails details=new AssociationDetails( o, association);
@@ -36,6 +36,8 @@ public class PublicationIndexer implements Indexer{
             mapDetails(publicDoc,publication);
             AssociationDetails details1=new AssociationDetails( publicDoc, association);
             details1.associateDetails();
+            if(publicDoc.getEditorSymbol()!=null || publicDoc.getDeliverySystemName()!=null
+            || publicDoc.getGuide()!=null || publicDoc.getVectorName()!=null || publicDoc.getModelName()!=null || publicDoc.getExperimentName()!=null || publicDoc.getModelOrganism()!=null)
             objects.add(publicDoc);
 
         }
