@@ -34,8 +34,12 @@ public class StudyMapper implements Mapper {
             Study study=new Study();
             try {
               List<Study> studyList=  studyDao.getStudyByExperimentId(experimentId);
+
               if(studyList.size()>0) {
                   study = studyList.get(0);
+                  if(study.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
+                      indexDocument.setTier(study.getTier());
+                  }
                   if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                           || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
                       studies.add(study.getStudy());
