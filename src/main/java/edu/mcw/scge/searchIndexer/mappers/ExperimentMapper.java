@@ -27,8 +27,12 @@ public class ExperimentMapper implements Mapper {
         for(ExperimentRecord record:experimentRecords) {
             Study study=experimentStudyMap.get(record.getExperimentId());
             if(study==null){
-                study = studyDao.getStudyByExperimentId(record.getExperimentId()).get(0);
-                experimentStudyMap.put(record.getExperimentId(), study);
+                List<Study>studies = studyDao.getStudyByExperimentId(record.getExperimentId());
+                if(studies!=null && studies.size()>0){
+                    study=studies.get(0);
+                    experimentStudyMap.put(record.getExperimentId(), study);
+
+                }
             }
 
             if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
