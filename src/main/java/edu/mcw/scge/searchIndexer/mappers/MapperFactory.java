@@ -23,9 +23,9 @@ public class MapperFactory  {
         if(type.equalsIgnoreCase("delivery")){
             return new DeliveryMapper();
         }
-        if(type.equalsIgnoreCase("application")){
-            return new ApplicationMethodMapper();
-        }
+//        if(type.equalsIgnoreCase("application")){
+//            return new ApplicationMethodMapper();
+//        }
         if(type.equalsIgnoreCase("study")){
             return new StudyMapper();
         }
