@@ -75,7 +75,7 @@ public class Manager {
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
-        ExecutorService executor=new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+      //  ExecutorService executor=new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for(String category: Arrays.asList(
                "experiment",
                 "editor",
@@ -84,11 +84,14 @@ public class Manager {
                 "grant",
                "publication"
           )) {
-          Runnable workerThread=new IndexerThread(category);
-          executor.execute(workerThread);
+            Indexer indexer = indexers.getIndexer(category);
+            indexer.index(RgdIndex.getNewAlias());
+
+//          Runnable workerThread=new IndexerThread(category);
+//          executor.execute(workerThread);
         }
-        executor.shutdown();
-        while (!executor.isTerminated()){}
+     //   executor.shutdown();
+//        while (!executor.isTerminated()){}
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
             System.out.println(clusterStatus + ", refusing to continue with operations");
