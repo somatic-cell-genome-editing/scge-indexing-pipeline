@@ -16,10 +16,9 @@ import java.util.stream.Collectors;
 public class EditorMapper implements Mapper {
 
     EditorDao editorDao=new EditorDao();
-    GuideDao guideDao=new GuideDao();
     @Override
     public void mapFields(List<ExperimentRecord> experimentRecords,IndexDocument indexDocument) throws Exception {
-        Set<Long> editorIds = new HashSet<>();
+
         Set<String> type = new HashSet<>();
         Set<String> subType = new HashSet<>();
         Set<String> symbol = new HashSet<>();
@@ -36,17 +35,15 @@ public class EditorMapper implements Mapper {
         Set<String> proteinSequence = new HashSet<>();
         Set<String> annotatedMap = new HashSet<>();
         Set<String> targetLocus = new HashSet<>();
-        Set<String> assembly = new HashSet<>();
         Set<String> location = new HashSet<>();
         Set<String> description = new HashSet<>();
+        Set<Long> editorIds =experimentRecords.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
         if (!indexDocument.getCategory().equalsIgnoreCase("Guide")) {
-        for (ExperimentRecord r : experimentRecords) {
-            if (r.getEditorId() != 0 )
-                if (!editorIds.contains(r.getEditorId())) {
-                    editorIds.add(r.getEditorId());
-                    Editor editor = new Editor();
+        for (long id:editorIds) {
+            if (id != 0 ){
+                Editor editor = new Editor();
                     try {
-                        List<Editor> editors = editorDao.getEditorById(r.getEditorId());
+                        List<Editor> editors = editorDao.getEditorById(id);
                         if (editors.size() > 0) {
                             editor = editors.get(0);
                             if(editor.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
@@ -54,7 +51,7 @@ public class EditorMapper implements Mapper {
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println(r.getEditorId());
+                        System.out.println(id);
                         e.printStackTrace();
                     }
 
@@ -107,7 +104,7 @@ public class EditorMapper implements Mapper {
                             targetLocus.add(editor.getTargetLocus().trim());
                         }
 
-                        List<Guide> guides = guideDao.getGuidesByEditor(editor.getId());
+//                        List<Guide> guides = guideDao.getGuidesByEditor(editor.getId());
                   /*  for(Guide g:guides){
                         System.out.print("guide locus:"+ g.getTargetLocus() );
 
@@ -126,7 +123,7 @@ public class EditorMapper implements Mapper {
 
 
                     }
-                }
+
             if (!alias.isEmpty()) indexDocument.setEditorAlias(alias);
             if (!species.isEmpty()) indexDocument.setEditorSpecies(species);
             if (!symbol.isEmpty()) indexDocument.setEditorSymbol(symbol);
@@ -155,4 +152,5 @@ public class EditorMapper implements Mapper {
         }
     }
 
+}
 }

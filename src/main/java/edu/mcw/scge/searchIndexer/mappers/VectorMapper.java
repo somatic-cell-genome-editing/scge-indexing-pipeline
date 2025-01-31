@@ -27,8 +27,10 @@ public class VectorMapper implements Mapper {
         Set<String> capsidVariant=new HashSet<>();
         Set<String> titerMethod=new HashSet<>();
         Set<String> description=new HashSet<>();
-        for(ExperimentRecord r: experimentRecords) {
-            for(Vector v:     vectorDao.getVectorsByExpRecId(r.getExperimentRecordId()) ) {
+        Set<Long> experimentIds=experimentRecords.stream().map(r->r.getExperimentId()).collect(Collectors.toSet());
+        for(long experimentId:experimentIds) {
+            List<Vector> vectors=vectorDao.getDistinctVectorsByExperimentId(experimentId);
+            for(Vector v:    vectors ) {
                 if(v.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
                     indexDocument.setTier(v.getTier());
                 }

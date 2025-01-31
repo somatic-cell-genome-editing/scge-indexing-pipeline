@@ -18,15 +18,17 @@ public class AntibodyMapper implements Mapper {
         Set<String> otherIds = new HashSet<>();
         Set<String> description = new HashSet<>();
         if (!indexDocument.getCategory().equalsIgnoreCase("antibody")) {
-            for (ExperimentRecord r : experimentRecords) {
-                List<Antibody> antibodyList = antibodyDao.getAntibodysByExpRecId(r.getExperimentRecordId());
-                if (antibodyList.size() > 0) {
-                    for(Antibody a:antibodyList){
-                        antibodies.add(a.getRrid());
-                        otherIds.add(a.getOtherId());
-                        description.add(a.getDescription());
+            Set<Long> experimentIds=experimentRecords.stream().map(r->r.getExperimentId()).collect(Collectors.toSet());
+            for(long experimentId:experimentIds) {
+                List<Antibody> antibodyList  = antibodyDao.getDistinctAntibodyByExperimentId(experimentId);
+                    if (antibodyList.size() > 0) {
+                        for (Antibody a : antibodyList) {
+                            antibodies.add(a.getRrid());
+                            otherIds.add(a.getOtherId());
+                            description.add(a.getDescription());
+                        }
                     }
-                }
+
             }
             if (!antibodies.isEmpty()) indexDocument.setAntibody(antibodies);
             if (!otherIds.isEmpty()) indexDocument.setExternalId(otherIds);

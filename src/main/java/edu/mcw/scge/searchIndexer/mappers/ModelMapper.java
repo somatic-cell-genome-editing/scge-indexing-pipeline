@@ -15,7 +15,7 @@ public class ModelMapper implements Mapper {
     ModelDao modelDao=new ModelDao();
     @Override
     public void mapFields(List<ExperimentRecord> experimentRecords, IndexDocument indexDocument) throws Exception {
-        Set<Long> modelIds=new HashSet<>();
+
         Set<String> modelType=new HashSet<>();
         Set<String> modelOrganism=new HashSet<>();
         Set<String> modelRrid=new HashSet<>();
@@ -29,11 +29,12 @@ public class ModelMapper implements Mapper {
         Set<String> strainCode=new HashSet<>();
         Set<String> strainAlias=new HashSet<>();
         Set<String> description=new HashSet<>();
-        for(ExperimentRecord r: experimentRecords) {
-            if (r.getModelId() != 0)
-                if (!modelIds.contains(r.getModelId())) {
-                    modelIds.add(r.getModelId());
-                    Model model = modelDao.getModelById(r.getModelId());
+        Set<Long> modelIds=experimentRecords.stream().map(r->r.getModelId()).collect(Collectors.toSet());
+        for(long id:modelIds) {
+            if (id != 0){
+
+
+                    Model model = modelDao.getModelById(id);
                     if(model.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
                         indexDocument.setTier(model.getTier());
                     }
@@ -87,7 +88,7 @@ public class ModelMapper implements Mapper {
         if(!parentalOrigin.isEmpty()) indexDocument.setParentalOrigin(parentalOrigin);
         if(!strainCode.isEmpty()) indexDocument.setStrainCode(strainCode);
         if(!strainAlias.isEmpty()) indexDocument.setStrainAlias(strainAlias);
-        StringBuilder generatedDescription=new StringBuilder();
+//        StringBuilder generatedDescription=new StringBuilder();
        /* if(indexDocument.getGeneratedDescription()!=null){
             generatedDescription.append(indexDocument.getGeneratedDescription()).append("..");
         }

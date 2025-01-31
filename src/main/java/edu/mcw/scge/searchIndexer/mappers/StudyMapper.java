@@ -29,7 +29,6 @@ public class StudyMapper implements Mapper {
         Set<String> grantInitiatives= new HashSet<>();
         Set<Long> experimentIds=experimentRecords.stream()
                 .map(ExperimentRecord::getExperimentId).collect(Collectors.toSet());
-        Set<Integer> studyIds=new HashSet<>();
         for(Long experimentId:experimentIds){
             Study study=new Study();
             try {

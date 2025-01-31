@@ -17,7 +17,6 @@ public class GuideMapper implements Mapper {
     @Override
     public void mapFields(List<ExperimentRecord> experimentRecords, IndexDocument indexDocument) throws Exception {
         Set<Long> guideIds=new HashSet<>();
-        List<Guide> guides=new ArrayList<>();
         Set<String> guideTargetLocus=new HashSet<>();
         Set<String> guideSpecies=new HashSet<>();
         Set<String> guideTargetSequence=new HashSet<>();
@@ -30,23 +29,20 @@ public class GuideMapper implements Mapper {
         Set<String> guideReversePrimer=new HashSet<>();
         Set<String> guideLinkerSequence=new HashSet<>();
         Set<String> guideAntiRepeatSequence=new HashSet<>();
-        Set<String> guideStemloopSequence=new HashSet<>();
-        Set<String> guideFormat=new HashSet<>();
         Set<String> modifications=new HashSet<>();
-        Set<String> standardScaffoldSequence=new HashSet<>();
-        Set<String> ivtConstructSource=new HashSet<>();
-        Set<String> vectorName=new HashSet<>();
-        Set<String> vectorDescription=new HashSet<>();
-        Set<String> vectorType=new HashSet<>();
-        Set<String> specificityRatio=new HashSet<>();
         Set<String> guideAnnotatedMap=new HashSet<>();
         Set<String> guideLocation=new HashSet<>();
         Set<String> description= new HashSet<>();
         Set<String> guideCompaitibility=new HashSet<>();
         Set<String> source = new HashSet<>();
 
-        for(ExperimentRecord r: experimentRecords) {
-            for (Guide g : guideDao.getGuidesByExpRecId(r.getExperimentRecordId())) {
+        Set<Long> experimentIds=experimentRecords.stream().map(r->r.getExperimentId()).collect(Collectors.toSet());
+        for(long experimentId:experimentIds) {
+            List<Guide> guides1 = guideDao.getDistinctGuidesByExperimentId(experimentId);
+
+//        }
+//        for(ExperimentRecord r: experimentRecords) {
+            for (Guide g : guides1) {
                 //   if (!guideIds.contains(r.getGuideId())) {
                 if(g.getTier()<indexDocument.getTier() && indexDocument.getCategory().equalsIgnoreCase("Publication")){
                     indexDocument.setTier(g.getTier());

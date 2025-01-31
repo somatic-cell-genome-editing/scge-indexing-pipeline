@@ -21,50 +21,34 @@ public class ExperimentMapper implements Mapper {
         Set<String> genotype=new HashSet<>();
         Set<String> sex=new HashSet<>();
         Set<String> experimentType=new HashSet<>();
-        Set<Long> experimentIds=new HashSet<>();
         Set<String> projectMembers=new HashSet<>();
-        Map<Long, Study> experimentStudyMap=new HashMap<>();
         Set<Integer> studyIds=experimentRecords.stream().map(e->e.getStudyId()).collect(Collectors.toSet());
+
         if(studyIds.size()>0) {
-            for (ExperimentRecord record : experimentRecords) {
-                Study study = experimentStudyMap.get(record.getExperimentId());
-                if (study == null) {
-                    List<Study> studies = studyDao.getStudyByExperimentId(record.getExperimentId());
-                    if (studies != null && studies.size() > 0) {
-                        study = studies.get(0);
-                        experimentStudyMap.put(record.getExperimentId(), study);
+            for(int studyId:studyIds){
+                List<Study> studies = studyDao.getStudyById(studyId);
+                if (studies != null && studies.size() > 0) {
+                  Study  study = studies.get(0);
+                  List<Experiment> experiments=experimentDao.getExperimentsByStudy(studyId);
 
-                    }
-                }
-
-                if (study != null) {
+                    projectMembers.addAll(groupDAO.getGroupMembersByGroupId(study.getGroupId()).stream().map(p -> p.getName()).collect(Collectors.toSet()));
                     if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
                             || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
-                        if (record.getSex() != null && !record.getSex().equals(""))
-                            sex.add(record.getSex());
-                        //  if(record.getSamplePrep()!=null && !record.getSamplePrep().equals(""))
-                        //       samplePrep.add(record.getSamplePrep());
-                        if (record.getGenotype() != null && !record.getGenotype().equals(""))
-                            genotype.add(record.getGenotype());
-                        experimentIds.add(record.getExperimentId());
+                        for(ExperimentRecord record:experimentRecords){
+                            if(record.getStudyId()==studyId){
+                                if (record.getSex() != null && !record.getSex().equals(""))
+                                    sex.add(record.getSex());
+                                if (record.getGenotype() != null && !record.getGenotype().equals(""))
+                                    genotype.add(record.getGenotype());
+                                experimentType.addAll(experiments.stream().map(e->e.getType()).collect(Collectors.toSet()));
+                            }
+                        }
                     }
-                    projectMembers.addAll(groupDAO.getGroupMembersByGroupId(study.getGroupId()).stream().map(p -> p.getName()).collect(Collectors.toSet()));
+
                 }
             }
-            indexDocument.setProjectMembers(projectMembers);
-            for (long experiemntId : experimentIds) {
-                Experiment experiment = experimentDao.getExperiment(experiemntId);
-                Study study = experimentStudyMap.get(experiemntId);
-                if (study == null) {
-                    study = studyDao.getStudyByExperimentId(experiemntId).get(0);
-                    experimentStudyMap.put(experiemntId, study);
-                }
-                if (indexDocument.getAccessLevel().equalsIgnoreCase("consortium")
-                        || (indexDocument.getAccessLevel().equalsIgnoreCase("public") && study.getTier() == 4)) {
-                    experimentType.add(experiment.getType());
-                }
-            }
-            indexDocument.setExperimentType(experimentType);
+            if(!projectMembers.isEmpty()) indexDocument.setProjectMembers(projectMembers);
+            if(!experimentType.isEmpty()) indexDocument.setExperimentType(experimentType);
             if (!sex.isEmpty()) indexDocument.setSex(sex);
             //   if(!samplePrep.isEmpty())indexDocument.setSamplePrep(samplePrep);
             //   if(!experimentName.isEmpty())indexDocument.setExperimentName(experimentName);
