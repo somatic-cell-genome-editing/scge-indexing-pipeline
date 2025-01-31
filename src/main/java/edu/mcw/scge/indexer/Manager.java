@@ -4,6 +4,8 @@ import edu.mcw.scge.indexer.model.RgdIndex;
 import edu.mcw.scge.indexer.service.ESClient;
 import edu.mcw.scge.indexer.service.IndexAdmin;
 import edu.mcw.scge.indexer.utils.Utils;
+import edu.mcw.scge.searchIndexer.IndexerThread;
+import edu.mcw.scge.searchIndexer.MyThreadPoolExecutor;
 import edu.mcw.scge.searchIndexer.indexers.Indexer;
 import edu.mcw.scge.searchIndexer.indexers.Indexers;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
@@ -19,6 +21,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class Manager {
     private String version;
@@ -69,7 +75,7 @@ public class Manager {
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
-
+        ExecutorService executor=new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         for(String category: Arrays.asList(
                "experiment",
                 "editor",
@@ -78,10 +84,11 @@ public class Manager {
                 "grant",
                "publication"
           )) {
-           Indexer indexer = indexers.getIndexer(category);
-            indexer.index(RgdIndex.getNewAlias());
+          Runnable workerThread=new IndexerThread(category);
+          executor.execute(workerThread);
         }
-
+        executor.shutdown();
+        while (!executor.isTerminated()){}
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
             System.out.println(clusterStatus + ", refusing to continue with operations");
