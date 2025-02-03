@@ -1,6 +1,7 @@
 package edu.mcw.scge.indexer;
 
 import edu.mcw.scge.indexer.model.RgdIndex;
+import edu.mcw.scge.indexer.service.BulkIndexProcessor;
 import edu.mcw.scge.indexer.service.ESClient;
 import edu.mcw.scge.indexer.service.IndexAdmin;
 import edu.mcw.scge.indexer.utils.Utils;
@@ -8,6 +9,7 @@ import edu.mcw.scge.searchIndexer.IndexerThread;
 import edu.mcw.scge.searchIndexer.MyThreadPoolExecutor;
 import edu.mcw.scge.searchIndexer.indexers.Indexer;
 import edu.mcw.scge.searchIndexer.indexers.Indexers;
+import edu.mcw.scge.searchIndexer.processThreads.*;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
@@ -33,6 +35,7 @@ public class Manager {
     private IndexAdmin admin;
     String command;
     String env;
+    BulkIndexProcessor bulkIndexProcessor;
     public static void main(String[] args) throws IOException {
 
        DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
@@ -50,12 +53,14 @@ public class Manager {
             manager.rgdIndex.setIndices(indices);
         }
         manager.rgdIndex= (RgdIndex) bf.getBean("rgdIndex");
-
+        BulkIndexProcessor bulkIndexProcessor=BulkIndexProcessor.getInstance();
         try {
             manager.run();
         } catch (Exception e) {
+            manager. bulkIndexProcessor.destroy();
             if(es!=null) {
                 try {
+
                     ESClient.destroy();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -63,8 +68,12 @@ public class Manager {
             }
             e.printStackTrace();
         }
+
+           manager. bulkIndexProcessor.destroy();
+
         if(es!=null)
             ESClient.destroy();
+
         System.out.println(manager.version);
     }
     public void run() throws Exception {
@@ -75,23 +84,37 @@ public class Manager {
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
-      //  ExecutorService executor=new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        for(String category: Arrays.asList(
-               "experiment",
-                "editor",
-                "delivery",
-                "vector", "guide","model", "protocol", "antibody",
-                "grant",
-               "publication"
-          )) {
-            Indexer indexer = indexers.getIndexer(category);
-            indexer.index(RgdIndex.getNewAlias());
+        ExecutorService executor=new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+//        for(String category: Arrays.asList(
+//               "experiment",
+//                "editor",
+//                "delivery",
+//                "vector", "guide","model", "protocol", "antibody",
+//                "grant",
+//               "publication"
+//          )) {
+//            Indexer indexer = indexers.getIndexer(category);
+//            indexer.index(RgdIndex.getNewAlias());
 
 //          Runnable workerThread=new IndexerThread(category);
 //          executor.execute(workerThread);
-        }
-     //   executor.shutdown();
-//        while (!executor.isTerminated()){}
+
+
+        executor.execute(new ExperimentIndexerThread());
+        executor.execute(new DeliveryIndexerThread());
+        executor.execute(new AntibodyIndexerThread());
+        executor.execute(new EditorInderThread());
+        executor.execute(new GrantIndexerThread());
+        executor.execute(new GuideIndexerThread());
+        executor.execute(new ModelIndexerThread());
+        executor.execute(new ProtocolIndexerThread());
+        executor.execute(new PublicationIndexerThread());
+        executor.execute(new StudyIndexerThread());
+        executor.execute(new VectorIndexerThread());
+
+//        }
+        executor.shutdown();
+        while (!executor.isTerminated()){}
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
             System.out.println(clusterStatus + ", refusing to continue with operations");

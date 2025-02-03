@@ -32,15 +32,15 @@ public class ExperimentIndexer implements Indexer {
                 mapDetails(x, o,s);
                 o.setStudyNames(studyMap);
                // o.setGeneratedDescription(x.getDescription());
-                List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());
-                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
+//                List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());
+//                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
 
                 objects.add(o);
                 if(s.getTier()==4){
                     IndexDocument publicObject = new IndexDocument();
                     publicObject.setAccessLevel("public");
                     mapDetails(x,publicObject,s);
-                    Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
+//                    Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
 
                     objects.add(publicObject);
                 }

@@ -23,5 +23,6 @@ public class IndexerThread implements Runnable{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 }

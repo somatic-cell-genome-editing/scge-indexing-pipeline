@@ -18,7 +18,7 @@ public class AssociationDetails {
         this.association=association;
         this.o=o;
     }
-     void associateDetails() throws Exception {
+     public void associateDetails() throws Exception {
        associateExperimentRecords();
        associateEditor();
        associateGuide();
