@@ -6,6 +6,7 @@ package edu.mcw.scge.searchIndexer.model;
 import edu.mcw.scge.datamodel.publications.Publication;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,6 +62,7 @@ public class IndexDocument extends Publication {
     private Set<String> initiative;
     private String studyType;
     private int studyId;
+    private List<Integer> studyIds;
 
     /******************EDITOR FIELDS*************************/
     private Set<String> editorType;
@@ -154,6 +156,14 @@ public class IndexDocument extends Publication {
     private Set<String> projectMembers;
     private String nihReporterLink;
     private Set<String> keywords;
+
+    public List<Integer> getStudyIds() {
+        return studyIds;
+    }
+
+    public void setStudyIds(List<Integer> studyIds) {
+        this.studyIds = studyIds;
+    }
 
     public Set<String> getKeywords() {
         return keywords;

@@ -74,7 +74,9 @@ public class GrantIndexer implements Indexer{
 
         Set<String> members=new HashSet<>();
         boolean flag=false;
+        Set<Integer> studyIds=new HashSet<>();
        for(Study study:studies){
+           studyIds.add(study.getStudyId());
            if(study.getTier()==4){
                flag=true;
 
@@ -102,6 +104,9 @@ public class GrantIndexer implements Indexer{
         if(projectMembers.size()>0){
             members.addAll(projectMembers.stream().map(p->p.getName()).collect(Collectors.toSet()));
         }
+       }
+       if(studyIds.size()>0){
+           o.setStudyIds((List<Integer>) studyIds);
        }
        if(lastModifiedDate.size()>0)
            o.setLastModifiedDate(Collections.max(lastModifiedDate).toString());
