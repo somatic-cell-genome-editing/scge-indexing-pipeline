@@ -106,7 +106,7 @@ public class GrantIndexer implements Indexer{
         }
        }
        if(studyIds.size()>0){
-           o.setStudyIds((List<Integer>) studyIds);
+           o.setStudyIds( studyIds);
        }
        if(lastModifiedDate.size()>0)
            o.setLastModifiedDate(Collections.max(lastModifiedDate).toString());

@@ -62,7 +62,7 @@ public class IndexDocument extends Publication {
     private Set<String> initiative;
     private String studyType;
     private int studyId;
-    private List<Integer> studyIds;
+    private Set<Integer> studyIds;
 
     /******************EDITOR FIELDS*************************/
     private Set<String> editorType;
@@ -157,11 +157,12 @@ public class IndexDocument extends Publication {
     private String nihReporterLink;
     private Set<String> keywords;
 
-    public List<Integer> getStudyIds() {
+
+    public Set<Integer> getStudyIds() {
         return studyIds;
     }
 
-    public void setStudyIds(List<Integer> studyIds) {
+    public void setStudyIds(Set<Integer> studyIds) {
         this.studyIds = studyIds;
     }
 
