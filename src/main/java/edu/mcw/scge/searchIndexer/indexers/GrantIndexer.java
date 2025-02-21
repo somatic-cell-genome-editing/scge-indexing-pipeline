@@ -2,6 +2,8 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
+import edu.mcw.scge.indexerRefactored.indexer.AccessLevel;
+import edu.mcw.scge.indexerRefactored.indexer.Project;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
@@ -23,18 +25,14 @@ public class GrantIndexer implements Indexer{
         List<Integer> submittedGrantIds=studyDao.getAllSubmittedGrantIds();
 
         for(int id:submittedGrantIds) {
-            IndexDocument o = new IndexDocument();
             Grant grant = grantDao.getGrantByGroupId(id);
-            o.setAccessLevel("consortium");
-            mapDetails(o,grant);
-            objects.add(o);
-            if(o.getTier()==4){
-                IndexDocument publicObject = new IndexDocument();
-                publicObject.setAccessLevel("public");
-                mapDetails(publicObject,grant);
-                objects.add(publicObject);
-
-            }
+            Project project=new Project(grant);
+            IndexDocument consortiumDoc=project.getIndexObject(AccessLevel.CONSORTIUM);
+            if(consortiumDoc!=null)
+            objects.add(consortiumDoc);
+            IndexDocument publicDoc=project.getIndexObject(AccessLevel.PUBLIC);
+            if(publicDoc!=null)
+            objects.add(publicDoc);
         }
 
         return objects;

@@ -26,7 +26,7 @@ public class Indexers {
         if(category.equalsIgnoreCase("studies")){
             return new StudyIndexer();
         }
-        if(category.equalsIgnoreCase("grant")){
+        if(category.equalsIgnoreCase("grant") || category.equalsIgnoreCase("project")){
             return new GrantIndexer();
         }
         if(category.equalsIgnoreCase("protocol")){

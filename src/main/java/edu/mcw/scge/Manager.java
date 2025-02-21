@@ -1,9 +1,10 @@
-package edu.mcw.scge.indexer;
+package edu.mcw.scge;
 
 import edu.mcw.scge.indexer.model.RgdIndex;
 import edu.mcw.scge.indexer.service.ESClient;
 import edu.mcw.scge.indexer.service.IndexAdmin;
 import edu.mcw.scge.indexer.utils.Utils;
+import edu.mcw.scge.indexerRefactored.indexer.Category;
 import edu.mcw.scge.searchIndexer.indexers.Indexer;
 import edu.mcw.scge.searchIndexer.indexers.Indexers;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
@@ -69,18 +70,33 @@ public class Manager {
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
+//
+//        for(String category: Arrays.asList(
+//               "experiment",
+//                "editor",
+//                "delivery",
+//                "vector", "guide","model", "protocol", "antibody",
+//                "grant",
+//               "publication"
+//          )) {
+//           Indexer indexer = indexers.getIndexer(category);
+//            indexer.index(RgdIndex.getNewAlias());
+//        }
+       for(Category category:Category.values()){
 
-        for(String category: Arrays.asList(
-               "experiment",
-                "editor",
-                "delivery",
-                "vector", "guide","model", "protocol", "antibody",
-                "grant",
-               "publication"
-          )) {
-           Indexer indexer = indexers.getIndexer(category);
-            indexer.index(RgdIndex.getNewAlias());
-        }
+           switch (category){
+//               case PROJECT:
+//                    indexer = indexers.getIndexer(String.valueOf(category));
+//                   indexer.index(RgdIndex.getNewAlias());
+//                   break;
+               case EXPERIMENT:
+                   Indexer indexer = indexers.getIndexer(String.valueOf(category));
+                   indexer.index(RgdIndex.getNewAlias());
+                   break;
+               default:
+
+           }
+       }
 
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {

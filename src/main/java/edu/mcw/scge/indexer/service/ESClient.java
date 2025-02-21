@@ -1,6 +1,6 @@
 package edu.mcw.scge.indexer.service;
 
-import edu.mcw.scge.indexer.Manager;
+import edu.mcw.scge.Manager;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.log4j.Logger;

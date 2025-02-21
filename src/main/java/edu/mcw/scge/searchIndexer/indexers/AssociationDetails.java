@@ -35,6 +35,9 @@ public class AssociationDetails {
         if(experimentRecords.size()>0)
             Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
 
+        else {
+
+        }
     }
     private void associateEditor() throws Exception {
         for(Editor e:association.getAssociatedEditors()) {

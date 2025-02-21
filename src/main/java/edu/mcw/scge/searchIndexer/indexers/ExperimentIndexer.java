@@ -4,6 +4,8 @@ import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
 
 
+import edu.mcw.scge.indexerRefactored.indexer.AccessLevel;
+import edu.mcw.scge.indexerRefactored.indexer.ExperimentDetails;
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
@@ -21,32 +23,20 @@ public class ExperimentIndexer implements Indexer {
     }
     public List<IndexDocument> getExperiments() throws  Exception{
         List<IndexDocument> objects= new ArrayList<>();
-        List<Study> studies=studyDao.getStudies();
-        for(Study s: studies) {
-            Map<Integer, String> studyMap=new HashMap<>();
-            studyMap.put(s.getStudyId(), s.getStudy());
-            List<Experiment> experiments = experimentDao.getExperimentsByStudy(s.getStudyId());
+        List<Experiment> experiments = experimentDao.getAllExperiments();
             for (Experiment x : experiments) {
-                IndexDocument o = new IndexDocument();
-                o.setAccessLevel("consortium");
-                mapDetails(x, o,s);
-                o.setStudyNames(studyMap);
-               // o.setGeneratedDescription(x.getDescription());
-                List<ExperimentRecord> experimentRecords=experimentDao.getExperimentRecords(x.getExperimentId());
-                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
-
-                objects.add(o);
-                if(s.getTier()==4){
-                    IndexDocument publicObject = new IndexDocument();
-                    publicObject.setAccessLevel("public");
-                    mapDetails(x,publicObject,s);
-                    Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
-
-                    objects.add(publicObject);
+                ExperimentDetails experimentDetails=new ExperimentDetails(x);
+                IndexDocument consortiumDoc = experimentDetails.getIndexObject(AccessLevel.CONSORTIUM);
+                if(consortiumDoc!=null){
+                    objects.add(consortiumDoc);
+                }
+                IndexDocument publicDoc = experimentDetails.getIndexObject(AccessLevel.PUBLIC);
+                if(publicDoc!=null){
+                    objects.add(publicDoc);
                 }
 
             }
-        }
+
         return objects;
     }
 public void mapDetails(Experiment x, IndexDocument o, Study s) throws Exception {
