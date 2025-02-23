@@ -2,19 +2,24 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
-import edu.mcw.scge.indexerRefactored.indexer.AccessLevel;
-import edu.mcw.scge.indexerRefactored.indexer.Project;
+import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
+import edu.mcw.scge.indexerRefactored.indexer.ProjectDetails;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GrantIndexer implements Indexer{
+public class GrantIndexer extends Indexer<Grant>{
     StudyDao studyDao=new StudyDao();
     GrantDao grantDao=new GrantDao();
     GroupDAO groupdao=new GroupDAO();
     ExperimentDao experimentDao=new ExperimentDao();
+
+    @Override
+    List<Grant> getObjects() throws Exception {
+        return null;
+    }
 
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
@@ -26,7 +31,7 @@ public class GrantIndexer implements Indexer{
 
         for(int id:submittedGrantIds) {
             Grant grant = grantDao.getGrantByGroupId(id);
-            Project project=new Project(grant);
+            ProjectDetails project=new ProjectDetails(grant);
             IndexDocument consortiumDoc=project.getIndexObject(AccessLevel.CONSORTIUM);
             if(consortiumDoc!=null)
             objects.add(consortiumDoc);

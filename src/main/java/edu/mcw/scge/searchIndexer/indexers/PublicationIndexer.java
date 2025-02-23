@@ -10,17 +10,22 @@ import edu.mcw.scge.searchIndexer.model.IndexDocument;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class PublicationIndexer implements Indexer{
+public class PublicationIndexer extends Indexer<Publication> {
     PublicationDAO publicationDAO=new PublicationDAO();
     ExperimentDao experimentDao=new ExperimentDao();
     AssociationDao associationDao=new AssociationDao();
+
+    @Override
+    List<Publication> getObjects() throws Exception {
+        return publicationDAO.getAllPublications();
+    }
+
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
 
         List<IndexDocument> objects=new ArrayList<>();
-        List<Publication> publications=publicationDAO.getAllPublications();
+        List<Publication> publications=getObjects();
         for(Publication publication:publications){
             IndexDocument o=new IndexDocument();
             o.setAccessLevel("consortium");

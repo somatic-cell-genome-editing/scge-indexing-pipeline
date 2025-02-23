@@ -5,41 +5,29 @@ import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.datamodel.Delivery;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
+import edu.mcw.scge.indexerRefactored.indexer.DeliveryDetails;
+import edu.mcw.scge.indexerRefactored.indexer.ObjectDetails;
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 
-public class DeliveryIndexer implements Indexer {
+public class DeliveryIndexer extends Indexer<Delivery> {
     DeliveryDao deliveryDao=new DeliveryDao();
-    ExperimentDao experimentDao=new ExperimentDao();
+
+    @Override
+    List<Delivery> getObjects() throws Exception {
+        return deliveryDao.getDeliverySystems();
+    }
+
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
         List<IndexDocument> objects=new ArrayList<>();
-        for(Delivery d:deliveryDao.getDeliverySystems() ) {
-            IndexDocument o = new IndexDocument();
-            o.setAccessLevel("consortium");
-            mapDetails(o,d);
-            List<ExperimentRecord> experimentRecords = experimentDao.getExperimentsByDeliverySystem(o.getId());
-            Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, o);
-            objects.add(o);
-            if(d.getTier()==4){
-                IndexDocument publicObject = new IndexDocument();
-                publicObject.setAccessLevel("public");
-                mapDetails(publicObject,d);
-                Objects.requireNonNull(MapperFactory.getMapper("experiment")).mapFields(experimentRecords, publicObject);
-
-                objects.add(publicObject);
-            }
+        for(Delivery d: getObjects()) {
+            ObjectDetails<Delivery> objectDetails=new DeliveryDetails(d);
+            objects.addAll(indexObjects(objectDetails));
         }
         return objects;
     }
-    public void mapDetails(IndexDocument o,Delivery d){
-        o.setId(d.getId());
-        o.setName(d.getName());
-        o.setDescription(d.getDescription());
-        o.setCategory("Delivery System");
-        o.setTier(d.getTier());
-        o.setReportPageLink("/toolkit/data/delivery/system?id=");
-    }
+
 }

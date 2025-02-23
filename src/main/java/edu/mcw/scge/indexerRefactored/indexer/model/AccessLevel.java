@@ -1,4 +1,4 @@
-package edu.mcw.scge.indexerRefactored.indexer;
+package edu.mcw.scge.indexerRefactored.indexer.model;
 
 public enum AccessLevel {
     PUBLIC,

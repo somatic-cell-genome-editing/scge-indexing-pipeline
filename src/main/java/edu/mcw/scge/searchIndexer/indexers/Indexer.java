@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.mcw.scge.indexer.service.ESClient;
+import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
+import edu.mcw.scge.indexerRefactored.indexer.ObjectDetails;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -12,12 +14,27 @@ import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.xcontent.XContentType;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Indexer {
-     List<IndexDocument> getIndexObjects() throws Exception;
+public abstract class Indexer<T> {
 
-    default void index(String index) throws Exception {
+    abstract List<T> getObjects() throws Exception;
+
+    abstract   List<IndexDocument> getIndexObjects() throws Exception;
+
+    public List<IndexDocument> indexObjects(ObjectDetails<T> objectDetails) throws Exception {
+        List<IndexDocument> objects=new ArrayList<>();
+        IndexDocument consortiumDoc=objectDetails.getIndexObject(AccessLevel.CONSORTIUM);
+        if(consortiumDoc!=null)
+            objects.add(consortiumDoc);
+        IndexDocument publicDoc=objectDetails.getIndexObject(AccessLevel.PUBLIC);
+        if(publicDoc!=null){
+            objects.add(publicDoc);
+        }
+        return objects;
+    }
+    public void index(String index) throws Exception {
         List<IndexDocument> objects=getIndexObjects();
         if(objects.size()>0){
             System.out.println("objects Size:"+ objects.size());

@@ -4,6 +4,7 @@ import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.Vector;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 
+import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 import org.apache.commons.lang.StringUtils;
@@ -13,23 +14,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ExperimentDetails extends DAO {
-    private final Experiment experiment;
+    private  Experiment experiment;
     private Study study;
     private Grant grant;
-    private List<Editor> editors;
-    private List<Model> models;
-    private List<Vector> vectors;
-    private List<Guide> guides;
-    private List<Delivery> deliveries;
-    private List<HRDonor> hrDonors;
-    private List<Antibody> antibodies;
-    private List<ExperimentRecord> recordList;
+     List<Editor> editors;
+     List<Model> models;
+     List<Vector> vectors;
+     List<Guide> guides;
+     List<Delivery> deliveries;
+     List<HRDonor> hrDonors;
+     List<Antibody> antibodies;
+     List<ExperimentRecord> recordList;
+
+    public ExperimentDetails(){}
     public ExperimentDetails(Experiment experiment) throws Exception {
         this.experiment=experiment;
         setRecordList();
         setStudy();
         setGrant();
-        setRecordList();
+       // setRecordList();
         setEditors();
         setModels();
         setVectors();
@@ -86,6 +89,7 @@ public class ExperimentDetails extends DAO {
         }
        return null;
     }
+
 
     public void setRecordList() throws Exception {
        if(study!=null){
@@ -165,11 +169,12 @@ public class ExperimentDetails extends DAO {
     }
 
     public List<Model> getModels(AccessLevel accessLevel) {
+        if(models!=null)
         switch (accessLevel){
             case CONSORTIUM:
                 return models;
             case PUBLIC:
-                return models.stream().filter(m->m.getTier()==4).collect(Collectors.toList());
+                return models.stream().filter(Objects::nonNull).filter(m->m.getTier()==4).collect(Collectors.toList());
 
         }
         return null;
@@ -177,7 +182,7 @@ public class ExperimentDetails extends DAO {
 
     public void setModels() throws Exception {
         List<Model> modelList=new ArrayList<>();
-        Set<Long> modelIds=recordList.stream().map(ExperimentRecord::getModelId).collect(Collectors.toSet());
+        Set<Long> modelIds=recordList.stream().map(ExperimentRecord::getModelId).filter(modelId -> modelId !=0L).collect(Collectors.toSet());
         for(long id:modelIds){
             Model model= modelDao.getModelById(id);
             modelList.add(model);
@@ -258,13 +263,11 @@ public class ExperimentDetails extends DAO {
 
     public void setAntibodies() throws Exception {
         List<Antibody> list=new ArrayList<>();
-       list= antibodyDao.getDistinctAntibodyByExperimentId(experiment.getExperimentId());
-
+        Set<Long> experimentIds=recordList.stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet());
+        for(long experimentId:experimentIds) {
+            list .addAll(antibodyDao.getDistinctAntibodyByExperimentId(experimentId));
+        }
         this.antibodies = list;
-    }
-
-    public void setRecordList(List<ExperimentRecord> recordList) {
-        this.recordList = recordList;
     }
     public Set<String> getTissueIds(AccessLevel accessLevel) {
         return getRecordList(accessLevel).stream().filter(r->r.getTissueId()!=null && !r.getTissueId().equals("")).map(ExperimentRecord::getTissueId).filter(Objects::nonNull).collect(Collectors.toSet());
@@ -281,8 +284,6 @@ public class ExperimentDetails extends DAO {
                     }
                     return null;
                 }).filter(Objects::nonNull).filter(obj -> true).map(StringUtils::capitalize).collect(Collectors.toSet());
-
-
 
 
     }
@@ -345,12 +346,11 @@ public class ExperimentDetails extends DAO {
     }
 
     public void mapTissues(IndexDocument indexDocument, AccessLevel accessLevel) throws Exception {
-
-       indexDocument.setTissueTerm(getTissueTerms(accessLevel));
+        indexDocument.setTissueTerm(getTissueTerms(accessLevel));
         indexDocument.setTissueIds(getTissueIds(accessLevel));
         indexDocument.setCellTypeTerm(getCellTypeTerms(accessLevel));
-         indexDocument.setCellType(getCellTypeIds(accessLevel));
-         indexDocument.setTermSynonyms(getSynonyms(accessLevel));
+        indexDocument.setCellType(getCellTypeIds(accessLevel));
+        indexDocument.setTermSynonyms(getSynonyms(accessLevel));
     }
     public void mapModels(IndexDocument indexDocument, AccessLevel accessLevel){
         List<Model> models=getModels(accessLevel);
@@ -497,17 +497,21 @@ public class ExperimentDetails extends DAO {
     public IndexDocument getIndexObject(AccessLevel accessLevel) throws Exception {
         IndexDocument o=new IndexDocument();
         o.setAccessLevel(accessLevel.toString().toLowerCase());
-        mapStudy(o,accessLevel);
-        mapGrant(o, accessLevel);
         mapExperiment(o,accessLevel);
-        mapEditors(o,accessLevel);
-        mapDelivery(o,accessLevel);
-        mapAntiBodies(o,accessLevel);
-        mapGuides(o,accessLevel);
-        mapVectors(o, accessLevel);
-        mapModels(o,accessLevel);
-        mapTissues(o,accessLevel);
-        return o;
+        if(o.getId()!=0) {
+            mapStudy(o, accessLevel);
 
+            mapGrant(o, accessLevel);
+
+            mapEditors(o, accessLevel);
+            mapDelivery(o, accessLevel);
+            mapAntiBodies(o, accessLevel);
+            mapGuides(o, accessLevel);
+            mapVectors(o, accessLevel);
+            mapModels(o, accessLevel);
+            mapTissues(o, accessLevel);
+            return o;
+        }
+        return  null;
     }
 }

@@ -16,14 +16,20 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class ProtocolIndexer implements Indexer {
+public class ProtocolIndexer extends Indexer<Protocol> {
     ProtocolDao protocolDao=new ProtocolDao();
     AssociationDao associationDao=new AssociationDao();
+
+    @Override
+    List<Protocol> getObjects() throws Exception {
+        return protocolDao.getProtocols();
+    }
+
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
         List<IndexDocument> objects=new ArrayList<>();
 
-        for(Protocol protocol:protocolDao.getProtocols()){
+        for(Protocol protocol:getObjects()){
             IndexDocument o=new IndexDocument();
             o.setAccessLevel("consortium");
             mapDetails(o,protocol);

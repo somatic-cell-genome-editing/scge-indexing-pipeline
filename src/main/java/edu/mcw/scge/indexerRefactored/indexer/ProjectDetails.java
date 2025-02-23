@@ -2,21 +2,21 @@ package edu.mcw.scge.indexerRefactored.indexer;
 
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.Experiment;
+import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class Project extends DAO {
+public class ProjectDetails extends DAO {
 
    private final Grant grant;
    private List<Study> studies;
    private List<Experiment> experimentsTier4;
    private List<Experiment> experiments;
 
-    public Project(Grant grant) throws Exception {
+    public ProjectDetails(Grant grant) throws Exception {
         this.grant=grant;
         setStudies();
         setExperiments();
@@ -38,20 +38,20 @@ public class Project extends DAO {
 
     }
     public void setExperiments() throws Exception {
-        List<Experiment> experiments=new ArrayList<>();
-        List<Experiment> experimentsTier4=new ArrayList<>();
-        for(Study study:studies) {
-            List<edu.mcw.scge.datamodel.Experiment> exps = experimentDao.getExperimentsByStudy(study.getStudyId());
-            if(exps!=null){
-                experiments.addAll(exps);
-                if(study.getTier()==4){
-                    experimentsTier4.addAll(experiments);
+            List<Experiment> experiments=new ArrayList<>();
+            List<Experiment> experimentsTier4=new ArrayList<>();
+            for(Study study:studies) {
+                List<edu.mcw.scge.datamodel.Experiment> exps = experimentDao.getExperimentsByStudy(study.getStudyId());
+                if(exps!=null){
+                    experiments.addAll(exps);
+                    if(study.getTier()==4){
+                        experimentsTier4.addAll(experiments);
+                    }
                 }
-            }
 
-        }
-        this.experimentsTier4=experimentsTier4;
-        this.experiments = experiments;
+            }
+            this.experimentsTier4=experimentsTier4;
+            this.experiments = experiments;
     }
     public List<Experiment> getExperiments(AccessLevel accessLevel){
         switch (accessLevel){

@@ -1,6 +1,7 @@
 package edu.mcw.scge.indexerRefactored.indexer;
 
 import edu.mcw.scge.dao.implementation.*;
+import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
 import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 public abstract class DAO {
@@ -19,4 +20,5 @@ public abstract class DAO {
 
 
     public abstract IndexDocument getIndexObject( AccessLevel accessLevel) throws Exception;
+
 }

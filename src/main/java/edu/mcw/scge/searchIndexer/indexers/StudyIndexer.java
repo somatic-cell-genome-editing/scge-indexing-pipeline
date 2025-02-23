@@ -9,12 +9,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StudyIndexer implements Indexer {
+public class StudyIndexer extends Indexer<Study> {
     StudyDao studyDao=new StudyDao();
     GrantDao grantDao=new GrantDao();
     PersonDao personDao=new PersonDao();
     GroupDAO gdao=new GroupDAO();
     ExperimentDao experimentDao=new ExperimentDao();
+
+    @Override
+    List<Study> getObjects() throws Exception {
+        return null;
+    }
+
     @Override
     public List<IndexDocument> getIndexObjects() throws Exception {
         return getStudies();
