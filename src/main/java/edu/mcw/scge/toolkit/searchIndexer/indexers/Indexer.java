@@ -10,6 +10,7 @@ import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.WriteRequest;
+import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.xcontent.XContentType;
 
 import java.util.List;
@@ -36,9 +37,9 @@ public abstract class Indexer<T> {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
             bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        //    bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
-          //  bulkRequest.timeout(TimeValue.timeValueMinutes(2));
-          //  bulkRequest.timeout("2m");
+            bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
+            bulkRequest.timeout(TimeValue.timeValueMinutes(2));
+            bulkRequest.timeout("2m");
 
                 try {
                     String json = mapper.writeValueAsString(o);
@@ -46,7 +47,6 @@ public abstract class Indexer<T> {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-                //     bulkRequestBuilder.add(new IndexRequest(index, type,o.getTerm_acc()).source(json, XContentType.JSON));
 
     }
 

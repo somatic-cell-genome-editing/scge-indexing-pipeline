@@ -94,6 +94,7 @@ public class Manager {
             } else {
                 System.out.println("Bulk indexing completed.");
             }
+
         }
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
