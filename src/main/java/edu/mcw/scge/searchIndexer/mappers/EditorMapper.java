@@ -5,13 +5,12 @@ import edu.mcw.scge.dao.implementation.GuideDao;
 import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Guide;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class EditorMapper implements Mapper {
 

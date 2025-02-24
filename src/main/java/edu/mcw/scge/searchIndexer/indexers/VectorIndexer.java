@@ -5,11 +5,10 @@ import edu.mcw.scge.datamodel.Vector;
 
 import edu.mcw.scge.indexerRefactored.indexer.ObjectDetails;
 import edu.mcw.scge.indexerRefactored.indexer.VectorDetails;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 
-public class VectorIndexer extends Indexer<Vector> {
+public class VectorIndexer extends Indexer<Vector> implements ObjectIndexer {
     VectorDao vectorDao=new VectorDao();
 
     @Override
@@ -17,13 +16,13 @@ public class VectorIndexer extends Indexer<Vector> {
         return vectorDao.getAllVectors();
     }
     @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
-        List<IndexDocument> objList= new ArrayList<>();
+    public void getIndexObjects() throws Exception {
+
         for(Vector e:getObjects()){
             ObjectDetails<Vector> objectDetails=new VectorDetails(e);
-            objList.addAll(indexObjects(objectDetails));
+           indexObjects(objectDetails);
         }
-        return objList;
+
     }
 
 }

@@ -5,7 +5,7 @@ import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.dao.implementation.PublicationDAO;
 import edu.mcw.scge.datamodel.Association;
 import edu.mcw.scge.datamodel.publications.Publication;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,8 +21,8 @@ public class PublicationIndexer extends Indexer<Publication> {
         return publicationDAO.getAllPublications();
     }
 
-    @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
+
+    public void getIndexObjects() throws Exception {
 
         List<IndexDocument> objects=new ArrayList<>();
         List<Publication> publications=getObjects();
@@ -46,7 +46,7 @@ public class PublicationIndexer extends Indexer<Publication> {
             objects.add(publicDoc);
 
         }
-        return objects;
+
 
     }
 

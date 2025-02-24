@@ -4,7 +4,7 @@ import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
 import edu.mcw.scge.process.UI;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -204,7 +204,7 @@ public class ProjectDetails extends DAO {
         }catch (Exception e){e.printStackTrace();}
     }
 
-    @Override
+//    @Override
     public IndexDocument getIndexObject( AccessLevel accessLevel) throws Exception {
         IndexDocument o=new IndexDocument();
         o.setAccessLevel(accessLevel.toString().toLowerCase());

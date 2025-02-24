@@ -6,7 +6,7 @@ import edu.mcw.scge.dao.implementation.StudyDao;
 import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Study;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.*;
 import java.util.stream.Collectors;

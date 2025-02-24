@@ -1,4 +1,4 @@
-package edu.mcw.scge.indexer.utils;
+package edu.mcw.scge.indexerRefactored.indexer.utils;
 
 public class Utils {
     public static String formatElapsedTime(long t1, long t2) {

@@ -2,7 +2,7 @@ package edu.mcw.scge.indexerRefactored.indexer;
 
 import edu.mcw.scge.datamodel.Delivery;
 import edu.mcw.scge.indexerRefactored.indexer.model.AccessLevel;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 public class DeliveryDetails extends ObjectDetails<Delivery> {
     public DeliveryDetails(Delivery delivery) throws Exception {

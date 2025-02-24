@@ -1,4 +1,4 @@
-package edu.mcw.scge.searchIndexer.model;
+package edu.mcw.scge.indexerRefactored.indexer.model;
 
 
 

@@ -1,4 +1,4 @@
-package edu.mcw.scge.indexer.model;
+package edu.mcw.scge.indexerRefactored.indexer.model;
 
 import java.util.List;
 

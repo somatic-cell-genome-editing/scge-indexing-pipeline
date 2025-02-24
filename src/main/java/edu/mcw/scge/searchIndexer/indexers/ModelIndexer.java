@@ -5,11 +5,10 @@ import edu.mcw.scge.datamodel.Model;
 
 import edu.mcw.scge.indexerRefactored.indexer.ModelDetails;
 import edu.mcw.scge.indexerRefactored.indexer.ObjectDetails;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 
-public class ModelIndexer extends Indexer<Model> {
+public class ModelIndexer extends Indexer<Model> implements ObjectIndexer {
     ModelDao modelDao=new ModelDao();
 
     @Override
@@ -18,13 +17,11 @@ public class ModelIndexer extends Indexer<Model> {
     }
 
     @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
-        List<IndexDocument> objects=new ArrayList<>();
+    public void getIndexObjects() throws Exception {
         for(Model m:getObjects()){
             ObjectDetails<Model> objectDetails=new ModelDetails(m);
-            objects.addAll(indexObjects(objectDetails));
+            indexObjects(objectDetails);
         }
-        return objects;
     }
 
 }

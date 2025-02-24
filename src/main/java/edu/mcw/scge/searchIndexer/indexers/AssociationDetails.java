@@ -4,7 +4,7 @@ import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.Vector;
 import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.*;
 

@@ -5,11 +5,10 @@ import edu.mcw.scge.datamodel.Antibody;
 
 import edu.mcw.scge.indexerRefactored.indexer.AntibodyDetails;
 import edu.mcw.scge.indexerRefactored.indexer.ObjectDetails;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 
-public class AntibodyIndexer extends Indexer<Antibody> {
+public class AntibodyIndexer extends Indexer<Antibody> implements ObjectIndexer {
     AntibodyDao antibodyDao=new AntibodyDao();
 
     @Override
@@ -18,13 +17,11 @@ public class AntibodyIndexer extends Indexer<Antibody> {
     }
 
     @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
-        List<IndexDocument> objects=new ArrayList<>();
+    public void getIndexObjects() throws Exception {
         for(Antibody antibody: getObjects()) {
             ObjectDetails<Antibody> objectDetails=new AntibodyDetails(antibody);
-            objects.addAll(indexObjects(objectDetails));
+            indexObjects(objectDetails);
         }
-        return objects;
     }
 
 }

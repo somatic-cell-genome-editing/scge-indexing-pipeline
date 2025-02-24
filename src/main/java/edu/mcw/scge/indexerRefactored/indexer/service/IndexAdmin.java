@@ -1,6 +1,6 @@
-package edu.mcw.scge.indexer.service;
+package edu.mcw.scge.indexerRefactored.indexer.service;
 
-import edu.mcw.scge.indexer.model.RgdIndex;
+import edu.mcw.scge.indexerRefactored.indexer.model.RgdIndex;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;

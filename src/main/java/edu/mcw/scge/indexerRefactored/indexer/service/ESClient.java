@@ -1,4 +1,4 @@
-package edu.mcw.scge.indexer.service;
+package edu.mcw.scge.indexerRefactored.indexer.service;
 
 import edu.mcw.scge.Manager;
 import org.apache.http.HttpHost;

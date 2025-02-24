@@ -3,13 +3,12 @@ package edu.mcw.scge.searchIndexer.mappers;
 import edu.mcw.scge.dao.implementation.VectorDao;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Vector;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class VectorMapper implements Mapper {
     VectorDao vectorDao=new VectorDao();

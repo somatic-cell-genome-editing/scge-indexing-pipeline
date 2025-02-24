@@ -3,7 +3,7 @@ package edu.mcw.scge.searchIndexer.indexers;
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.process.UI;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,9 +21,9 @@ public class StudyIndexer extends Indexer<Study> {
         return null;
     }
 
-    @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
-        return getStudies();
+
+    public void getIndexObjects() throws Exception {
+       getStudies();
     }
     public List<IndexDocument> getStudies() throws  Exception{
         List<IndexDocument> objects= new ArrayList<>();

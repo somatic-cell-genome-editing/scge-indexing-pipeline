@@ -1,18 +1,14 @@
 package edu.mcw.scge.searchIndexer.indexers;
 
 import edu.mcw.scge.dao.implementation.DeliveryDao;
-import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.datamodel.Delivery;
-import edu.mcw.scge.datamodel.ExperimentRecord;
 
 import edu.mcw.scge.indexerRefactored.indexer.DeliveryDetails;
 import edu.mcw.scge.indexerRefactored.indexer.ObjectDetails;
-import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
 
 import java.util.*;
 
-public class DeliveryIndexer extends Indexer<Delivery> {
+public class DeliveryIndexer extends Indexer<Delivery> implements ObjectIndexer {
     DeliveryDao deliveryDao=new DeliveryDao();
 
     @Override
@@ -21,13 +17,12 @@ public class DeliveryIndexer extends Indexer<Delivery> {
     }
 
     @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
-        List<IndexDocument> objects=new ArrayList<>();
+    public void getIndexObjects() throws Exception {
         for(Delivery d: getObjects()) {
             ObjectDetails<Delivery> objectDetails=new DeliveryDetails(d);
-            objects.addAll(indexObjects(objectDetails));
+            indexObjects(objectDetails);
         }
-        return objects;
+
     }
 
 }

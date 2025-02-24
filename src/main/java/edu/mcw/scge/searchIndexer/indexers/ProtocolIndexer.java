@@ -2,21 +2,16 @@ package edu.mcw.scge.searchIndexer.indexers;
 
 
 import edu.mcw.scge.dao.implementation.AssociationDao;
-import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.dao.implementation.ProtocolDao;
 import edu.mcw.scge.datamodel.Association;
-import edu.mcw.scge.datamodel.Experiment;
-import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Protocol;
-import edu.mcw.scge.searchIndexer.mappers.MapperFactory;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
-public class ProtocolIndexer extends Indexer<Protocol> {
+public class ProtocolIndexer extends Indexer<Protocol>implements ObjectIndexer  {
     ProtocolDao protocolDao=new ProtocolDao();
     AssociationDao associationDao=new AssociationDao();
 
@@ -26,7 +21,7 @@ public class ProtocolIndexer extends Indexer<Protocol> {
     }
 
     @Override
-    public List<IndexDocument> getIndexObjects() throws Exception {
+    public void getIndexObjects() throws Exception {
         List<IndexDocument> objects=new ArrayList<>();
 
         for(Protocol protocol:getObjects()){
@@ -46,7 +41,7 @@ public class ProtocolIndexer extends Indexer<Protocol> {
                 objects.add(publicObject);
             }
         }
-        return objects;
+
     }
 
 

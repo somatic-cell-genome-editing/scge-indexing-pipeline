@@ -4,7 +4,7 @@ import edu.mcw.scge.dao.implementation.OntologyXDAO;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 import edu.mcw.scge.datamodel.ontologyx.TermSynonym;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;

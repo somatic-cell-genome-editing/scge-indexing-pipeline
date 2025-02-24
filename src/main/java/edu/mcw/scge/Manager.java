@@ -1,15 +1,16 @@
 package edu.mcw.scge;
 
-import edu.mcw.scge.indexer.model.RgdIndex;
-import edu.mcw.scge.indexer.service.ESClient;
-import edu.mcw.scge.indexer.service.IndexAdmin;
-import edu.mcw.scge.indexer.utils.Utils;
-import edu.mcw.scge.indexerRefactored.indexer.Category;
-import edu.mcw.scge.searchIndexer.indexers.Indexer;
-import edu.mcw.scge.searchIndexer.indexers.Indexers;
+import edu.mcw.scge.indexerRefactored.indexer.model.RgdIndex;
+import edu.mcw.scge.indexerRefactored.indexer.service.ESClient;
+import edu.mcw.scge.indexerRefactored.indexer.service.IndexAdmin;
+import edu.mcw.scge.indexerRefactored.indexer.utils.Utils;
+import edu.mcw.scge.indexerRefactored.indexer.model.Category;
+import edu.mcw.scge.searchIndexer.indexers.*;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -18,7 +19,6 @@ import org.springframework.core.io.FileSystemResource;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Manager {
@@ -28,6 +28,7 @@ public class Manager {
     private IndexAdmin admin;
     String command;
     String env;
+    BulkRequest bulkRequest;
     public static void main(String[] args) throws IOException {
 
        DefaultListableBeanFactory bf= new DefaultListableBeanFactory();
@@ -45,7 +46,8 @@ public class Manager {
             manager.rgdIndex.setIndices(indices);
         }
         manager.rgdIndex= (RgdIndex) bf.getBean("rgdIndex");
-
+        manager.bulkRequest=new BulkRequest();
+        Indexer.bulkRequest=manager.bulkRequest;
         try {
             manager.run();
         } catch (Exception e) {
@@ -64,40 +66,26 @@ public class Manager {
     }
     public void run() throws Exception {
         long start = System.currentTimeMillis();
-        Indexers indexers=new Indexers();
+//        Indexers indexers=new Indexers();
 
         if (command.equalsIgnoreCase("reindex"))
             admin.createIndex("", "");
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
-//
-//        for(String category: Arrays.asList(
-//               "experiment",
-//                "editor",
-//                "delivery",
-//                "vector", "guide","model", "protocol", "antibody",
-//                "grant",
-//               "publication"
-//          )) {
-//           Indexer indexer = indexers.getIndexer(category);
-//            indexer.index(RgdIndex.getNewAlias());
-//        }
+        IndexerFactory indexerFactory=new IndexerFactory();
        for(Category category:Category.values()){
+         ObjectIndexer indexer=  indexerFactory.getIndexer(category);
+         indexer.getIndexObjects();
 
-           switch (category){
-//               case PROJECT:
-//                    indexer = indexers.getIndexer(String.valueOf(category));
-//                   indexer.index(RgdIndex.getNewAlias());
-//                   break;
-               case EXPERIMENT:
-                   Indexer indexer = indexers.getIndexer(String.valueOf(category));
-                   indexer.index(RgdIndex.getNewAlias());
-                   break;
-               default:
-
-           }
        }
-
+        if(bulkRequest!=null) {
+            BulkResponse bulkResponse = ESClient.getClient().bulk(bulkRequest, RequestOptions.DEFAULT);
+            if (bulkResponse.hasFailures()) {
+                System.err.println("Bulk indexing had errors!");
+            } else {
+                System.out.println("Bulk indexing completed.");
+            }
+        }
         String clusterStatus = this.getClusterHealth(RgdIndex.getNewAlias());
         if (!clusterStatus.equalsIgnoreCase("ok")) {
             System.out.println(clusterStatus + ", refusing to continue with operations");

@@ -3,12 +3,11 @@ package edu.mcw.scge.searchIndexer.mappers;
 import edu.mcw.scge.dao.implementation.AntibodyDao;
 import edu.mcw.scge.datamodel.Antibody;
 import edu.mcw.scge.datamodel.ExperimentRecord;
-import edu.mcw.scge.searchIndexer.model.IndexDocument;
+import edu.mcw.scge.indexerRefactored.indexer.model.IndexDocument;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class AntibodyMapper implements Mapper {
     AntibodyDao antibodyDao=new AntibodyDao();
