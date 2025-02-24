@@ -98,7 +98,6 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
            }
         }
         this.protocolObjectTypes=objectTypes;
-        System.out.println("PROTOCOL OBJECT TYPES:" +protocolObjectTypes.toString());
     }
     public Category getObjectTypeOfSCGEId(long id){
         String objectCode=String.valueOf(id).substring(0,2);

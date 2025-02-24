@@ -43,7 +43,6 @@ public class ProtocolDetails extends ObjectDetails<Protocol>{
                 objectTypes.add(getObjectTypeOfSCGEId(id));
             }
             this.protocolObjectTypes=objectTypes;
-        System.out.println("PROTOCOL OBJECT TYPES:" +protocolObjectTypes.toString());
     }
     @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {

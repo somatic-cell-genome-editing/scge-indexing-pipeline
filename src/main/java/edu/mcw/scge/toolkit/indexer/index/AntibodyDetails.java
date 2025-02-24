@@ -28,7 +28,6 @@ public class AntibodyDetails extends ObjectDetails<Antibody>{
     @Override
     public void setStudies() throws Exception {
         this.studies= studyDao.getStudiesByAntibody(t.getAntibodyId());
-        System.out.println("STUIDIES SIZE: ID: "+t.getAntibodyId()+"\t"+ this.studies.size());
     }
 
 
