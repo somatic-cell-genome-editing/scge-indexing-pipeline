@@ -4,7 +4,7 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'application'
-mainClassName="edu.mcw.scge.indexer.Manager"
+mainClassName="edu.mcw.scge.toolkit.Manager"
 String myAppName="scge-indexing-pipeline"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
