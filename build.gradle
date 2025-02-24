@@ -60,7 +60,7 @@ startScripts {
 }
 
 jar {
-    baseName = myAppName
+//    baseName = myAppName
     manifest {
         attributes(
                 'Built-By': System.getProperty('user.name'),
@@ -72,7 +72,7 @@ jar {
 
 distributions {
     main {
-        baseName = myAppName
+        distributionBaseName = myAppName
     }
 }
 task update_scgecore(type:Copy){
