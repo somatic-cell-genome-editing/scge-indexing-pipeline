@@ -15,7 +15,7 @@ public  class DAO {
     AntibodyDao antibodyDao=new AntibodyDao();
     HRDonorDao hrDonorDao=new HRDonorDao();
     OntologyXDAO xdao=new OntologyXDAO();
-
+    ProtocolDao protocolDao=new ProtocolDao();
 
 
 

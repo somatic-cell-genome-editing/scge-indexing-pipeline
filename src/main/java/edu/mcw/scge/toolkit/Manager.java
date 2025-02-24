@@ -81,8 +81,10 @@ public class Manager {
             admin.updateIndex();
         ExecutorService executor= new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
        for(Category category:Category.values()){
-           Runnable workerThread=new IndexerThread(category);
-           workerThread.run();
+           if(category.equals(Category.PROTOCOL)) {
+               Runnable workerThread = new IndexerThread(category);
+               workerThread.run();
+           }
        }
        executor.shutdown();
        while (!executor.isTerminated()){}

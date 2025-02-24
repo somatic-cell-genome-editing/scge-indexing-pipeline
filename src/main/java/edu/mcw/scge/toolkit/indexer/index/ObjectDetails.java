@@ -5,6 +5,7 @@ import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import edu.mcw.scge.process.UI;
+import edu.mcw.scge.toolkit.indexer.model.Category;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 import org.apache.commons.lang.StringUtils;
 
@@ -27,6 +28,8 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     List<HRDonor> hrDonors;
     List<Antibody> antibodies;
     List<ExperimentRecord> recordList;
+    List<Protocol> protocols;
+    Set<Category> protocolObjectTypes;
 
     public ObjectDetails(T t) throws Exception {
          this.t=t;
@@ -49,8 +52,64 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
              setHrDonors();
          if(!(t instanceof Antibody))
              setAntibodies();
-
+        if(!(t instanceof Protocol)) {
+            setProtocols();
+            setProtocolsAssociatedObjectType();
+        }
      }
+
+    public List<Protocol> getProtocols(AccessLevel accessLevel) {
+        if(protocols!=null){
+            switch (accessLevel){
+                case CONSORTIUM:
+                    return protocols;
+                case PUBLIC:
+                    return protocols.stream().filter(p->p.getTier()==4).collect(Collectors.toList());
+            }
+        }
+        return null;
+    }
+    public void setProtocols() throws Exception {
+        Set<Long> scgeIds=new HashSet<>();
+        if(editors!=null)
+            scgeIds.addAll(editors.stream().map(Editor::getId).collect(Collectors.toSet()));
+        if(experiments!=null)
+            scgeIds.addAll(experiments.stream().map(Experiment::getExperimentId).collect(Collectors.toSet()));
+        if(guides!=null)
+            scgeIds.addAll(guides.stream().map(Guide::getGuide_id).collect(Collectors.toSet()));
+        if(models!=null)
+            scgeIds.addAll(models.stream().map(Model::getModelId).collect(Collectors.toSet()));
+        if(vectors!=null)
+            scgeIds.addAll(vectors.stream().map(edu.mcw.scge.datamodel.Vector::getVectorId).collect(Collectors.toSet()));
+        if(deliveries!=null)
+            scgeIds.addAll(deliveries.stream().map(Delivery::getId).collect(Collectors.toSet()));
+        if(hrDonors!=null)
+            scgeIds.addAll(hrDonors.stream().map(HRDonor::getId).collect(Collectors.toSet()));
+
+        if(scgeIds.size()>0)
+            this.protocols = protocolDao.getProtocolsBySCGEObjectIdsList(new ArrayList<>(scgeIds));
+    }
+    public void setProtocolsAssociatedObjectType() throws Exception {
+        Set<Category> objectTypes=new HashSet<>();
+        if(protocols!=null){
+           for(Protocol p:protocols){
+             long id=  p.getAssociatedObjectId();
+             objectTypes.add(getObjectTypeOfSCGEId(id));
+           }
+        }
+        this.protocolObjectTypes=objectTypes;
+        System.out.println("PROTOCOL OBJECT TYPES:" +protocolObjectTypes.toString());
+    }
+    public Category getObjectTypeOfSCGEId(long id){
+        String objectCode=String.valueOf(id).substring(0,2);
+        for(Category category:Category.values()) {
+            if(objectCode.equals(category.getObjectCode()))
+                return category;
+        }
+        return null;
+    }
+
+
     public void setGrants() throws Exception {
         List<Grant> grants=new ArrayList<>();
         for(Study study:studies) {
@@ -234,12 +293,12 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         this.antibodies = list;
     }
     public Set<String> getTissueIds(AccessLevel accessLevel) {
-        return getRecordList(accessLevel).stream().filter(r->r.getTissueId()!=null && !r.getTissueId().equals("")).map(ExperimentRecord::getTissueId).filter(Objects::nonNull).collect(Collectors.toSet());
+        return getRecordList(accessLevel).stream().filter(r->r.getTissueId()!=null && !r.getTissueId().equals("")).map(ExperimentRecord::getTissueId).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
 
     }
     public Set<String> getTissueTerms(AccessLevel accessLevel) {
 
-        return getTissueIds(accessLevel).stream().filter(Objects::nonNull).filter(t->!t.equals("")).map(id-> {
+        return getTissueIds(accessLevel).stream().filter(e->e!=null && !e.isEmpty()).map(id-> {
             try {
                 return xdao.getTerm(id).getTerm();
             } catch (Exception e) {
@@ -247,16 +306,16 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 e.printStackTrace();
             }
             return null;
-        }).filter(Objects::nonNull).filter(obj -> true).map(StringUtils::capitalize).collect(Collectors.toSet());
+        }).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet());
 
 
     }
     public Set<String> getCellTypeIds(AccessLevel accessLevel) {
-        return recordList.stream().map(ExperimentRecord::getCellType).filter(Objects::nonNull).filter(t->!t.equals("")).collect(Collectors.toSet());
+        return recordList.stream().map(ExperimentRecord::getCellType).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
 
     }
     public Set<String> getCellTypeTerms(AccessLevel accessLevel) {
-        return getCellTypeIds(accessLevel).stream().filter(Objects::nonNull).filter(t->!t.equals("")).map(id-> {
+        return getCellTypeIds(accessLevel).stream().filter(e->e!=null && !e.isEmpty()).map(id-> {
             try {
                 return xdao.getTerm(id).getTerm();
             } catch (Exception e) {
@@ -264,7 +323,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 e.printStackTrace();
             }
             return null;
-        }).filter(Objects::nonNull).filter(obj -> true).map(StringUtils::capitalize).collect(Collectors.toSet());
+        }).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet());
 
 
     }
@@ -320,7 +379,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     public void mapStudies(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Study> studyList=getStudies(accessLevel);
         if(studyList.size()>0) {
-            o.setStudy(studyList.stream().map(Study::getStudy).collect(Collectors.toSet()));
+            o.setStudy(studyList.stream().map(Study::getStudy).map(StringUtils::capitalize).collect(Collectors.toSet()));
             o.setStudyIds(studyList.stream().map(Study::getStudyId).collect(Collectors.toSet()));
             o.setPi(getPi(accessLevel));
             o.setProjectMembers(getProjectMembers(accessLevel));
@@ -347,7 +406,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
     public void mapExperiments(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Experiment> experimentList=getExperiments(accessLevel);
-        o.setExperimentType(experimentList.stream().map(Experiment::getType).collect(Collectors.toSet()));
+        o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
 //            o.setLastModifiedDate(getLastModifiedDate(accessLevel));
         o.setSex(getSex(accessLevel));
         o.setGenotype(getGenotype(accessLevel));
@@ -360,8 +419,8 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     public void mapModels(IndexDocument indexDocument, AccessLevel accessLevel){
         List<Model> models=getModels(accessLevel);
         if(models!=null && models.size()>0) {
-            indexDocument.setModelType(models.stream().map(Model::getType).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setModelSubtype(models.stream().map(Model::getSubtype).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModelType(models.stream().map(Model::getType).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModelSubtype(models.stream().map(Model::getSubtype).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
             Set<String> modelName=new HashSet<>();
             for(Model model:models) {
                 if (model.getDisplayName() != null && !model.getDisplayName().equals(""))
@@ -370,90 +429,97 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                     modelName.add(model.getName());
             }
             indexDocument.setModelName(modelName);
-            indexDocument.setModelOrganism(models.stream().map(Model::getOrganism).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setModelRrid(models.stream().map(Model::getRrid).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setModelSource(models.stream().map(Model::getSource).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setModelAnnotatedMap(models.stream().map(Model::getAnnotatedMap).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setTransgene(models.stream().map(Model::getTransgene).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setTransgeneReporter(models.stream().map(Model::getTransgeneReporter).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setParentalOrigin(models.stream().map(Model::getParentalOrigin).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setStrainAlias(models.stream().map(Model::getStrainAlias).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModelOrganism(models.stream().map(Model::getOrganism).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModelRrid(models.stream().map(Model::getRrid).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModelSource(models.stream().map(Model::getSource).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModelAnnotatedMap(models.stream().map(Model::getAnnotatedMap).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setTransgene(models.stream().map(Model::getTransgene).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setTransgeneReporter(models.stream().map(Model::getTransgeneReporter).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setParentalOrigin(models.stream().map(Model::getParentalOrigin).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setStrainAlias(models.stream().map(Model::getStrainAlias).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
         }
     }
     public void mapVectors(IndexDocument indexDocument, AccessLevel accessLevel){
 
         List<edu.mcw.scge.datamodel.Vector> vectorList=getVectors(accessLevel);
         if(vectorList!=null && vectorList.size()>0){
-            indexDocument.setVectorName(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getName).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setVectorType(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getType).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setVectorSubtype(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getSubtype).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setVectorSource(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getSource).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setVectorlabId(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getLabId).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setVectorAnnotatedMap(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getAnnotatedMap).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGenomeSerotype(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getGenomeSerotype).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setCapsidSerotype(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getCapsidSerotype).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setCapsidVariant(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getCapsidVariant).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setTiterMethod(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getTiterMethod).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setVectorName(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getName).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setVectorType(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getType).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setVectorSubtype(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getSubtype).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setVectorSource(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getSource).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setVectorlabId(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getLabId).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setVectorAnnotatedMap(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getAnnotatedMap).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGenomeSerotype(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getGenomeSerotype).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setCapsidSerotype(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getCapsidSerotype).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setCapsidVariant(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getCapsidVariant).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setTiterMethod(vectorList.stream().map(edu.mcw.scge.datamodel.Vector::getTiterMethod).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
         }
     }
     public void mapGuides(IndexDocument indexDocument, AccessLevel accessLevel){
         List<Guide> guideList=getGuides(accessLevel);
         if(guideList!=null && guideList.size()>0) {
-            indexDocument.setGuideCompatibility(guideList.stream().map(Guide::getGuideCompatibility).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideTargetLocus(guideList.stream().map(Guide::getTargetLocus).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideSpecies(guideList.stream().map(Guide::getSpecies).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideTargetSequence(guideList.stream().map(Guide::getTargetSequence).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuidePam(guideList.stream().map(Guide::getPam).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGrnaLabId(guideList.stream().map(Guide::getGrnaLabId).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideSpacerSequence(guideList.stream().map(Guide::getSpacerSequence).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideRepeatSequence(guideList.stream().map(Guide::getRepeatSequence).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuide(guideList.stream().map(Guide::getGuide).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideForwardPrimer(guideList.stream().map(Guide::getForwardPrimer).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideReversePrimer(guideList.stream().map(Guide::getReversePrimer).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideLinkerSequence(guideList.stream().map(Guide::getLinkerSequence).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideAntiRepeatSequence(guideList.stream().map(Guide::getAntiRepeatSequence).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setModifications(guideList.stream().map(Guide::getModifications).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideCompatibility(guideList.stream().map(Guide::getGuideCompatibility).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideTargetLocus(guideList.stream().map(Guide::getTargetLocus).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideSpecies(guideList.stream().map(Guide::getSpecies).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideTargetSequence(guideList.stream().map(Guide::getTargetSequence).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuidePam(guideList.stream().map(Guide::getPam).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGrnaLabId(guideList.stream().map(Guide::getGrnaLabId).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideSpacerSequence(guideList.stream().map(Guide::getSpacerSequence).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideRepeatSequence(guideList.stream().map(Guide::getRepeatSequence).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuide(guideList.stream().map(Guide::getGuide).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideForwardPrimer(guideList.stream().map(Guide::getForwardPrimer).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideReversePrimer(guideList.stream().map(Guide::getReversePrimer).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideLinkerSequence(guideList.stream().map(Guide::getLinkerSequence).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideAntiRepeatSequence(guideList.stream().map(Guide::getAntiRepeatSequence).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setModifications(guideList.stream().map(Guide::getModifications).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
             indexDocument.setGuideLocation(guideList.stream().filter(g -> g.getChr() != null && !g.getChr().equals("")).map(g -> g.getChr() + ":" + g.getStart() + " - " + g.getStop()).collect(Collectors.toSet()));
-            indexDocument.setGuideAnnotatedMap(guideList.stream().map(Guide::getAnnotatedMap).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setGuideSource(guideList.stream().map(Guide::getSource).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideAnnotatedMap(guideList.stream().map(Guide::getAnnotatedMap).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setGuideSource(guideList.stream().map(Guide::getSource).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
         }
 
     }
     public void mapDelivery(IndexDocument indexDocument, AccessLevel accessLevel){
         List<Delivery> deliveriesList=getDeliveries(accessLevel);
         if(deliveriesList!=null && deliveriesList.size()>0) {
-            indexDocument.setDeliverySystemName(deliveriesList.stream().map(Delivery::getName).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setDeliveryType(deliveriesList.stream().map(Delivery::getType).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setDeliverySubtype(deliveriesList.stream().map(Delivery::getSubtype).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setMolTargetingAgent(deliveriesList.stream().map(Delivery::getMolTargetingAgent).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setDeliverySource(deliveriesList.stream().map(Delivery::getSource).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setDeliveryLabId(deliveriesList.stream().map(Delivery::getLabId).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setDeliveryAnnotatedMap(deliveriesList.stream().map(Delivery::getAnnotatedMap).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setDeliverySystemName(deliveriesList.stream().map(Delivery::getName).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setDeliveryType(deliveriesList.stream().map(Delivery::getType).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setDeliverySubtype(deliveriesList.stream().map(Delivery::getSubtype).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setMolTargetingAgent(deliveriesList.stream().map(Delivery::getMolTargetingAgent).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setDeliverySource(deliveriesList.stream().map(Delivery::getSource).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setDeliveryLabId(deliveriesList.stream().map(Delivery::getLabId).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setDeliveryAnnotatedMap(deliveriesList.stream().map(Delivery::getAnnotatedMap).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
         }
 
     }
     public void mapEditors(IndexDocument indexDocument, AccessLevel accessLevel){
         List<Editor> editors=getEditors(accessLevel);
         if(editors!=null && editors.size()>0) {
-            indexDocument.setEditorAlias(editors.stream().map(Editor::getAlias).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setEditorSpecies(editors.stream().map(Editor::getSpecies).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setEditorSymbol(editors.stream().map(Editor::getSymbol).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setEditorType(editors.stream().map(Editor::getType).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setEditorSubType(editors.stream().map(Editor::getSubtype).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setEditorVariant(editors.stream().map(Editor::getEditorVariant).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setActivity(editors.stream().map(Editor::getActivity).map(StringUtils::capitalize).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setEditorAnnotatedMap(editors.stream().map(Editor::getAnnotatedMap).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setEditorLocation(editors.stream().map(Editor::getAlias).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            indexDocument.setFusion(editors.stream().map(Editor::getFusion).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setSubstrateTarget(editors.stream().map(Editor::getSubstrateTarget).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setEditorTargetSequence(editors.stream().map(Editor::getTarget_sequence).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setEditorTargetLocus(editors.stream().map(Editor::getTargetLocus).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setDsbCleavageType(editors.stream().map(Editor::getDsbCleavageType).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setEditorPamPreference(editors.stream().map(Editor::getPamPreference).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setProteinSequence(editors.stream().map(Editor::getProteinSequence).filter(Objects::nonNull).collect(Collectors.toSet()));
-            indexDocument.setEditorSource(editors.stream().map(Editor::getSource).filter(Objects::nonNull).collect(Collectors.toSet()));
+            indexDocument.setEditorAlias(editors.stream().map(Editor::getAlias).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setEditorSpecies(editors.stream().map(Editor::getSpecies).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setEditorSymbol(editors.stream().map(Editor::getSymbol).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setEditorType(editors.stream().map(Editor::getType).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setEditorSubType(editors.stream().map(Editor::getSubtype).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setEditorVariant(editors.stream().map(Editor::getEditorVariant).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setActivity(editors.stream().map(Editor::getActivity).map(StringUtils::capitalize).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setEditorAnnotatedMap(editors.stream().map(Editor::getAnnotatedMap).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setEditorLocation(editors.stream().map(Editor::getAlias).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            indexDocument.setFusion(editors.stream().map(Editor::getFusion).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setSubstrateTarget(editors.stream().map(Editor::getSubstrateTarget).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setEditorTargetSequence(editors.stream().map(Editor::getTarget_sequence).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setEditorTargetLocus(editors.stream().map(Editor::getTargetLocus).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setDsbCleavageType(editors.stream().map(Editor::getDsbCleavageType).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setEditorPamPreference(editors.stream().map(Editor::getPamPreference).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setProteinSequence(editors.stream().map(Editor::getProteinSequence).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
+            indexDocument.setEditorSource(editors.stream().map(Editor::getSource).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet()));
             indexDocument.setEditorLocation(editors.stream().filter(e->e.getChr()!=null && !e.getChr().equals(""))
                     .map(e->"CHR"+e.getChr()+":"+e.getStart()+" - "+e.getStop()).collect(Collectors.toSet()));
+        }
+    }
+    public void mapProtocols(IndexDocument o, AccessLevel accessLevel){
+        List<Protocol> protocolList=getProtocols(accessLevel);
+        if(protocolList!=null && protocolList.size()>0) {
+            o.setProtocolTitle(protocolList.stream().map(Protocol::getTitle).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+            o.setDescription(protocolList.stream().map(Protocol::getDescription).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.joining(";")));
         }
     }
 
@@ -463,8 +529,8 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         for(long experimentId:experimentIds) {
             antibodyList .addAll(antibodyDao.getDistinctAntibodyByExperimentId(experimentId));
         }
-        o.setAntibody(antibodyList.stream().map(Antibody::getRrid).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
-        o.setExternalId(antibodyList.stream().map(Antibody::getOtherId).filter(Objects::nonNull).map(StringUtils::capitalize).collect(Collectors.toSet()));
+        o.setAntibody(antibodyList.stream().map(Antibody::getRrid).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
+        o.setExternalId(antibodyList.stream().map(Antibody::getOtherId).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
     }
     public void mapTissues(IndexDocument indexDocument, AccessLevel accessLevel) throws Exception {
         indexDocument.setTissueTerm(getTissueTerms(accessLevel));
@@ -524,23 +590,31 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
     public void mapOtherExperimentalDetails(IndexDocument o, AccessLevel accessLevel) throws Exception {
         mapStudies(o, accessLevel);
-        if(t.equals(Experiment.class) || t instanceof Grant)
+        if((t instanceof Experiment) || (t instanceof Grant))
             mapGrant(o, accessLevel);
-        if(!t.equals(Experiment.class))
+        if(!(t instanceof Experiment))
             mapExperiments(o, accessLevel);
-        if(!t.equals(Delivery.class) && deliveries!=null && !(t instanceof Grant))
+        if((!(t instanceof Delivery) && deliveries!=null && !(t instanceof Grant) && !(t instanceof Protocol))
+                || (t instanceof Protocol) && protocolObjectTypes.contains(Category.DELIVERY))
             mapDelivery(o, accessLevel);
-        if(!t.equals(Antibody.class) && antibodies!=null && !(t instanceof Grant))
+        if((!(t instanceof Antibody) && antibodies!=null && !(t instanceof Grant) && !(t instanceof Protocol))
+                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.ANTIBODY)))
             mapAntiBodies(o, accessLevel);
-        if(!t.equals(Guide.class) && guides!=null && !(t instanceof Grant))
+        if((!(t instanceof Guide) && guides!=null && !(t instanceof Grant) && !(t instanceof Protocol))
+                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.GUIDE)))
             mapGuides(o, accessLevel);
-        if(!t.equals(Vector.class) && vectors!=null && !(t instanceof Grant))
+        if((!(t instanceof Vector) && vectors!=null && !(t instanceof Grant) && !(t instanceof Protocol))
+                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.VECTOR)))
             mapVectors(o, accessLevel);
-        if(!t.equals(Model.class) && models!=null&& !(t instanceof Grant))
+        if((!(t instanceof Model) && models!=null&& !(t instanceof Grant) && !(t instanceof Protocol))
+                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.MODEL)))
             mapModels(o, accessLevel);
-        if(!t.equals(Editor.class) && editors!=null && !(t instanceof Grant))
+        if((!(t instanceof Editor) && editors!=null && !(t instanceof Grant) && !(t instanceof Protocol))
+                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.EDITOR)))
             mapEditors(o,accessLevel);
-
+        if(!(t instanceof Protocol) && protocols!=null && !(t instanceof Grant))
+            mapProtocols(o,accessLevel);
+        if(!(t instanceof Protocol))
         mapTissues(o, accessLevel);
 
     }
