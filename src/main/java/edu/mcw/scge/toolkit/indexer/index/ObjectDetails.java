@@ -130,6 +130,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
 
     public void setPublications() throws Exception {
+        if(allObjectsIdList.size()>0)
         this.publications = publicationDAO.getPublicationsByScgeIdList(new ArrayList<>(allObjectsIdList));
     }
 
