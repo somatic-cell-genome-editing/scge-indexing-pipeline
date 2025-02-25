@@ -573,7 +573,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         List<Protocol> protocolList=getProtocols(accessLevel);
         if(protocolList!=null && protocolList.size()>0) {
             o.setProtocolTitle(protocolList.stream().map(Protocol::getTitle).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            o.setDescription(protocolList.stream().map(Protocol::getDescription).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.joining(";")));
+            o.setProtocolDescription(protocolList.stream().map(Protocol::getDescription).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
         }
     }
     public void mapPublications(IndexDocument o, AccessLevel accessLevel){
