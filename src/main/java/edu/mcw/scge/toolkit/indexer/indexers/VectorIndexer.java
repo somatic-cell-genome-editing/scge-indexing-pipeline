@@ -1,6 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-import edu.mcw.scge.dao.implementation.VectorDao;
 import edu.mcw.scge.datamodel.Vector;
 
 import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
@@ -9,7 +8,6 @@ import edu.mcw.scge.toolkit.indexer.index.VectorDetails;
 import java.util.*;
 
 public class VectorIndexer extends Indexer<Vector> implements ObjectIndexer {
-    VectorDao vectorDao=new VectorDao();
 
     @Override
     List<Vector> getObjects() throws Exception {

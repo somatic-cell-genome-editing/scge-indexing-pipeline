@@ -1,6 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-import edu.mcw.scge.dao.implementation.DeliveryDao;
 import edu.mcw.scge.datamodel.Delivery;
 
 import edu.mcw.scge.toolkit.indexer.index.DeliveryDetails;
@@ -9,7 +8,6 @@ import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
 import java.util.*;
 
 public class DeliveryIndexer extends Indexer<Delivery> implements ObjectIndexer {
-    DeliveryDao deliveryDao=new DeliveryDao();
 
     @Override
     List<Delivery> getObjects() throws Exception {

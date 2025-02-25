@@ -1,6 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-import edu.mcw.scge.dao.implementation.GuideDao;
 import edu.mcw.scge.datamodel.*;
 
 import edu.mcw.scge.toolkit.indexer.index.GuideDetails;
@@ -9,7 +8,6 @@ import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
 import java.util.*;
 
 public class GuideIndexer extends Indexer<Guide> implements ObjectIndexer {
-    GuideDao guideDao=new GuideDao();
 
     @Override
     List<Guide> getObjects() throws Exception {

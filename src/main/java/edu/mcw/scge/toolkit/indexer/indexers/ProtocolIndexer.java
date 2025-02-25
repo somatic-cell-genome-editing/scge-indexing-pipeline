@@ -1,7 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-
-import edu.mcw.scge.dao.implementation.ProtocolDao;
 
 import edu.mcw.scge.datamodel.Protocol;
 import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
@@ -11,13 +9,10 @@ import java.util.List;
 
 
 public class ProtocolIndexer extends Indexer<Protocol>implements ObjectIndexer  {
-    ProtocolDao protocolDao=new ProtocolDao();
-
     @Override
     List<Protocol> getObjects() throws Exception {
         return protocolDao.getProtocols();
     }
-
     @Override
     public void getIndexObjects() throws Exception {
 

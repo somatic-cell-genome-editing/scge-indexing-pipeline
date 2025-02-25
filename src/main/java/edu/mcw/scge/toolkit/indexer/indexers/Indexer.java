@@ -1,8 +1,9 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.mcw.scge.toolkit.indexer.index.DAO;
 import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 import edu.mcw.scge.toolkit.indexer.model.RgdIndex;
@@ -15,7 +16,7 @@ import org.elasticsearch.xcontent.XContentType;
 
 import java.util.List;
 
-public abstract class Indexer<T> {
+public abstract class Indexer<T> extends DAO {
 
     ObjectMapper mapper=new ObjectMapper();
     public static BulkRequest bulkRequest;

@@ -1,6 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-import edu.mcw.scge.dao.implementation.ModelDao;
 import edu.mcw.scge.datamodel.Model;
 
 import edu.mcw.scge.toolkit.indexer.index.ModelDetails;
@@ -9,7 +8,6 @@ import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
 import java.util.*;
 
 public class ModelIndexer extends Indexer<Model> implements ObjectIndexer {
-    ModelDao modelDao=new ModelDao();
 
     @Override
     List<Model> getObjects() throws Exception {

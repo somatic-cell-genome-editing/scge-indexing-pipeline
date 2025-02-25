@@ -30,7 +30,6 @@ public class IndexDocument extends Publication {
     private String reportPageLink;
     private String externalLink;
     private Set<String> externalId; //stocknumber etc.
-    private int experimentCount;
     private String withExperiments;
     private Map<Integer, String> studyNames;
     private Map<Long, String> experimentNames;
@@ -61,7 +60,7 @@ public class IndexDocument extends Publication {
     private String submissionDate;
     private Set<String> initiative;
     private String studyType;
-    private int studyId;
+
     private Set<Integer> studyIds;
 
     /******************EDITOR FIELDS*************************/
@@ -221,13 +220,7 @@ public class IndexDocument extends Publication {
         this.nihReporterLink = nihReporterLink;
     }
 
-    public int getStudyId() {
-        return studyId;
-    }
 
-    public void setStudyId(int studyId) {
-        this.studyId = studyId;
-    }
 
     public Set<String> getProjectMembers() {
         return projectMembers;
@@ -455,13 +448,6 @@ public class IndexDocument extends Publication {
 
 
 
-    public int getExperimentCount() {
-        return experimentCount;
-    }
-
-    public void setExperimentCount(int experimentCount) {
-        this.experimentCount = experimentCount;
-    }
 
     public String getWithExperiments() {
         return withExperiments;

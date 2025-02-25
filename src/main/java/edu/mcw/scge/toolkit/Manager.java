@@ -2,7 +2,7 @@ package edu.mcw.scge.toolkit;
 
 import edu.mcw.scge.toolkit.indexer.model.MyThreadPoolExecutor;
 
-import edu.mcw.scge.toolkit.searchIndexer.indexers.Indexer;
+import edu.mcw.scge.toolkit.indexer.indexers.Indexer;
 import edu.mcw.scge.toolkit.service.ESClient;
 import edu.mcw.scge.toolkit.service.IndexAdmin;
 import edu.mcw.scge.toolkit.indexer.model.RgdIndex;

@@ -1,6 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
 
 
@@ -12,7 +11,6 @@ import java.util.*;
 
 
 public class ExperimentIndexer extends Indexer<Experiment> implements ObjectIndexer  {
-    ExperimentDao experimentDao = new ExperimentDao();
 
     @Override
     List<Experiment> getObjects() throws Exception {

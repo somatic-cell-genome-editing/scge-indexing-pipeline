@@ -3,19 +3,20 @@ package edu.mcw.scge.toolkit.indexer.index;
 import edu.mcw.scge.dao.implementation.*;
 
 public  class DAO {
-    StudyDao studyDao=new StudyDao();
-    GrantDao grantDao=new GrantDao();
-    GroupDAO groupdao=new GroupDAO();
-    ExperimentDao experimentDao=new ExperimentDao();
-    EditorDao editorDao=new EditorDao();
+   public StudyDao studyDao=new StudyDao();
+    public GrantDao grantDao=new GrantDao();
+    public GroupDAO groupdao=new GroupDAO();
+    public ExperimentDao experimentDao=new ExperimentDao();
+    public EditorDao editorDao=new EditorDao();
 
-    ModelDao modelDao=new ModelDao();
-    DeliveryDao deliveryDao=new DeliveryDao();
-    AntibodyDao antibodyDao=new AntibodyDao();
-    HRDonorDao hrDonorDao=new HRDonorDao();
-    OntologyXDAO xdao=new OntologyXDAO();
-    ProtocolDao protocolDao=new ProtocolDao();
-    PublicationDAO publicationDAO=new PublicationDAO();
-    AssociationDao associationDao=new AssociationDao();
+    public GuideDao guideDao=new GuideDao();
+    public VectorDao vectorDao=new VectorDao();
+    public ModelDao modelDao=new ModelDao();
+    public DeliveryDao deliveryDao=new DeliveryDao();
+    public AntibodyDao antibodyDao=new AntibodyDao();
 
+    public HRDonorDao hrDonorDao=new HRDonorDao();
+    public OntologyXDAO xdao=new OntologyXDAO();
+    public ProtocolDao protocolDao=new ProtocolDao();
+    public PublicationDAO publicationDAO=new PublicationDAO();
 }

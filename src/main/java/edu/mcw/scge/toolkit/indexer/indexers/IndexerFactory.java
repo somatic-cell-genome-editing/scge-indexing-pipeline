@@ -1,4 +1,4 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
 import edu.mcw.scge.toolkit.indexer.model.Category;
 

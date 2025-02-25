@@ -1,8 +1,8 @@
 package edu.mcw.scge.toolkit;
 
 import edu.mcw.scge.toolkit.indexer.model.Category;
-import edu.mcw.scge.toolkit.searchIndexer.indexers.IndexerFactory;
-import edu.mcw.scge.toolkit.searchIndexer.indexers.ObjectIndexer;
+import edu.mcw.scge.toolkit.indexer.indexers.IndexerFactory;
+import edu.mcw.scge.toolkit.indexer.indexers.ObjectIndexer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

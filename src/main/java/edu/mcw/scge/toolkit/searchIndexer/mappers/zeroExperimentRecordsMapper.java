@@ -50,7 +50,7 @@ public class zeroExperimentRecordsMapper  {
         o.setReportPageLink("/toolkit/data/experiments/experiment/");
         o.setTier(s.getTier());
         o.setStudy(Stream.of(s.getStudy()).collect(Collectors.toSet()));
-        o.setStudyId(s.getStudyId());
+        o.setId(s.getStudyId());
         Set<String> pis=new HashSet<>();
         for(Person pi:s.getMultiplePis()){
             if(pi.getFirstName()!=null && !pi.getFirstName().equals(""))

@@ -1,6 +1,5 @@
-package edu.mcw.scge.toolkit.searchIndexer.indexers;
+package edu.mcw.scge.toolkit.indexer.indexers;
 
-import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
 import edu.mcw.scge.toolkit.indexer.index.GrantDetails;
@@ -9,10 +8,6 @@ import edu.mcw.scge.toolkit.indexer.index.GrantDetails;
 import java.util.*;
 
 public class GrantIndexer extends Indexer<Grant> implements ObjectIndexer {
-    StudyDao studyDao=new StudyDao();
-    GrantDao grantDao=new GrantDao();
-
-
     @Override
     List<Grant> getObjects() throws Exception {
         List<Integer> submittedGrantIds=studyDao.getAllSubmittedGrantIds();
