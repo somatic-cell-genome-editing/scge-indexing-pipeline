@@ -581,9 +581,9 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         if(publicationList!=null && publicationList.size()>0) {
             o.setPublicationTitle(publicationList.stream().map(p->p.getReference().getTitle()).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
             o.setPublicationDescription(publicationList.stream().map(p->p.getReference().getRefAbstract()).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            o.setAuthorList(publicationList.stream().map(Publication::getAuthorList).flatMap(List::stream).collect(Collectors.toList()));
-            o.setArticleIds(publicationList.stream().map(Publication::getArticleIds).flatMap(List::stream).collect(Collectors.toList()));
-            o.setKeywords(publicationList.stream().map(p->p.getReference().getMeshTerms()).flatMap(List::stream).collect(Collectors.toSet()));
+            o.setAuthorList(publicationList.stream().map(Publication::getAuthorList).filter(Objects::nonNull).flatMap(List::stream).collect(Collectors.toList()));
+            o.setArticleIds(publicationList.stream().map(Publication::getArticleIds).filter(Objects::nonNull).flatMap(List::stream).collect(Collectors.toList()));
+            o.setKeywords(publicationList.stream().map(p->p.getReference().getMeshTerms()).filter(Objects::nonNull).flatMap(List::stream).collect(Collectors.toSet()));
         }
     }
 
