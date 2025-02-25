@@ -81,7 +81,7 @@ public class Manager {
        for(Category category:Category.values()){
 //           if(category.equals(Category.PUBLICATION)) {
                Runnable workerThread = new IndexerThread(category);
-               workerThread.run();
+               executor.execute(workerThread);
 //           }
        }
        executor.shutdown();

@@ -26,8 +26,8 @@ public class IndexerThread implements Runnable{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(Thread.currentThread().getName()  + ": " + category+ " started " + new Date() );
-        log.info(Thread.currentThread().getName()  + ": " + category+ " started " + new Date() );
+        System.out.println(Thread.currentThread().getName()  + ": " + category+ " END " + new Date() );
+        log.info(Thread.currentThread().getName()  + ": " + category+ " END " + new Date() );
 
     }
 }

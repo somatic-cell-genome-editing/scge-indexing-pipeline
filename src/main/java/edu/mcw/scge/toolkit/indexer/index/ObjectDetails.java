@@ -4,7 +4,6 @@ package edu.mcw.scge.toolkit.indexer.index;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 import edu.mcw.scge.datamodel.publications.Publication;
-import edu.mcw.scge.datamodel.publications.Reference;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import edu.mcw.scge.process.UI;
 import edu.mcw.scge.toolkit.indexer.model.Category;
