@@ -9,8 +9,8 @@ public enum Category {
     MODEL("13"),
     PROTOCOL("21"),
     ANTIBODY(""),
-    PROJECT("");
-//    PUBLICATION
+    PROJECT(""),
+    PUBLICATION("");
     private final String objectCode;
      Category(String objectCode){
         this.objectCode=objectCode;

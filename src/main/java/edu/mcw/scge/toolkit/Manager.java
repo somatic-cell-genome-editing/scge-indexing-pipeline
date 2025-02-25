@@ -1,8 +1,7 @@
 package edu.mcw.scge.toolkit;
 
 import edu.mcw.scge.toolkit.indexer.model.MyThreadPoolExecutor;
-import edu.mcw.scge.toolkit.searchIndexer.indexers.IndexerFactory;
-import edu.mcw.scge.toolkit.searchIndexer.indexers.ObjectIndexer;
+
 import edu.mcw.scge.toolkit.searchIndexer.indexers.Indexer;
 import edu.mcw.scge.toolkit.service.ESClient;
 import edu.mcw.scge.toolkit.service.IndexAdmin;
@@ -24,7 +23,6 @@ import org.springframework.core.io.FileSystemResource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -81,10 +79,10 @@ public class Manager {
             admin.updateIndex();
         ExecutorService executor= new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
        for(Category category:Category.values()){
-//           if(category.equals(Category.PROTOCOL)) {
+           if(category.equals(Category.PUBLICATION)) {
                Runnable workerThread = new IndexerThread(category);
                workerThread.run();
-//           }
+           }
        }
        executor.shutdown();
        while (!executor.isTerminated()){}

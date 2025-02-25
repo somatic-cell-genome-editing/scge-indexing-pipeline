@@ -161,6 +161,25 @@ public class IndexDocument extends Publication {
     /************************protocol *******************************/
     private Set<String> protocolTitle;
     private Set<String>  protocolDescription;
+    /************************publication *******************************/
+    private Set<String> publicationTitle;
+    private Set<String> publicationDescription;
+
+    public Set<String> getPublicationTitle() {
+        return publicationTitle;
+    }
+
+    public void setPublicationTitle(Set<String> publicationTitle) {
+        this.publicationTitle = publicationTitle;
+    }
+
+    public Set<String> getPublicationDescription() {
+        return publicationDescription;
+    }
+
+    public void setPublicationDescription(Set<String> publicationDescription) {
+        this.publicationDescription = publicationDescription;
+    }
 
     public Set<String> getProtocolTitle() {
         return protocolTitle;

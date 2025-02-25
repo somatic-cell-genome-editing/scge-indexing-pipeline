@@ -4,16 +4,19 @@ import edu.mcw.scge.dao.implementation.AssociationDao;
 import edu.mcw.scge.dao.implementation.ExperimentDao;
 import edu.mcw.scge.dao.implementation.PublicationDAO;
 import edu.mcw.scge.datamodel.Association;
+import edu.mcw.scge.datamodel.Protocol;
 import edu.mcw.scge.datamodel.publications.Publication;
+import edu.mcw.scge.toolkit.indexer.index.ObjectDetails;
+import edu.mcw.scge.toolkit.indexer.index.ProtocolDetails;
+import edu.mcw.scge.toolkit.indexer.index.PublicationDetails;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class PublicationIndexer extends Indexer<Publication> {
+public class PublicationIndexer extends Indexer<Publication>implements ObjectIndexer {
     PublicationDAO publicationDAO=new PublicationDAO();
-    ExperimentDao experimentDao=new ExperimentDao();
     AssociationDao associationDao=new AssociationDao();
 
     @Override
@@ -24,26 +27,11 @@ public class PublicationIndexer extends Indexer<Publication> {
 
     public void getIndexObjects() throws Exception {
 
-        List<IndexDocument> objects=new ArrayList<>();
+
         List<Publication> publications=getObjects();
         for(Publication publication:publications){
-            IndexDocument o=new IndexDocument();
-            o.setAccessLevel("consortium");
-            o.setTier(4); // publications do not have TIER. So manually set it to 4 initially then update with object tier if it is less
-             mapDetails(o,publication);
-            Association association=associationDao.getPublicationAssociations(publication.getReference().getKey());
-            AssociationDetails details=new AssociationDetails( o, association);
-            details.associateDetails();
-            objects.add(o);
-            IndexDocument publicDoc=new IndexDocument();
-            publicDoc.setAccessLevel("public");
-            publicDoc.setTier(4);
-            mapDetails(publicDoc,publication);
-            AssociationDetails details1=new AssociationDetails( publicDoc, association);
-            details1.associateDetails();
-            if(publicDoc.getEditorSymbol()!=null || publicDoc.getDeliverySystemName()!=null
-            || publicDoc.getGuide()!=null || publicDoc.getVectorName()!=null || publicDoc.getModelName()!=null || publicDoc.getExperimentName()!=null || publicDoc.getModelOrganism()!=null)
-            objects.add(publicDoc);
+            ObjectDetails<Publication> objectDetails=new PublicationDetails(publication);
+            indexObjects(objectDetails);
 
         }
 

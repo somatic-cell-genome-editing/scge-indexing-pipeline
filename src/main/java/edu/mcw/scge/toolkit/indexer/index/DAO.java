@@ -8,15 +8,14 @@ public  class DAO {
     GroupDAO groupdao=new GroupDAO();
     ExperimentDao experimentDao=new ExperimentDao();
     EditorDao editorDao=new EditorDao();
-    VectorDao vectorDao=new VectorDao();
-    GuideDao guideDao=new GuideDao();
+
     ModelDao modelDao=new ModelDao();
     DeliveryDao deliveryDao=new DeliveryDao();
     AntibodyDao antibodyDao=new AntibodyDao();
     HRDonorDao hrDonorDao=new HRDonorDao();
     OntologyXDAO xdao=new OntologyXDAO();
     ProtocolDao protocolDao=new ProtocolDao();
-
-
+    PublicationDAO publicationDAO=new PublicationDAO();
+    AssociationDao associationDao=new AssociationDao();
 
 }

@@ -1,7 +1,6 @@
 package edu.mcw.scge.toolkit.indexer.index;
 
 
-import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.Protocol;
 import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.toolkit.indexer.model.Category;
@@ -27,14 +26,7 @@ public class ProtocolDetails extends ObjectDetails<Protocol>{
     public void setStudies() throws Exception {
         List<Long> associatedObjectIds = this.protocolDao.getProtocolAssociatedObjectIds(t.getId());
         setProtocolsAssociatedObjectType(associatedObjectIds);
-        List<Study> studies=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            List<Study> studyList=studyDao.getStudiesBySCGEId(id);
-            if(studyList!=null){
-                studies.addAll(studyList);
-            }
-        }
-        this.studies=studies;
+        this.studies= getStudiesSCGEIds(associatedObjectIds);
     }
     public void setProtocolsAssociatedObjectType(List<Long> associatedObjectIds) throws Exception {
         Set<Category> objectTypes=new HashSet<>();

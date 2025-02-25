@@ -23,8 +23,8 @@ public class IndexerFactory {
                 return new DeliveryIndexer();
             case PROTOCOL:
                 return new ProtocolIndexer();
-//            case PUBLICATION:
-//                return new PublicationIndexer();
+            case PUBLICATION:
+                return new PublicationIndexer();
             default:
         }
         return null;
