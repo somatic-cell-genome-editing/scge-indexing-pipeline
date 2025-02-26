@@ -34,8 +34,17 @@ public class ExperimentDetails extends ObjectDetails<Experiment> {
             o.setName(t.getName());
             o.setReportPageLink("/toolkit/data/experiments/experiment/");
             o.setDescription(t.getDescription());
-            o.setSex(getSex(accessLevel));
-            o.setGenotype(getGenotype(accessLevel));
+
+            try {
+                o.setSex(getSex(accessLevel));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                o.setGenotype(getGenotype(accessLevel));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

@@ -326,7 +326,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         this.deliveries = list;
     }
 
-    public List<HRDonor> getHrDonors(AccessLevel accessLevel) {
+    public List<HRDonor> getHrDonors(AccessLevel accessLevel) throws Exception {
         return getRecordList(accessLevel).stream().filter(r->r.getHrDonors()!=null).map(r->r.getHrDonors()).flatMap(List::stream).collect(Collectors.toList());
     }
 
@@ -344,11 +344,11 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         }
         this.antibodies = list;
     }
-    public Set<String> getTissueIds(AccessLevel accessLevel) {
+    public Set<String> getTissueIds(AccessLevel accessLevel) throws Exception {
         return getRecordList(accessLevel).stream().filter(r->r.getTissueId()!=null && !r.getTissueId().equals("")).map(ExperimentRecord::getTissueId).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
 
     }
-    public Set<String> getTissueTerms(AccessLevel accessLevel) {
+    public Set<String> getTissueTerms(AccessLevel accessLevel) throws Exception {
 
         return getTissueIds(accessLevel).stream().filter(e->e!=null && !e.isEmpty()).map(id-> {
             try {
@@ -420,7 +420,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         }
         return projectMembers;
     }
-    public Set<String> getSex(AccessLevel accessLevel){
+    public Set<String> getSex(AccessLevel accessLevel) throws Exception {
         List<ExperimentRecord> records=getRecordList(accessLevel);
         if(records!=null)
             try {
@@ -432,7 +432,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         return null;
 
             }
-    public Set<String> getGenotype(AccessLevel accessLevel){
+    public Set<String> getGenotype(AccessLevel accessLevel) throws Exception {
         return getRecordList(accessLevel).stream().filter(r->r.getGenotype()!=null && !r.getGenotype().equals("")).map(ExperimentRecord::getGenotype).map(StringUtils::capitalize).collect(Collectors.toSet());
 
     }
