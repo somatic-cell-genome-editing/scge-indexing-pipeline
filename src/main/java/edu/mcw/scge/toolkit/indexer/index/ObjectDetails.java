@@ -1,6 +1,7 @@
 package edu.mcw.scge.toolkit.indexer.index;
 
 
+import com.fasterxml.jackson.core.PrettyPrinter;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 import edu.mcw.scge.datamodel.publications.Publication;
@@ -20,6 +21,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     List<Study> studies;
     List<Experiment> experiments;
     List<Experiment> experimentsTier4;
+
     List<Grant> grants;
     List<Editor> editors;
     List<Model> models;
@@ -29,6 +31,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     List<HRDonor> hrDonors;
     List<Antibody> antibodies;
     List<ExperimentRecord> recordList;
+    List<ExperimentRecord> recordListTier4;
     List<Protocol> protocols;
     Set<Category> protocolObjectTypes;
 
@@ -179,10 +182,21 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
     public void setRecords() throws Exception {
         List<ExperimentRecord> recordsAll=new ArrayList<>();
+        List<ExperimentRecord> recordsTier4=new ArrayList<>();
         for(Experiment e:experiments){
-            recordsAll.addAll(experimentDao.getExperimentRecords(e.getExperimentId()));
+            List<ExperimentRecord> records=experimentDao.getExperimentRecords(e.getExperimentId());
+            recordsAll.addAll(records);
+            for(Experiment experiment:experimentsTier4){
+                if(e.getExperimentId()==experiment.getExperimentId()){
+                    recordsTier4.addAll(records);
+                }
+            }
         }
+        this.recordListTier4=recordsTier4;
         this.recordList = recordsAll;
+
+    }
+    public void verifyRecord(){
 
     }
 
@@ -223,21 +237,12 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
             case CONSORTIUM:
                 return recordList;
             case PUBLIC: {
-                if(experimentsTier4!=null && experimentsTier4.size()>0) {
-                    List<ExperimentRecord> records = new ArrayList<>();
-                    for (Experiment e : experimentsTier4) {
-                        for (ExperimentRecord r : recordList) {
-                            if (e.getExperimentId() == r.getExperimentId()) {
-                                records.add(r);
-                            }
-                        }
-                    }
-                    return records;
-                }
+               return recordListTier4;
             }
         }
         return null;
     }
+
     public List<Editor> getEditors(AccessLevel accessLevel) {
         switch (accessLevel){
             case CONSORTIUM:

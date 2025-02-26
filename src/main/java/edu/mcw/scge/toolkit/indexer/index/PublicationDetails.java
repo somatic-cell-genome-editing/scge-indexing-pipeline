@@ -43,6 +43,7 @@ public class PublicationDetails extends ObjectDetails<Publication>{
     @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
         if(getObject(accessLevel)!=null){
+            o.setTier(getTier());
             o.setCategory("Publication");
             o.setId(t.getReference().getKey());
             o.setAuthorList(t.getAuthorList());

@@ -5,6 +5,7 @@ import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,13 +17,12 @@ public class GrantDetails extends ObjectDetails<Grant>{
 
     @Override
     public int getTier() {
-        if(studies.size()==1){
-            return studies.get(0).getTier();
-        }
+
             List<Integer> tiers = studies.stream().map(Study::getTier).collect(Collectors.toList());
             if (tiers.contains(4))
                 return 4;
-        return 0;
+            return Collections.max(tiers);
+
     }
 
     @Override
@@ -35,6 +35,7 @@ public class GrantDetails extends ObjectDetails<Grant>{
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
         if(getTier()==4 || accessLevel.equals(AccessLevel.CONSORTIUM)) {
             o.setId(t.getGroupId());
+            o.setTier(getTier());
             try {
                 o.setInitiative(getInitiatives());
             } catch (Exception e) {
