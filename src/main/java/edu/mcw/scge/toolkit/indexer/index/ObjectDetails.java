@@ -218,20 +218,18 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         }
         return experiments;
     }
-    public List<ExperimentRecord> getRecordList(AccessLevel accessLevel) {
+    public List<ExperimentRecord> getRecordList(AccessLevel accessLevel) throws Exception {
         switch (accessLevel){
             case CONSORTIUM:
                 return recordList;
             case PUBLIC: {
-                List<ExperimentRecord> records=new ArrayList<>();
-                for (Experiment e : experimentsTier4) {
-                    for (ExperimentRecord r : recordList) {
-                        if (e.getExperimentId() == r.getExperimentId()) {
-                            records.add(r);
-                        }
+                if (experimentsTier4.size() > 0) {
+                    List<ExperimentRecord> records = new ArrayList<>();
+                    for (Experiment e : experimentsTier4) {
+                        records.addAll(experimentDao.getExperimentRecords(e.getExperimentId()));
                     }
+                    return records;
                 }
-                return records;
             }
         }
         return null;
@@ -696,7 +694,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         if(!(t instanceof Publication) && publications!=null && !(t instanceof Grant))
             mapPublications(o,accessLevel);
         if(!(t instanceof Protocol) && !(t instanceof Publication))
-        mapTissues(o, accessLevel);
+            mapTissues(o, accessLevel);
 
     }
     @Override
