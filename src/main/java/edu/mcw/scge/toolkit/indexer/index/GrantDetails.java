@@ -16,8 +16,12 @@ public class GrantDetails extends ObjectDetails<Grant>{
 
     @Override
     public int getTier() {
-        List<Integer> tiers=studies.stream().map(Study::getTier).collect(Collectors.toList());
-        if(tiers.contains(4)) return 4;
+        if(studies.size()==1){
+            return studies.get(0).getTier();
+        }
+            List<Integer> tiers = studies.stream().map(Study::getTier).collect(Collectors.toList());
+            if (tiers.contains(4))
+                return 4;
         return 0;
     }
 
