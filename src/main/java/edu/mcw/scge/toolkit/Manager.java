@@ -86,6 +86,8 @@ public class Manager {
        }
        executor.shutdown();
        while (!executor.isTerminated()){}
+        ESClient.getClient().bulk(bulkRequest, RequestOptions.DEFAULT);
+       bulkRequest=new BulkRequest();
        Runnable workerThread = new IndexerThread(Category.PUBLICATION);
        workerThread.run();
 
