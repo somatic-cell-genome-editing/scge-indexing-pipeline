@@ -79,13 +79,16 @@ public class Manager {
             admin.updateIndex();
         ExecutorService executor= new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
        for(Category category:Category.values()){
-//           if(category.equals(Category.PUBLICATION)) {
+           if(!category.equals(Category.PUBLICATION)) {
                Runnable workerThread = new IndexerThread(category);
                executor.execute(workerThread);
-//           }
+           }
        }
        executor.shutdown();
        while (!executor.isTerminated()){}
+       Runnable workerThread = new IndexerThread(Category.PUBLICATION);
+       workerThread.run();
+
 
         if(bulkRequest!=null) {
             BulkResponse bulkResponse = ESClient.getClient().bulk(bulkRequest, RequestOptions.DEFAULT);
