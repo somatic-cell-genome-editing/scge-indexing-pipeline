@@ -172,7 +172,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
             if(exps!=null){
                 experiments.addAll(exps);
                 if(study.getTier()==4){
-                    experimentsTier4.addAll(experiments);
+                    experimentsTier4.addAll(exps);
                 }
             }
 
