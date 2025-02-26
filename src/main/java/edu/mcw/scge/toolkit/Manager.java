@@ -78,9 +78,11 @@ public class Manager {
         else if (command.equalsIgnoreCase("update"))
             admin.updateIndex();
         ExecutorService executor= new MyThreadPoolExecutor(10,10,0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-       for(Category category:Category.values()){
-           Runnable workerThread = new IndexerThread(category);
-           executor.execute(workerThread);
+       for(Category category:Category.values()) {
+           if (!category.equals(Category.PUBLICATION)) {
+               Runnable workerThread = new IndexerThread(category);
+               executor.execute(workerThread);
+           }
        }
        executor.shutdown();
        while (!executor.isTerminated()){}

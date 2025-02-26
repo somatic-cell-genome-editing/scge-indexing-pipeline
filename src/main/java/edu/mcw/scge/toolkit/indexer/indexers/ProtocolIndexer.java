@@ -15,7 +15,7 @@ public class ProtocolIndexer extends Indexer<Protocol>implements ObjectIndexer  
     }
     @Override
     public void getIndexObjects() throws Exception {
-
+        System.out.println("PROTOCOL SIZE:"+ getObjects().size());
         for(Protocol protocol:getObjects()){
             ObjectDetails<Protocol> objectDetails=new ProtocolDetails(protocol);
             indexObjects(objectDetails);
