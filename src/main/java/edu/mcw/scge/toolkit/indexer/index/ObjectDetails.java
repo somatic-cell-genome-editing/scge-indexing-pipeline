@@ -423,8 +423,17 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         return projectMembers;
     }
     public Set<String> getSex(AccessLevel accessLevel){
-        return getRecordList(accessLevel).stream().filter(r->r.getSex()!=null && !r.getSex().equals("")).map(ExperimentRecord::getSex).map(StringUtils::capitalize).collect(Collectors.toSet());
-    }
+        List<ExperimentRecord> records=getRecordList(accessLevel);
+        if(records!=null)
+            try {
+                return records.stream().filter(r -> r.getSex() != null && !r.getSex().equals("")).map(ExperimentRecord::getSex).map(StringUtils::capitalize).collect(Collectors.toSet());
+            }catch (Exception e){
+                System.out.println("EXP ID:"+records.get(0).getExperimentId() );
+                e.printStackTrace();
+            }
+        return null;
+
+            }
     public Set<String> getGenotype(AccessLevel accessLevel){
         return getRecordList(accessLevel).stream().filter(r->r.getGenotype()!=null && !r.getGenotype().equals("")).map(ExperimentRecord::getGenotype).map(StringUtils::capitalize).collect(Collectors.toSet());
 
