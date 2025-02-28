@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProtocolDetails extends ObjectDetails<Protocol>{
     public ProtocolDetails(Protocol protocol) throws Exception {
@@ -24,10 +25,14 @@ public class ProtocolDetails extends ObjectDetails<Protocol>{
 
     @Override
     public void setStudies() throws Exception {
-        List<Long> associatedObjectIds = this.protocolDao.getProtocolAssociatedObjectIds(t.getId());
-        setProtocolsAssociatedObjectType(associatedObjectIds);
-        this.studies= getStudiesSCGEIds(associatedObjectIds);
+        setAssociatedIds();
+        setProtocolsAssociatedObjectType(new ArrayList<>(protocolAssociationIds));
+        this.studies= getStudiesSCGEIds(new ArrayList<>(protocolAssociationIds));
     }
+    public void setAssociatedIds() throws Exception {
+       this.protocolAssociationIds= new HashSet<>(this.protocolDao.getProtocolAssociatedObjectIds(t.getId()));
+    }
+
     public void setProtocolsAssociatedObjectType(List<Long> associatedObjectIds) throws Exception {
         Set<Category> objectTypes=new HashSet<>();
 

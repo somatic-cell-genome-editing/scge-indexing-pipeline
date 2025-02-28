@@ -28,6 +28,7 @@ public class PublicationDetails extends ObjectDetails<Publication>{
     @Override
     public void setStudies() throws Exception {
         List<Long> associatedObjectIds = this.publicationDAO.getPublicationAssoicatedSCGEIds(t.getReference().getKey());
+        this.publicationAssociationIds= new HashSet<>(associatedObjectIds);
         setPublicationAssociatedObjectType(associatedObjectIds);
         this.studies= getStudiesSCGEIds(associatedObjectIds);
     }

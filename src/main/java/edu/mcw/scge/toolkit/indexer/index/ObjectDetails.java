@@ -39,6 +39,10 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     Set<Category> publicationObjectTypes;
 
     Set<Long> allObjectsIdList;
+    Set<Long> protocolAssociationIds;
+    Set<Long> publicationAssociationIds;
+
+
 
     public ObjectDetails(T t) throws Exception {
          this.t=t;
@@ -476,10 +480,21 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
     public void mapExperiments(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Experiment> experimentList = getExperiments(accessLevel);
-        if(!(t instanceof Protocol)) {
+        if(t instanceof Protocol) {
+            Set<String> type=new HashSet<>();
+            TreeMap<Long, String> expNameIdMap=new TreeMap<>();
+            for(Experiment e:experimentList) {
+                type.add(e.getType());
+                if (protocolAssociationIds.contains(e.getExperimentId())){
+                    expNameIdMap.put(e.getExperimentId(), e.getName());
+                }
+            }
+            o.setExperimentType(type);
+            o.setExperimentNames(expNameIdMap);
+
+        }else {
 
             o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
-//            o.setLastModifiedDate(getLastModifiedDate(accessLevel));
             o.setSex(getSex(accessLevel));
             o.setGenotype(getGenotype(accessLevel));
             try {
@@ -488,19 +503,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 e.printStackTrace();
             }
 
-        }else {
-            Set<String> type=new HashSet<>();
-            TreeMap<Long, String> expNameIdMap=new TreeMap<>();
-            for(Experiment e:experimentList) {
-                type.add(e.getType());
-                if (((Protocol) t).getAssociatedObjectId() ==e.getExperimentId()){
-                    for(Experiment experiment:experimentList){
-                        expNameIdMap.put(experiment.getExperimentId(), experiment.getName());
-                    }
-                }
-            }
-            o.setExperimentType(type);
-            o.setExperimentNames(expNameIdMap);
+
         }
     }
     public void mapModels(IndexDocument indexDocument, AccessLevel accessLevel){
