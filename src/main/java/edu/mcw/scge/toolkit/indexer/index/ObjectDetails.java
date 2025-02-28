@@ -48,33 +48,35 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
          this.t=t;
 
          setStudies();
-         if(t instanceof Experiment || t instanceof Grant)
-             setGrants();
-         setExperiments();
-         setRecords();
-         if(!(t instanceof Editor))
-             setEditors();
-         if(!(t instanceof Model))
-             setModels();
-         if(!(t instanceof Vector))
-             setVectors();
-         if(!(t instanceof Guide))
-             setGuides();
-         if(!(t instanceof Delivery))
-             setDeliveries();
-         if(!(t instanceof HRDonor))
-             setHrDonors();
-         if(!(t instanceof Antibody))
-             setAntibodies();
-        mapAllObjectsIdList();
-        if(!(t instanceof Protocol)) {
-            setProtocols();
-            setProtocolsAssociatedObjectType();
-        }
-        if(!(t instanceof Publication)) {
-            setPublications();
-            setPublicationAssociatedObjectTypes();
-        }
+         if(studies!=null && studies.size()>0) {
+             if (t instanceof Experiment || t instanceof Grant || t instanceof Protocol)
+                 setGrants();
+             setExperiments();
+             setRecords();
+             if (!(t instanceof Editor))
+                 setEditors();
+             if (!(t instanceof Model))
+                 setModels();
+             if (!(t instanceof Vector))
+                 setVectors();
+             if (!(t instanceof Guide))
+                 setGuides();
+             if (!(t instanceof Delivery))
+                 setDeliveries();
+             if (!(t instanceof HRDonor))
+                 setHrDonors();
+             if (!(t instanceof Antibody))
+                 setAntibodies();
+             mapAllObjectsIdList();
+             if (!(t instanceof Protocol)) {
+                 setProtocols();
+                 setProtocolsAssociatedObjectType();
+             }
+             if (!(t instanceof Publication)) {
+                 setPublications();
+                 setPublicationAssociatedObjectTypes();
+             }
+         }
      }
 
     public List<Protocol> getProtocols(AccessLevel accessLevel) {
@@ -216,14 +218,16 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
 
     public List<Study> getStudies(AccessLevel accessLevel) {
-        switch (accessLevel){
-            case PUBLIC:
-                List<Study> studyList= studies.stream().filter(s->s.getTier()==4).collect(Collectors.toList());
-                if(studyList.size()>0){
-                    return studyList;
-                }
+        if(studies!=null && studies.size()>0) {
+            switch (accessLevel) {
+                case PUBLIC:
+                    List<Study> studyList = studies.stream().filter(Objects::nonNull).filter(s -> s.getTier() == 4).collect(Collectors.toList());
+                    if (studyList.size() > 0) {
+                        return studyList;
+                    }
                 case CONSORTIUM:
-                return studies;
+                    return studies;
+            }
         }
         return null;
     }
@@ -452,7 +456,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
     public void mapStudies(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Study> studyList=getStudies(accessLevel);
-        if(studyList.size()>0) {
+        if(studyList!=null && studyList.size()>0) {
             o.setStudy(studyList.stream().map(Study::getStudy).map(StringUtils::capitalize).collect(Collectors.toSet()));
             o.setStudyIds(studyList.stream().map(Study::getStudyId).collect(Collectors.toSet()));
             o.setPi(getPi(accessLevel));
@@ -480,30 +484,32 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
     public void mapExperiments(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Experiment> experimentList = getExperiments(accessLevel);
-        if(t instanceof Protocol) {
-            Set<String> type=new HashSet<>();
-            TreeMap<Long, String> expNameIdMap=new TreeMap<>();
-            for(Experiment e:experimentList) {
-                type.add(e.getType());
-                if (protocolAssociationIds.contains(e.getExperimentId())){
-                    expNameIdMap.put(e.getExperimentId(), e.getName());
+        if(experimentList!=null && experimentList.size()>0) {
+            if (t instanceof Protocol) {
+                Set<String> type = new HashSet<>();
+                TreeMap<Long, String> expNameIdMap = new TreeMap<>();
+                for (Experiment e : experimentList) {
+                    type.add(e.getType());
+                    if (protocolAssociationIds != null && protocolAssociationIds.contains(e.getExperimentId())) {
+                        expNameIdMap.put(e.getExperimentId(), e.getName());
+                    }
                 }
+                o.setExperimentType(type);
+                o.setExperimentNames(expNameIdMap);
+
+            } else {
+
+                o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
+                o.setSex(getSex(accessLevel));
+                o.setGenotype(getGenotype(accessLevel));
+                try {
+                    o.setExperimentNames(getExperimentNameIdMap(accessLevel));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
-            o.setExperimentType(type);
-            o.setExperimentNames(expNameIdMap);
-
-        }else {
-
-            o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
-            o.setSex(getSex(accessLevel));
-            o.setGenotype(getGenotype(accessLevel));
-            try {
-                o.setExperimentNames(getExperimentNameIdMap(accessLevel));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
         }
     }
     public void mapModels(IndexDocument indexDocument, AccessLevel accessLevel){
@@ -690,33 +696,21 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
     public void mapOtherExperimentalDetails(IndexDocument o, AccessLevel accessLevel) throws Exception {
         mapStudies(o, accessLevel);
-        if((t instanceof Experiment) || (t instanceof Grant))
+        if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol))
             mapGrant(o, accessLevel);
         if(!(t instanceof Experiment))
             mapExperiments(o, accessLevel);
-        if((!(t instanceof Delivery) && deliveries!=null && !(t instanceof Grant) && !(t instanceof Protocol) && !(t instanceof Publication))
-                || (t instanceof Protocol) && protocolObjectTypes.contains(Category.DELIVERY)
-                || (t instanceof Publication) && publicationObjectTypes.contains(Category.DELIVERY))
+        if((!(t instanceof Delivery) && deliveries!=null && !(t instanceof Grant)))
             mapDelivery(o, accessLevel);
-        if((!(t instanceof Antibody) && antibodies!=null && !(t instanceof Grant) && !(t instanceof Protocol) && !(t instanceof Publication))
-                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.ANTIBODY))
-                || (t instanceof Publication) && publicationObjectTypes.contains(Category.ANTIBODY))
+        if((!(t instanceof Antibody) && antibodies!=null && !(t instanceof Grant) ))
             mapAntiBodies(o, accessLevel);
-        if((!(t instanceof Guide) && guides!=null && !(t instanceof Grant) && !(t instanceof Protocol) && !(t instanceof Publication))
-                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.GUIDE))
-                || (t instanceof Publication) && publicationObjectTypes.contains(Category.GUIDE))
+        if((!(t instanceof Guide) && guides!=null && !(t instanceof Grant) ))
             mapGuides(o, accessLevel);
-        if((!(t instanceof Vector) && vectors!=null && !(t instanceof Grant) && !(t instanceof Protocol) && !(t instanceof Publication))
-                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.VECTOR))
-                || (t instanceof Publication) && publicationObjectTypes.contains(Category.VECTOR))
+        if((!(t instanceof Vector) && vectors!=null && !(t instanceof Grant) ))
             mapVectors(o, accessLevel);
-        if((!(t instanceof Model) && models!=null&& !(t instanceof Grant) && !(t instanceof Protocol) && !(t instanceof Publication))
-                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.MODEL))
-                || (t instanceof Publication) && publicationObjectTypes.contains(Category.MODEL))
+        if((!(t instanceof Model) && models!=null&& !(t instanceof Grant)))
             mapModels(o, accessLevel);
-        if((!(t instanceof Editor) && editors!=null && !(t instanceof Grant) && !(t instanceof Protocol) && !(t instanceof Publication))
-                || ((t instanceof Protocol) && protocolObjectTypes.contains(Category.EDITOR))
-                || (t instanceof Publication) && publicationObjectTypes.contains(Category.EDITOR) )
+        if((!(t instanceof Editor) && editors!=null && !(t instanceof Grant) ) )
             mapEditors(o,accessLevel);
         if(!(t instanceof Protocol) && protocols!=null && !(t instanceof Grant) )
             mapProtocols(o,accessLevel);

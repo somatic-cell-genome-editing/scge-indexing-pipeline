@@ -2,7 +2,6 @@ package edu.mcw.scge.toolkit.indexer.index;
 
 
 import edu.mcw.scge.datamodel.Protocol;
-import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.toolkit.indexer.model.Category;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ProtocolDetails extends ObjectDetails<Protocol>{
     public ProtocolDetails(Protocol protocol) throws Exception {
@@ -26,11 +24,15 @@ public class ProtocolDetails extends ObjectDetails<Protocol>{
     @Override
     public void setStudies() throws Exception {
         setAssociatedIds();
-        setProtocolsAssociatedObjectType(new ArrayList<>(protocolAssociationIds));
-        this.studies= getStudiesSCGEIds(new ArrayList<>(protocolAssociationIds));
+        if(protocolAssociationIds!=null && protocolAssociationIds.size()>0) {
+            setProtocolsAssociatedObjectType(new ArrayList<>(protocolAssociationIds));
+            this.studies = getStudiesSCGEIds(new ArrayList<>(protocolAssociationIds));
+        }
     }
     public void setAssociatedIds() throws Exception {
-       this.protocolAssociationIds= new HashSet<>(this.protocolDao.getProtocolAssociatedObjectIds(t.getId()));
+       List<Long> ids= this.protocolDao.getProtocolAssociatedObjectIds(t.getId());
+       if(ids!=null && ids.size()>0 )
+           this.protocolAssociationIds= new HashSet<>(ids);
     }
 
     public void setProtocolsAssociatedObjectType(List<Long> associatedObjectIds) throws Exception {
