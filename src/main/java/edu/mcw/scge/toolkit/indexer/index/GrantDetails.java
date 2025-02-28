@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class GrantDetails extends ObjectDetails<Grant>{
     public GrantDetails(Grant grant) throws Exception {
         super(grant);
+        this.grants=Collections.singletonList(grant);
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class PublicationDetails extends ObjectDetails<Publication>{
     public PublicationDetails(Publication publication) throws Exception {
         super(publication);
+        this.publications=Collections.singletonList(publication);
     }
 
     @Override

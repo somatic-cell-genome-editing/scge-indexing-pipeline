@@ -4,9 +4,13 @@ import edu.mcw.scge.datamodel.Vector;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 
+
+import java.util.Collections;
+
 public class VectorDetails extends ObjectDetails<Vector> {
     public VectorDetails(Vector vector) throws Exception {
         super(vector);
+        this.vectors= Collections.singletonList(vector);
     }
     @Override
     public int getTier() {

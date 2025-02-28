@@ -9,6 +9,7 @@ import java.util.Collections;
 public class ModelDetails extends ObjectDetails<Model>{
     public ModelDetails(Model model) throws Exception {
         super(model);
+        this.models=Collections.singletonList(model);
     }
 
     @Override

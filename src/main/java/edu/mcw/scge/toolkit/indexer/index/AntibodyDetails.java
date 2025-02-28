@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class AntibodyDetails extends ObjectDetails<Antibody>{
     public AntibodyDetails(Antibody antibody) throws Exception {
         super(antibody);
+        this.antibodies=Collections.singletonList(antibody);
     }
 
     @Override

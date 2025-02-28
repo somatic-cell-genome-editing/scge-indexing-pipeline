@@ -11,6 +11,7 @@ import java.util.List;
 public class ExperimentDetails extends ObjectDetails<Experiment> {
     public ExperimentDetails(Experiment experiment) throws Exception {
         super(experiment);
+        this.experiments=Collections.singletonList(experiment);
     }
 
     @Override

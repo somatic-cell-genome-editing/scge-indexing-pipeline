@@ -6,14 +6,12 @@ import edu.mcw.scge.toolkit.indexer.model.Category;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ProtocolDetails extends ObjectDetails<Protocol>{
     public ProtocolDetails(Protocol protocol) throws Exception {
         super(protocol);
+        this.protocols= Collections.singletonList(protocol);
     }
 
     @Override

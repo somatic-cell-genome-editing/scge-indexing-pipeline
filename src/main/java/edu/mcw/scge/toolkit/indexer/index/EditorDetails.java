@@ -4,10 +4,13 @@ import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 
+import java.util.Collections;
+
 
 public class EditorDetails extends ObjectDetails<Editor>{
     public EditorDetails(Editor editor) throws Exception {
         super(editor);
+        this.editors= Collections.singletonList(editor);
     }
 
     @Override

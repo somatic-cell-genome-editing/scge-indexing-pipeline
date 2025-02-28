@@ -4,9 +4,12 @@ import edu.mcw.scge.datamodel.Delivery;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 
+import java.util.Collections;
+
 public class DeliveryDetails extends ObjectDetails<Delivery> {
     public DeliveryDetails(Delivery delivery) throws Exception {
         super(delivery);
+        this.deliveries= Collections.singletonList(delivery);
     }
 
     @Override

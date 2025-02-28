@@ -4,9 +4,12 @@ import edu.mcw.scge.datamodel.Guide;
 import edu.mcw.scge.toolkit.indexer.model.AccessLevel;
 import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 
+import java.util.Collections;
+
 public class GuideDetails extends ObjectDetails<Guide>{
     public GuideDetails(Guide guide) throws Exception {
         super(guide);
+        this.guides= Collections.singletonList(guide);
     }
     @Override
     public int getTier() {

@@ -1,7 +1,6 @@
 package edu.mcw.scge.toolkit.indexer.index;
 
 
-import com.fasterxml.jackson.core.PrettyPrinter;
 import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.ontologyx.Term;
 import edu.mcw.scge.datamodel.publications.Publication;
@@ -703,23 +702,23 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
         if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol))
             mapGrant(o, accessLevel);
-        if(!(t instanceof Experiment))
+        if(!(t instanceof Experiment) && experiments!=null)
             mapExperiments(o, accessLevel);
-        if((!(t instanceof Delivery) && deliveries!=null && !(t instanceof Grant)))
+        if((deliveries!=null && !(t instanceof Grant)))
             mapDelivery(o, accessLevel);
-        if((!(t instanceof Antibody) && antibodies!=null && !(t instanceof Grant) ))
+        if(( antibodies!=null && !(t instanceof Grant) ))
             mapAntiBodies(o, accessLevel);
-        if((!(t instanceof Guide) && guides!=null && !(t instanceof Grant) ))
+        if(( guides!=null && !(t instanceof Grant) ))
             mapGuides(o, accessLevel);
-        if((!(t instanceof Vector) && vectors!=null && !(t instanceof Grant) ))
+        if(( vectors!=null && !(t instanceof Grant) ))
             mapVectors(o, accessLevel);
-        if((!(t instanceof Model) && models!=null&& !(t instanceof Grant)))
+        if((models!=null&& !(t instanceof Grant)))
             mapModels(o, accessLevel);
-        if((!(t instanceof Editor) && editors!=null && !(t instanceof Grant) ) )
+        if(( editors!=null && !(t instanceof Grant) ) )
             mapEditors(o,accessLevel);
-        if(!(t instanceof Protocol) && protocols!=null && !(t instanceof Grant) )
+        if(  protocols!=null && !(t instanceof Grant) )
             mapProtocols(o,accessLevel);
-        if(!(t instanceof Publication) && publications!=null && !(t instanceof Grant))
+        if( publications!=null && !(t instanceof Grant))
             mapPublications(o,accessLevel);
         if(!(t instanceof Protocol) && !(t instanceof Publication))
             mapTissues(o, accessLevel);
