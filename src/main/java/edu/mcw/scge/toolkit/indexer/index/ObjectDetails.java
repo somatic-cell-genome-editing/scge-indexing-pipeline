@@ -475,16 +475,33 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
     }
     public void mapExperiments(IndexDocument o, AccessLevel accessLevel) throws Exception {
-        List<Experiment> experimentList=getExperiments(accessLevel);
-        o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
+        List<Experiment> experimentList = getExperiments(accessLevel);
+        if(!(t instanceof Protocol)) {
+
+            o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
 //            o.setLastModifiedDate(getLastModifiedDate(accessLevel));
-        o.setSex(getSex(accessLevel));
-        o.setGenotype(getGenotype(accessLevel));
-        try{
-            o.setExperimentNames(getExperimentNameIdMap(accessLevel));
-        }catch (Exception e){e.printStackTrace();}
+            o.setSex(getSex(accessLevel));
+            o.setGenotype(getGenotype(accessLevel));
+            try {
+                o.setExperimentNames(getExperimentNameIdMap(accessLevel));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-
+        }else {
+            Set<String> type=new HashSet<>();
+            TreeMap<Long, String> expNameIdMap=new TreeMap<>();
+            for(Experiment e:experimentList) {
+                type.add(e.getType());
+                if (((Protocol) t).getAssociatedObjectId() ==e.getExperimentId()){
+                    for(Experiment experiment:experimentList){
+                        expNameIdMap.put(experiment.getExperimentId(), experiment.getName());
+                    }
+                }
+            }
+            o.setExperimentType(type);
+            o.setExperimentNames(expNameIdMap);
+        }
     }
     public void mapModels(IndexDocument indexDocument, AccessLevel accessLevel){
         List<Model> models=getModels(accessLevel);
