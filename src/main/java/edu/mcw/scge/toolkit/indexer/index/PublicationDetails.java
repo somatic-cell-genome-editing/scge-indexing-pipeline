@@ -20,17 +20,22 @@ public class PublicationDetails extends ObjectDetails<Publication>{
 
     @Override
     public int getTier() {
-        List<Integer> tiers=studies.stream().map(Study::getTier).collect(Collectors.toList());
-        if(tiers.contains(4)) return 4;
-        return tiers.size()>0? Collections.max(tiers):0;
+        if(studies!=null) {
+            List<Integer> tiers = studies.stream().map(Study::getTier).collect(Collectors.toList());
+            if (tiers.contains(4)) return 4;
+            return tiers.size() > 0 ? Collections.max(tiers) : 0;
+        }
+        return 0;
     }
 
     @Override
     public void setStudies() throws Exception {
         List<Long> associatedObjectIds = this.publicationDAO.getPublicationAssoicatedSCGEIds(t.getReference().getKey());
-        this.publicationAssociationIds= new HashSet<>(associatedObjectIds);
-        setPublicationAssociatedObjectType(associatedObjectIds);
-        this.studies= getStudiesSCGEIds(associatedObjectIds);
+        if(associatedObjectIds!=null && associatedObjectIds.size()>0) {
+            this.publicationAssociationIds = new HashSet<>(associatedObjectIds);
+            setPublicationAssociatedObjectType(associatedObjectIds);
+            this.studies = getStudiesSCGEIds(associatedObjectIds);
+        }
     }
     public void setPublicationAssociatedObjectType(List<Long> associatedObjectIds) throws Exception {
         Set<Category> objectTypes=new HashSet<>();

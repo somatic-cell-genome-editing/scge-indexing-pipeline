@@ -88,7 +88,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                     return protocols.stream().filter(p->p.getTier()==4).collect(Collectors.toList());
             }
         }
-        return null;
+        return new ArrayList<>();
     }
     public void mapAllObjectsIdList(){
         Set<Long> scgeIds=new HashSet<>();
@@ -126,13 +126,15 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     }
 
     public List<Publication> getPublications(AccessLevel accessLevel) {
-        switch (accessLevel){
-            case CONSORTIUM:
-                return publications;
-            case PUBLIC:
-                if(getTier()==4)
+        if(publications!=null) {
+            switch (accessLevel) {
+                case CONSORTIUM:
                     return publications;
+                case PUBLIC:
+                    if (getTier() == 4)
+                        return publications;
 
+            }
         }
         return null;
     }
@@ -149,8 +151,9 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 long id=  p.getReference().getAssociatedSCGEId();
                 objectTypes.add(getObjectTypeOfSCGEId(id));
             }
+            this.publicationObjectTypes=objectTypes;
         }
-        this.publicationObjectTypes=objectTypes;
+
     }
     public Category getObjectTypeOfSCGEId(long id){
         String objectCode=String.valueOf(id).substring(0,2);
@@ -202,10 +205,6 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         this.recordList = recordsAll;
 
     }
-    public void verifyRecord(){
-
-    }
-
     public List<Study> getStudiesSCGEIds(List<Long> associatedSCGEIds) throws Exception {
         List<Study> studies=new ArrayList<>();
         for(long id:associatedSCGEIds){
@@ -248,7 +247,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                return recordListTier4;
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public List<Editor> getEditors(AccessLevel accessLevel) {
@@ -259,7 +258,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 return   editors.stream().filter(e->e.getTier()==4).collect(Collectors.toList());
             default:
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void setEditors() throws Exception {
@@ -281,7 +280,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                     return models.stream().filter(Objects::nonNull).filter(m->m.getTier()==4).collect(Collectors.toList());
 
             }
-        return null;
+        return new ArrayList<>();
     }
 
     public void setModels() throws Exception {
@@ -302,7 +301,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
             case PUBLIC:
                 return vectors.stream().filter(v->v.getTier()==4).collect(Collectors.toList());
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void setVectors() throws Exception {
@@ -316,7 +315,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
             case PUBLIC:
                 return guides.stream().filter(g->g.getTier()==4).collect(Collectors.toList());
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void setGuides() {
@@ -330,7 +329,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
             case PUBLIC:
                 return deliveries.stream().filter(d->d.getTier()==4).collect(Collectors.toList());
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void setDeliveries() throws Exception {
@@ -362,8 +361,10 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         this.antibodies = list;
     }
     public Set<String> getTissueIds(AccessLevel accessLevel) {
-        return getRecordList(accessLevel).stream().filter(r->r.getTissueId()!=null && !r.getTissueId().equals("")).map(ExperimentRecord::getTissueId).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
-
+        List<ExperimentRecord> recordList1=getRecordList(accessLevel);
+        if(recordList1!=null)
+        return recordList1.stream().filter(r->r.getTissueId()!=null && !r.getTissueId().equals("")).map(ExperimentRecord::getTissueId).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
+        return new HashSet<>();
     }
     public Set<String> getTissueTerms(AccessLevel accessLevel) {
 
@@ -374,14 +375,16 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 System.out.println(id);
                 e.printStackTrace();
             }
-            return null;
+            return "";
         }).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet());
 
 
     }
     public Set<String> getCellTypeIds(AccessLevel accessLevel) {
-        return recordList.stream().map(ExperimentRecord::getCellType).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
-
+        List<ExperimentRecord> recordList1=getRecordList(accessLevel);
+        if(recordList1!=null)
+        return recordList1.stream().map(ExperimentRecord::getCellType).filter(e->e!=null && !e.isEmpty()).collect(Collectors.toSet());
+        else return new HashSet<>();
     }
     public Set<String> getCellTypeTerms(AccessLevel accessLevel) {
         return getCellTypeIds(accessLevel).stream().filter(e->e!=null && !e.isEmpty()).map(id-> {
@@ -391,7 +394,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 System.out.println(id);
                 e.printStackTrace();
             }
-            return null;
+            return "";
         }).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet());
 
 
@@ -631,13 +634,14 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
     public void  mapAntiBodies(IndexDocument o,AccessLevel accessLevel) throws Exception {
         List<Antibody> antibodyList=new ArrayList<>();
+        if(getRecordList(accessLevel)!=null){
         Set<Long> experimentIds=getRecordList(accessLevel).stream().map(ExperimentRecord::getExperimentId).collect(Collectors.toSet());
         for(long experimentId:experimentIds) {
             antibodyList .addAll(antibodyDao.getDistinctAntibodyByExperimentId(experimentId));
         }
         o.setAntibody(antibodyList.stream().map(Antibody::getRrid).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
         o.setExternalId(antibodyList.stream().map(Antibody::getOtherId).filter(e->e!=null && !e.isEmpty()).map(StringUtils::capitalize).collect(Collectors.toSet()));
-    }
+    }}
     public void mapTissues(IndexDocument indexDocument, AccessLevel accessLevel) throws Exception {
         indexDocument.setTissueTerm(getTissueTerms(accessLevel));
         indexDocument.setTissueIds(getTissueIds(accessLevel));
@@ -696,6 +700,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
     public void mapOtherExperimentalDetails(IndexDocument o, AccessLevel accessLevel) throws Exception {
         mapStudies(o, accessLevel);
+
         if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol))
             mapGrant(o, accessLevel);
         if(!(t instanceof Experiment))
