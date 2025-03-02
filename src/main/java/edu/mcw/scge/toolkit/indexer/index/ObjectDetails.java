@@ -702,7 +702,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
         if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol))
             mapGrant(o, accessLevel);
-        if(experiments!=null)
+        if(!(t instanceof Experiment) && experiments!=null)
             mapExperiments(o, accessLevel);
         if((deliveries!=null && !(t instanceof Grant)))
             mapDelivery(o, accessLevel);
