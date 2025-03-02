@@ -22,6 +22,11 @@ public class GuideDetails extends ObjectDetails<Guide>{
     }
 
     @Override
+    public void setObjectId() {
+        this.associationIds=  Collections.singleton((long) t.getGuide_id());
+    }
+
+    @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
 
         if (getObject(accessLevel) != null) {

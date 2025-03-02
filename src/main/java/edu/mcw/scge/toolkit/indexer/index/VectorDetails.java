@@ -21,6 +21,12 @@ public class VectorDetails extends ObjectDetails<Vector> {
         this.studies= studyDao.getStudiesByModel(t.getVectorId());
 
     }
+
+    @Override
+    public void setObjectId() {
+        this.associationIds=  Collections.singleton((long) t.getVectorId());
+    }
+
     @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
 

@@ -6,6 +6,7 @@ import edu.mcw.scge.toolkit.indexer.model.IndexDocument;
 public interface Index<T> {
     int getTier();
      void setStudies() throws Exception ;
+     void setObjectId();
      T getObject(AccessLevel accessLevel);
     void mapObject(IndexDocument indexDocument, AccessLevel accessLevel);
      IndexDocument getIndexObject( AccessLevel accessLevel) throws Exception;

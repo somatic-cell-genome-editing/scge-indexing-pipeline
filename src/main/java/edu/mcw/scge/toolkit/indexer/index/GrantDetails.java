@@ -33,6 +33,11 @@ public class GrantDetails extends ObjectDetails<Grant>{
     }
 
     @Override
+    public void setObjectId() {
+        this.associationIds=  Collections.singleton((long) t.getGroupId());
+    }
+
+    @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
         if(getTier()==4 || accessLevel.equals(AccessLevel.CONSORTIUM)) {
             o.setId(t.getGroupId());

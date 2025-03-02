@@ -23,6 +23,12 @@ public class ExperimentDetails extends ObjectDetails<Experiment> {
     public void setStudies() throws Exception {
         this.studies= Collections.singletonList(studyDao.getStudyByStudyId(t.getStudyId()));
     }
+
+    @Override
+    public void setObjectId() {
+        this.associationIds=  Collections.singleton((long) t.getExperimentId());
+    }
+
     @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
         List<Study> studyList=getStudies(accessLevel);

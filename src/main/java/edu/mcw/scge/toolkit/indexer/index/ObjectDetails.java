@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public abstract class ObjectDetails<T> extends DAO implements Index<T> {
      T t;
-
+     long objectId;
     List<Study> studies;
     List<Experiment> experiments;
     List<Experiment> experimentsTier4;
@@ -38,14 +38,15 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     Set<Category> publicationObjectTypes;
 
     Set<Long> allObjectsIdList;
-    Set<Long> protocolAssociationIds;
-    Set<Long> publicationAssociationIds;
+//    Set<Long> protocolAssociationIds;
+//    Set<Long> publicationAssociationIds;
 
+    Set<Long> associationIds;
 
 
     public ObjectDetails(T t) throws Exception {
          this.t=t;
-
+         setObjectId();
          setStudies();
          if(studies!=null && studies.size()>0) {
              if (t instanceof Experiment || t instanceof Grant || t instanceof Protocol)
@@ -175,16 +176,15 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     public void setExperiments() throws Exception {
         List<Experiment> experiments=new ArrayList<>();
         List<Experiment> experimentsTier4=new ArrayList<>();
-        for(Study study:studies) {
-            List<Experiment> exps = experimentDao.getExperimentsByStudy(study.getStudyId());
+       for(long id:associationIds) {
+            List<Experiment> exps = experimentDao.getExperimentsByObjectId(id);
             if(exps!=null){
                 experiments.addAll(exps);
-                if(study.getTier()==4){
-                    experimentsTier4.addAll(exps);
-                }
+                experimentsTier4.addAll(experiments.stream().filter(e->e.getTier()==4).collect(Collectors.toList()));
+
             }
 
-        }
+       }
         this.experimentsTier4=experimentsTier4;
         this.experiments = experiments;
     }
@@ -492,7 +492,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 TreeMap<Long, String> expNameIdMap = new TreeMap<>();
                 for (Experiment e : experimentList) {
                     type.add(e.getType());
-                    if (protocolAssociationIds != null && protocolAssociationIds.contains(e.getExperimentId())) {
+                    if (associationIds != null && associationIds.contains(e.getExperimentId())) {
                         expNameIdMap.put(e.getExperimentId(), e.getName());
                     }
                 }
@@ -702,7 +702,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
 
         if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol))
             mapGrant(o, accessLevel);
-        if(!(t instanceof Experiment) && experiments!=null)
+        if(experiments!=null)
             mapExperiments(o, accessLevel);
         if((deliveries!=null && !(t instanceof Grant)))
             mapDelivery(o, accessLevel);

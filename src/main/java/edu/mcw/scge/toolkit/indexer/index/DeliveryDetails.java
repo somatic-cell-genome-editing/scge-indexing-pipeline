@@ -22,6 +22,12 @@ public class DeliveryDetails extends ObjectDetails<Delivery> {
         this.studies= studyDao.getStudiesByDeliverySystem(t.getId());
 
     }
+
+    @Override
+    public void setObjectId() {
+        this.associationIds=  Collections.singleton((long) t.getId());
+    }
+
     @Override
     public void mapObject(IndexDocument o, AccessLevel accessLevel) {
         if (getObject(accessLevel) != null) {

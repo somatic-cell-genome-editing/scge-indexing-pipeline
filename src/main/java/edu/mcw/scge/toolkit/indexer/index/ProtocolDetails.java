@@ -22,15 +22,21 @@ public class ProtocolDetails extends ObjectDetails<Protocol>{
     @Override
     public void setStudies() throws Exception {
         setAssociatedIds();
-        if(protocolAssociationIds!=null && protocolAssociationIds.size()>0) {
-            setProtocolsAssociatedObjectType(new ArrayList<>(protocolAssociationIds));
-            this.studies = getStudiesSCGEIds(new ArrayList<>(protocolAssociationIds));
+        if(associationIds!=null && associationIds.size()>0) {
+            setProtocolsAssociatedObjectType(new ArrayList<>(associationIds));
+            this.studies = getStudiesSCGEIds(new ArrayList<>(associationIds));
         }
     }
+
+    @Override
+    public void setObjectId() {
+
+    }
+
     public void setAssociatedIds() throws Exception {
        List<Long> ids= this.protocolDao.getProtocolAssociatedObjectIds(t.getId());
        if(ids!=null && ids.size()>0 )
-           this.protocolAssociationIds= new HashSet<>(ids);
+           this.associationIds= new HashSet<>(ids);
     }
 
     public void setProtocolsAssociatedObjectType(List<Long> associatedObjectIds) throws Exception {

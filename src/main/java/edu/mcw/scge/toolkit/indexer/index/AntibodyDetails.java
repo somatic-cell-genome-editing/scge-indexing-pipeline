@@ -31,6 +31,10 @@ public class AntibodyDetails extends ObjectDetails<Antibody>{
         this.studies= studyDao.getStudiesByAntibody(t.getAntibodyId());
     }
 
+    @Override
+    public void setObjectId() {
+        this.associationIds=  Collections.singleton((long) t.getAntibodyId());
+    }
 
 
     @Override

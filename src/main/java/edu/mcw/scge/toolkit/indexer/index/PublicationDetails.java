@@ -33,11 +33,17 @@ public class PublicationDetails extends ObjectDetails<Publication>{
     public void setStudies() throws Exception {
         List<Long> associatedObjectIds = this.publicationDAO.getPublicationAssoicatedSCGEIds(t.getReference().getKey());
         if(associatedObjectIds!=null && associatedObjectIds.size()>0) {
-            this.publicationAssociationIds = new HashSet<>(associatedObjectIds);
+            this.associationIds = new HashSet<>(associatedObjectIds);
             setPublicationAssociatedObjectType(associatedObjectIds);
             this.studies = getStudiesSCGEIds(associatedObjectIds);
         }
     }
+
+    @Override
+    public void setObjectId() {
+
+    }
+
     public void setPublicationAssociatedObjectType(List<Long> associatedObjectIds) throws Exception {
         Set<Category> objectTypes=new HashSet<>();
 
