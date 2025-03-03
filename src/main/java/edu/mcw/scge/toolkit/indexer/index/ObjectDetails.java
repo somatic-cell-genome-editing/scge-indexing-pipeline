@@ -229,6 +229,18 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         }
         return null;
     }
+    public String getStudyTypes(AccessLevel accessLevel) {
+        List<Study> studies=getStudies(accessLevel);
+        if(studies!=null && studies.size()>0) {
+            return studies.stream().filter(Objects::nonNull)
+                    .map(s->{
+                        if(s.getIsValidationStudy()==1)
+                        return "Validation";
+                        return "Experimental";})
+                    .collect(Collectors.joining(", "));
+        }
+        return null;
+    }
     public List<Experiment> getExperiments(AccessLevel accessLevel) {
         switch (accessLevel){
             case CONSORTIUM:
@@ -487,19 +499,19 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     public void mapExperiments(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Experiment> experimentList = getExperiments(accessLevel);
         if(experimentList!=null && experimentList.size()>0) {
-            if (t instanceof Protocol) {
-                Set<String> type = new HashSet<>();
-                TreeMap<Long, String> expNameIdMap = new TreeMap<>();
-                for (Experiment e : experimentList) {
-                    type.add(e.getType());
-                    if (associationIds != null && associationIds.contains(e.getExperimentId())) {
-                        expNameIdMap.put(e.getExperimentId(), e.getName());
-                    }
-                }
-                o.setExperimentType(type);
-                o.setExperimentNames(expNameIdMap);
-
-            } else {
+//            if (t instanceof Protocol) {
+//                Set<String> type = new HashSet<>();
+//                TreeMap<Long, String> expNameIdMap = new TreeMap<>();
+//                for (Experiment e : experimentList) {
+//                    type.add(e.getType());
+//                    if (associationIds != null && associationIds.contains(e.getExperimentId())) {
+//                        expNameIdMap.put(e.getExperimentId(), e.getName());
+//                    }
+//                }
+//                o.setExperimentType(type);
+//                o.setExperimentNames(expNameIdMap);
+//
+//            } else {
 
                 o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
                 o.setSex(getSex(accessLevel));
@@ -509,9 +521,10 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            o.setLastModifiedDate(getLastModifiedDate(accessLevel));
+                o.setStudyType(getStudyTypes(accessLevel));
 
-
-            }
+//            }
         }
     }
     public void mapModels(IndexDocument indexDocument, AccessLevel accessLevel){
