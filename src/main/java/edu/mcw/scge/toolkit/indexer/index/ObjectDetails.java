@@ -47,7 +47,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
          setObjectId();
          setStudies();
          if(studies!=null && studies.size()>0) {
-             if (t instanceof Experiment || t instanceof Grant || t instanceof Protocol)
+             if (t instanceof Experiment || t instanceof Grant || t instanceof Protocol || t instanceof Publication)
                  setGrants();
              setExperiments();
              setRecords();
