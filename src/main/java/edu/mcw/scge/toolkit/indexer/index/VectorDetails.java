@@ -18,13 +18,13 @@ public class VectorDetails extends ObjectDetails<Vector> {
     }
     @Override
     public void setStudies() throws Exception {
-        this.studies= studyDao.getStudiesByModel(t.getVectorId());
+        this.studies= studyDao.getStudiesByVector(t.getVectorId());
 
     }
 
     @Override
     public void setObjectId() {
-        this.associationIds=  Collections.singleton((long) t.getVectorId());
+        this.associationIds=  Collections.singleton(t.getVectorId());
     }
 
     @Override

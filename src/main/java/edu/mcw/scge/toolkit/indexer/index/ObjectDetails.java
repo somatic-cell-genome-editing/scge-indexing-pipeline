@@ -655,12 +655,20 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
             o.setPi(getPi(accessLevel));
             o.setCurrentGrantNumber(grants.get(0).getCurrentGrantNumber());
             if (grants.get(0).getFormerGrantNumbers().size() > 0)
                 o.setFormerGrantNumbers(new HashSet<>(grants.get(0).getFormerGrantNumbers()));
             if (grants.get(0).getNihReporterLink() != null && !grants.get(0).getNihReporterLink().equals(""))
                 o.setNihReporterLink(grants.get(0).getNihReporterLink());
+            Map<Integer, String> studyMap=new HashMap<>();
+
+            for(Study study:getStudies(accessLevel)){
+                studyMap.put(study.getStudyId(), study.getStudy());
+            }
+            o.setStudyNames(studyMap);
         }
     }
     public Set<String> getInitiatives() throws Exception {
