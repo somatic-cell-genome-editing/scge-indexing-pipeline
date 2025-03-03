@@ -38,8 +38,6 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     Set<Category> publicationObjectTypes;
 
     Set<Long> allObjectsIdList;
-//    Set<Long> protocolAssociationIds;
-//    Set<Long> publicationAssociationIds;
 
     Set<Long> associationIds;
 
@@ -522,7 +520,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                     e.printStackTrace();
                 }
             o.setLastModifiedDate(getLastModifiedDate(accessLevel));
-                o.setStudyType(getStudyTypes(accessLevel));
+
 
 //            }
         }
