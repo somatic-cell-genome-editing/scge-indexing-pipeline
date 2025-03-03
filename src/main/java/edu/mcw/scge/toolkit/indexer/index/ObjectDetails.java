@@ -719,7 +719,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     public void mapOtherExperimentalDetails(IndexDocument o, AccessLevel accessLevel) throws Exception {
         mapStudies(o, accessLevel);
 
-     //   if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol))
+        if((t instanceof Experiment) || (t instanceof Grant) || (t instanceof Protocol) || (t instanceof Publication))
             mapGrant(o, accessLevel);
         if(!(t instanceof Experiment) && experiments!=null)
             mapExperiments(o, accessLevel);
