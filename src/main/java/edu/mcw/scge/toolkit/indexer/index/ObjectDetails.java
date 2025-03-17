@@ -202,6 +202,10 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         this.recordList = recordsAll;
 
     }
+    public int getRecordCount(AccessLevel accessLevel){
+        List<ExperimentRecord> records=getRecordList(accessLevel);
+        return records.size();
+    }
     public List<Study> getStudiesSCGEIds(List<Long> associatedSCGEIds) throws Exception {
         List<Study> studies=new ArrayList<>();
         for(long id:associatedSCGEIds){
@@ -497,6 +501,7 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
     public void mapExperiments(IndexDocument o, AccessLevel accessLevel) throws Exception {
         List<Experiment> experimentList = getExperiments(accessLevel);
         if(experimentList!=null && experimentList.size()>0) {
+            if(getRecordList(accessLevel)!=null && getRecordList(accessLevel).size()>0) {
 //            if (t instanceof Protocol) {
 //                Set<String> type = new HashSet<>();
 //                TreeMap<Long, String> expNameIdMap = new TreeMap<>();
@@ -519,8 +524,9 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            o.setLastModifiedDate(getLastModifiedDate(accessLevel));
+                o.setLastModifiedDate(getLastModifiedDate(accessLevel));
 
+            }
 
 //            }
         }
