@@ -1,6 +1,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-    <bean id="manager" class="edu.mcw.scge.indexer.Manager">
+    <bean id="manager" class="edu.mcw.scge.toolkit.Manager">
         <property name="version" value="SCGE Indexer v.0.1.0 May 14, 2020"/>
         <property name="rgdIndex" ref="rgdIndex"/>
         <property name="admin" ref="admin"/>
@@ -15,10 +15,10 @@
             </list>
         </property>
     </bean>
-    <bean id="rgdIndex" class="edu.mcw.scge.indexer.model.RgdIndex"/>
-    <bean id="admin" class="edu.mcw.scge.indexer.service.IndexAdmin">
+    <bean id="rgdIndex" class="edu.mcw.scge.toolkit.indexer.model.RgdIndex"/>
+    <bean id="admin" class="edu.mcw.scge.toolkit.service.IndexAdmin">
         <property name="rgdIndex" ref="rgdIndex"/>
     </bean>
 
-    <bean id="client" class="edu.mcw.scge.indexer.service.ESClient" init-method="init" destroy-method="destroy"/>
+    <bean id="client" class="edu.mcw.scge.toolkit.service.ESClient" init-method="init" destroy-method="destroy"/>
 </beans>
