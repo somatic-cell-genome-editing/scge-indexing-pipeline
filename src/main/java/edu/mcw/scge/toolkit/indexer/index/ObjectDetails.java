@@ -502,19 +502,6 @@ public abstract class ObjectDetails<T> extends DAO implements Index<T> {
         List<Experiment> experimentList = getExperiments(accessLevel);
         if(experimentList!=null && experimentList.size()>0) {
             if(getRecordList(accessLevel)!=null && getRecordList(accessLevel).size()>0) {
-//            if (t instanceof Protocol) {
-//                Set<String> type = new HashSet<>();
-//                TreeMap<Long, String> expNameIdMap = new TreeMap<>();
-//                for (Experiment e : experimentList) {
-//                    type.add(e.getType());
-//                    if (associationIds != null && associationIds.contains(e.getExperimentId())) {
-//                        expNameIdMap.put(e.getExperimentId(), e.getName());
-//                    }
-//                }
-//                o.setExperimentType(type);
-//                o.setExperimentNames(expNameIdMap);
-//
-//            } else {
 
                 o.setExperimentType(experimentList.stream().map(Experiment::getType).map(StringUtils::capitalize).collect(Collectors.toSet()));
                 o.setSex(getSex(accessLevel));
