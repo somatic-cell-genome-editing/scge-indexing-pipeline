@@ -55,10 +55,6 @@ public class Manager {
         }
         manager.rgdIndex= (RgdIndex) bf.getBean("rgdIndex");
         manager.bulkRequest=new BulkRequest();
-        manager.bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-        manager.bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
-        manager. bulkRequest.timeout(TimeValue.timeValueMinutes(2));
-        manager. bulkRequest.timeout("2m");
         Indexer.bulkRequest=manager.bulkRequest;
 
         try {
