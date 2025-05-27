@@ -55,7 +55,7 @@ public class ProtocolDetails extends ObjectDetails<Protocol>{
             o.setName(t.getTitle());
             o.setDescription(t.getDescription());
             o.setTier(t.getTier());
-            o.setReportPageLink("/toolkit/data/protocols/protocol/?id=");
+            o.setReportPageLink("/toolkit/data/protocols/protocol?id=");
         }
     }
 }

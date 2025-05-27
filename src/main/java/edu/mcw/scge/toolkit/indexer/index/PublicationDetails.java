@@ -66,7 +66,7 @@ public class PublicationDetails extends ObjectDetails<Publication>{
             if(t.getReference().getMeshTerms()!=null && t.getReference().getMeshTerms().size()>0 ){
                 o.setKeywords(new HashSet<>(t.getReference().getMeshTerms()));
             }
-            o.setReportPageLink("/toolkit/data/publications/publication/?key=");
+            o.setReportPageLink("/toolkit/data/publications/publication?key=");
 
         }
 
