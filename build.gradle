@@ -6,31 +6,19 @@ apply plugin: 'java'
 apply plugin: 'application'
 mainClassName="edu.mcw.scge.toolkit.Manager"
 String myAppName="scge-indexing-pipeline"
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
     implementation fileTree(dir: 'lib', include: '*.jar')
-    //  implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '6.4.0'
-    // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
+
     implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '7.17.4'
-
-    //   implementation group: 'org.elasticsearch.client', name: 'transport', version: '6.4.0'
-    // https://mvnrepository.com/artifact/org.elasticsearch.client/transport
     implementation group: 'org.elasticsearch.client', name: 'transport', version: '7.17.4'
-// https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-client
     implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.17.4'
-
-// https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client
     implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.17.4'
-
-    //     implementation group: 'org.apache.lucene', name: 'lucene-core', version: '7.4.0'
-    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
     implementation group: 'org.apache.lucene', name: 'lucene-core', version: '8.2.0'
 
 
@@ -40,19 +28,20 @@ dependencies {
     implementation 'log4j:log4j:1.2.17'
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.7'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4.2'
 
-    implementation 'org.springframework:spring-beans:4.3.6.RELEASE'
-    implementation 'org.springframework:spring-jdbc:4.3.6.RELEASE'
-    implementation group: 'org.jsoup', name: 'jsoup', version: '1.8.3'
-// https://mvnrepository.com/artifact/com.github.samtools/htsjdk
-    implementation group: 'com.github.samtools', name: 'htsjdk', version: '2.21.1'
-// https://mvnrepository.com/artifact/org.postgresql/postgresql
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
-// https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-// https://mvnrepository.com/artifact/org.apache.commons/commons-text
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+    implementation("org.springframework:spring-beans:6.2.7")
+    implementation("org.springframework:spring-jdbc:6.2.7")
+
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
+
+    implementation group: 'com.github.samtools', name: 'htsjdk', version: '3.0.1'
+
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.2'
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     implementation 'org.apache.commons:commons-dbcp2:2.11.0'
 }
 startScripts {
