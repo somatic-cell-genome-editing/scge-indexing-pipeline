@@ -41,7 +41,7 @@ public class ModelDetails extends ObjectDetails<Model>{
                 o.setName(t.getName());
             o.setDescription(t.getDescription());
             o.setTier(t.getTier());
-            o.setReportPageLink("/toolkit/data/models/model/?id=");
+            o.setReportPageLink("/toolkit/data/models/model?id=");
         }
     }
 }
